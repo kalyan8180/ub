@@ -1,0 +1,111 @@
+<div style="padding-left: 10px;padding-top: 10px;padding-right: 10px;margin-bottom: 10px;margin-left:-20px;margin-right:-20px
+">
+ <mat-card style="background-color: #03a9f4; color:white; padding: 7px;">
+    <mat-card-title style= "font-size:19px;font-weight:bold"> ITEM LEDGER REPORT
+
+        <button style="margin-right: 10px;
+      float: right;
+      background-color: white;
+      color: black !important; margin-right: 10px;margin-top:-5px" class="btn btn-primary mat-ripple"md-ripple="reset"
+          (click)="reset()">Cancel</button>&nbsp;
+        <button style="margin-right: 10px;
+      float: right;
+      background-color: white;
+      color: black !important;margin-top:-5px " class="btn btn-primary mat-ripple" (click)="save(ItemreportForm.value)" >Submit</button>        &nbsp;
+      </mat-card-title>
+    </mat-card>
+  </div>
+
+
+<div class="content">
+    <div style="padding-left:10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+        <mat-card style="max-height: 45px; padding-top: 2px">
+
+       <form class="form-horizontal" class="form-inline" [formGroup]="ItemreportForm"> 
+
+        <div class="row">
+
+          
+            <div class="col-lg-4 col-md-3 col-sm-12">
+                <div class="form-group ">
+                  <div class="col-xl">
+    
+                    <!-- <mat-form-field> -->
+    
+                      <ng-select style="width:250px;"    (change)="medicinenamef($event)"    [items]="reports" bindLabel="medicinename" placeholder="Item Name" >
+                      </ng-select>
+<!--         
+                    </mat-form-field> -->
+                               </div>
+                </div>
+              </div>
+         
+           <div class="col-lg-4 col-md-3 col-sm-12">
+            <div class="form-group">
+              <div class="col-xl">
+                
+
+
+                <mat-form-field>
+                  <input matInput [(ngModel)]="fromDate" formControlName="fromDate" [matDatepicker]="picker3" placeholder="From Date"
+                   >
+                  <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                  <mat-datepicker #picker3></mat-datepicker>
+                </mat-form-field>
+
+              </div>
+
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-3 col-sm-12">
+            <div class="form-group">
+              <div class="col-xl">
+
+
+
+                <mat-form-field>
+                  <input matInput [(ngModel)]="toDate" formControlName="toDate" [matDatepicker]="picker4" placeholder="To Date"
+                  >
+                  <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                  <mat-datepicker #picker4></mat-datepicker>
+                </mat-form-field>
+
+              </div>
+
+            </div>
+          </div> 
+    
+</div>
+ </form> 
+</mat-card>
+</div>
+</div>
+
+<div style="padding-left:10px;padding-top:0px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+  
+    <table width="100%" class="table  table-condensed" style="overflow-y: scroll;">
+        <tbody style="font-size:11px;font-weight: bold">
+      <tr style="background:#03a9f4;color:whitesmoke">
+        
+          <th>Patient Name</th> 
+          <th>Bill No</th>
+          <th>Bill Date</th>
+          <th>Quantity Ordered</th>
+          <th>Balance Qty</th>
+          <th>Patient Type</th>
+          
+          </tr>
+          <tr  *ngFor="let data of All" >
+           
+            <td>{{data.patientname}}</td>
+            <td>{{data.billNo}}</td>
+            <td>{{data.billDate}}</td>
+            <td>{{data.qty}}</td>
+            <td>{{data.balance}}</td>
+            <td>{{data.patienttype}}</td>
+          </tr>
+        
+      </tbody>
+      </table>
+      </div>

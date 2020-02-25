@@ -1,0 +1,55 @@
+.rad-info-box i {
+    display: block;
+    background-clip: padding-box;
+    margin: 15px;
+    height: 60px;
+    width: 60px;
+    line-height: 60px;
+    font-size: 4.4em;
+    position: absolute;
+    border-radius: 50%;
+}
+.rad-info-box {
+    box-shadow: 1px 1px 2px 0 #CCCCCC;
+    padding: 20px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+    background:   linear-gradient(to bottom, #3399ff 4%, #ffffff 101%);
+    margin: 30px 0px;
+    height: 10rem;
+    width: 16rem;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+}
+.rad-info-box .heading {
+    font-size: 1.0em;
+    text-transform: uppercase;
+}
+.rad-info-box span.value{
+    font-size: 1.8em;
+}
+.rad-info-box .value, .rad-info-box .heading {
+    display: block;
+    position: relative;
+    color: #515d6e;
+    text-align: right;
+    z-index: 10;
+}
+
+
+
+
+
+.dropdown:hover>.dropdown-menu {
+    display: block;
+    overflow: auto;
+    /* width: 50px; */
+    height: 100px;
+  }
+  
+  .dropdown>.dropdown-toggle:active {
+    /*Without this, clicking will make it sticky*/
+      pointer-events: none;
+      overflow: auto;
+     
+  }

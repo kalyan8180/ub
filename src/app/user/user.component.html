@@ -1,0 +1,510 @@
+<div style="padding-left: 10px;padding-top: 10px;padding-right: 10px;margin-bottom: 10px;margin-left:-20px;margin-right:-20px
+">
+  <!-- <div class="btn btn-default" (click)="reloadPage()"> Reload </div> -->
+  <mat-card style="background-color: #03a9f4; color:white; padding: 7px;">
+    <mat-card-title style= "font-size:19px;font-weight:bold" >{{titleName.User}}
+
+      <button style="margin-right: 10px;
+        float: right;
+        background-color: white;
+        color: black !important;margin-top:-5px" md-ripple="reset" (click)="reset()" class="btn btn-primary">
+          <i class="glyphicon glyphicon-floppy-disk"></i>
+          <div> RESET </div>
+        </button>&nbsp;
+        <!-- [disabled]="!UserForm.valid" -->
+      <button style=" margin-right: 10px;
+        float: right;
+        background-color: white;
+        color: black ;margin-top:-5px" type="submit"  class="btn btn-primary" (click)="onSubmit(UserForm.value)">
+          <i class="glyphicon glyphicon-floppy-disk"></i>
+          <div> SAVE </div>
+        </button>
+    </mat-card-title>
+  </mat-card>
+</div>
+<div class="row">
+  <div class="col-md-12 col-sm-12">
+    <div style="padding-left:10px;padding-right:10px;position:relative;float:left;margin-left:-20px;margin-right:-20px">
+      <mat-card class="mat-card-padding">
+
+        <!-- <form #info="ngForm" (ngSubmit)="onSubmit(info)" class="form-horizontal" id="userForm" class="form-inline"> -->
+        <form class="form-horizontal" class="form-inline" [formGroup]="UserForm">
+          <mat-card-title style="color:#7266ba; ">User Information</mat-card-title>
+
+          <div class="row">
+            <div class="col-md-6 col-lg-4">
+              <div class="form-group ">
+                <div class="col-xl">
+                  <mat-form-field>
+                    <input [value]="User[3]?User[3].nextUserId:''" matInput placeholder="User Id" type="text" readonly>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <div class="form-group ">
+                <div class="col-xl">
+                  <mat-form-field>
+                    <input [(ngModel)]="firstName" matInput placeholder="First Name" [formControl]="UserForm.controls['firstName']" type="text"
+                      pattern="[a-zA-Z ]*" minlength="3" maxlength="50" required>
+                  </mat-form-field>
+                  <div> <small class="text text-danger" style="font-size:10px;font-weight:bold" *ngIf="submitted && !UserForm.controls['firstName'].valid"> First Name is Required
+                    </small></div>
+                  <div> <small class="text text-danger"  style="font-size:10px;font-weight:bold" *ngIf="!submitted && UserForm.controls['firstName'].touched && !UserForm.controls['firstName'].valid"> First Name should be
+                    </small></div>
+                  <div class="text text-danger" style="font-size:10px;font-weight:bold" *ngIf="UserForm.controls['firstName'].errors?.pattern">Allow only alphabets</div>
+
+
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <div class="form-group ">
+                <div class="col-xl">
+                  <mat-form-field>
+                    <input [(ngModel)]="middleName" [formControl]="UserForm.controls['middleName']" matInput placeholder="Middle Name" type="text">
+
+                  </mat-form-field>
+
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <div class="form-group ">
+                <div class="col-xl">
+                  <mat-form-field>
+                    <input [(ngModel)]="lastName" [formControl]="UserForm.controls['lastName']" matInput placeholder="Last Name" type="text"
+                      pattern="^[a-zA-Z0-9_ ]*$" maxlength="50" required>
+                  </mat-form-field>
+                  <div class="text text-danger" style="font-size:10px;font-weight:bold" *ngIf="submitted && !UserForm.controls['lastName'].valid"> Last Name is required</div>
+                  <div class="text text-danger" style="font-size:10px;font-weight:bold" *ngIf="!submitted && UserForm.controls['lastName'].touched && !UserForm.controls['lastName'].valid"> Last Name is required</div>
+                  <div class="text text-danger" style="font-size:10px;font-weight:bold" *ngIf="UserForm.controls['lastName'].errors?.pattern">Allow only alphabets</div>
+
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <div class="form-group ">
+                <div class="col-xl">
+
+                  <mat-form-field>
+
+                    <input [(ngModel)]="user_Name" [formControl]="UserForm.controls['user_Name']" matInput placeholder="UserName" type="text"
+                      minlength="6" maxlength="50" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$" required>
+                  </mat-form-field>
+                  <div class="text text-danger" style="font-size:10px;font-weight:bold" *ngIf="submitted && !UserForm.controls['user_Name'].valid"> User Name is required</div>
+                  <div class="text text-danger" style="font-size:10px;font-weight:bold"  *ngIf="!submitted && UserForm.controls['user_Name'].touched && !UserForm.controls['user_Name'].valid"> User Name is required</div>
+                  <div class="text text-danger" style="font-size:10px;font-weight:bold"  *ngIf="UserForm.controls['user_Name'].errors?.pattern"> User Name should allow Only Letter(a-z), numbers(0-9), and periods(.) are allowed</div>
+                  <div class="text text-danger" style="font-size:10px;font-weight:bold"  *ngIf="UserForm.controls['user_Name'].errors?.minlength">User Name minLength is 6</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+              <div class="form-group ">
+             <div class="col-xl">
+                  <mat-form-field>
+                    <mat-select [(ngModel)]="role_Id" [formControl]="UserForm.controls['role_Id']" placeholder="User Role" required>
+                      <mat-option>None</mat-option>
+                      <mat-option *ngFor="let c of User[0]; let i=index;" [value]="c.roleName">
+                        {{c.roleName}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <div class="text text-danger" style="font-size:10px;font-weight:bold"  *ngIf="submitted && !UserForm.controls['role_Id'].valid"> User Type is required</div>
+                  <div class="text text-danger"  style="font-size:10px;font-weight:bold"  *ngIf="!submitted && UserForm.controls['role_Id'].touched && !UserForm.controls['role_Id'].valid"> User Type is required</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- <div class="col-md-6 col-lg-4" *ngIf = "UserForm.controls['role_Id'].value == 'DOCTOR'">
+                <div class="form-group ">
+               <div class="col-xl">
+                    <mat-form-field>
+                        <input [(ngModel)]="Reference_Name" [formControl]="UserForm.controls['cons_fees']" matInput placeholder="Consultation Fees"
+                        type="text">
+                    </mat-form-field>
+                    <div class="text text-danger" style="font-size:10px;font-weight:bold"  *ngIf="submitted && !UserForm.controls['role_Id'].valid"> User Type is required</div>
+                    <div class="text text-danger"  style="font-size:10px;font-weight:bold"  *ngIf="!submitted && UserForm.controls['role_Id'].touched && !UserForm.controls['role_Id'].valid"> User Type is required</div>
+                  </div>
+                </div>
+              </div> -->
+
+            <div class="col-md-6 col-lg-4">
+              <div class="form-group ">
+                <div class="col-xl">
+
+                  <mat-form-field>
+
+                    <input [(ngModel)]="Reference_Name" [formControl]="UserForm.controls['Reference_Name']" matInput placeholder="Reference_Name"
+                      type="text">
+                  </mat-form-field>
+
+                  <div class="text text-danger" *ngIf="UserForm.controls['Reference_Name'].touched && !UserForm.controls['Reference_Name'].valid">
+                  Reference Name is required</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <div class="form-group ">
+                <div class="col-xl">
+
+                  <mat-form-field>
+
+                    <mat-select [(ngModel)]="location" [formControl]="UserForm.controls['location']" placeholder="Location" required>
+                      <mat-option>None</mat-option>
+
+                      <mat-option value="Bangalore">Bangalore</mat-option>
+                      <mat-option value="Chennai">Chennai</mat-option>
+                      <mat-option value="Hyderabad">Hyderabad</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <div class="text text-danger" style="font-size:10px;font-weight:bold" *ngIf="submitted && !UserForm.controls['location'].valid"> location is required</div>
+                  
+                  <div class="text text-danger" style="font-size:10px;font-weight:bold"  *ngIf="!submitted && UserForm.controls['location'].touched && !UserForm.controls['location'].valid"> location is required</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <div class="form-group ">
+                <div class="col-xl">
+
+                  <mat-form-field>
+
+                    <input [(ngModel)]="email" [formControl]="UserForm.controls['email']" matInput placeholder="Email" type="email" pattern='^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$'
+                      maxlength="50" required>
+                  </mat-form-field>
+                  <div class="text text-danger" style="font-size:10px;font-weight:bold" *ngIf="submitted && !UserForm.controls['email'].valid"> email is required</div>
+                  
+                  <div class="text text-danger" style="font-size:10px;font-weight:bold" *ngIf="!submitted && UserForm.controls['email'].touched && !UserForm.controls['email'].valid"> email is required</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <div class="form-group ">
+                <div class="col-xl">
+
+                  <mat-form-field>
+
+                    <input [(ngModel)]="personal_Contact_Number" [formControl]="UserForm.controls['personal_Contact_Number']" matInput placeholder="Personal Contact Number"
+                      type="text" pattern="[6789][0-9]{9}" maxlength="10" required>
+                  </mat-form-field>
+                  <div class="text text-danger" style="font-size:10px;font-weight:bold" *ngIf="submitted && !UserForm.controls['personal_Contact_Number'].valid">
+                    Please enter a valid No.</div>
+                  <div class="text text-danger" style="font-size:10px;font-weight:bold"  *ngIf="!submitted && UserForm.controls['personal_Contact_Number'].touched && !UserForm.controls['personal_Contact_Number'].valid">
+                    Please enter a valid No.</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <div class="form-group ">
+                <div class="col-xl">
+
+                  <mat-form-field>
+
+                    <input [(ngModel)]="work_Contact_Number" [formControl]="UserForm.controls['work_Contact_Number']" matInput placeholder="Work Contact Number"
+                      type="text" pattern="^-?(0|[0-9]\d*)?$" maxlength="11">
+                  </mat-form-field>
+                  <div class="text text-danger" *ngIf="UserForm.controls['work_Contact_Number'].touched && !UserForm.controls['work_Contact_Number'].valid">
+                    Please enter a valid No.</div>
+
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <div class="form-group ">
+                <div class="col-xl">
+
+                  <mat-form-field>
+
+                    <input [(ngModel)]="description" [formControl]="UserForm.controls['description']" matInput placeholder="Description" type="text"
+                      maxlength="50">
+
+                  </mat-form-field>
+                  <div class="text text-danger" *ngIf="UserForm.controls['description'].touched && !UserForm.controls['description'].valid">
+                  description is required
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- <div *ngIf="role_Id==='ADMIN'||' FRONT OFFICE'||' IP BILLING'||'LAB'||'NURSE'||'PHARMACY'" class="col-md-6 col-lg-4">
+              <div class="form-group ">
+                <div class="col-xl">
+
+                  <mat-form-field>
+
+                    <input [(ngModel)]="qual" [formControl]="UserForm.controls['qual']" matInput placeholder="Specialization" type="text"
+                      maxlength="50">
+
+                  </mat-form-field>
+                  <div class="text text-danger" *ngIf="UserForm.controls['qual'].touched && !UserForm.controls['qual'].valid">
+                    Specialization is required
+                  </div>
+                </div>
+              </div>
+            </div> -->
+
+            <!-- *ngIf="role_Id!='ADMIN'"  -->
+
+            <div class="col-md-6 col-lg-4">
+              <div class="form-group ">
+                <div class="col-xl">
+
+                  <mat-form-field>
+
+                    <mat-select required [(ngModel)]="qual" [formControl]="UserForm.controls['qual']"  placeholder="Specialization">
+                      <mat-option *ngFor="let c of User[2]" [value]="c.specName">
+
+                        {{c.specName}}
+                      </mat-option>
+
+                      <!-- <mat-option  value="Not Applicable">Not Applicable</mat-option> -->
+                    </mat-select>
+
+
+                  </mat-form-field>
+
+                  <br>
+                  <a (click)="open2(basic1)">Add Specilization</a>
+                  <br/>
+                  <div class="text text-danger" style="font-size:10px;font-weight:bold" *ngIf="submitted && !UserForm.controls['qual'].valid"> Specialization is required
+                  </div>
+                  <div class="text text-danger"  style="font-size:10px;font-weight:bold" *ngIf="!submitted && UserForm.controls['qual'].touched && !UserForm.controls['qual'].valid"> Specialization is required
+                  </div>
+                </div>
+                <div>
+
+                </div>
+              </div>
+            </div>
+
+
+
+
+            <div class="col-md-6 col-lg-4">
+              <div class="form-group ">
+                <div class="col-xl">
+
+                  <mat-form-field>
+
+                    <mat-select [(ngModel)]="dep" [formControl]="UserForm.controls['dep']" placeholder="Department" required>
+                      <mat-option value="None">None</mat-option>
+
+
+                      <mat-option value="Adminsitration">Adminsitration</mat-option>
+                      <mat-option value="Ambulance Services">Ambulance Services</mat-option>
+                      <mat-option value="Customer Service">Customer Service</mat-option>
+                      <mat-option value="Doctors">Doctors</mat-option>
+                      <mat-option value="Finance">Finance</mat-option>
+                      <mat-option value="Nursing">Nursing</mat-option>
+                      <mat-option value="Pharmacy">Pharmacy</mat-option>
+                      <mat-option value="Security">Security</mat-option>
+
+
+                    </mat-select>
+                  </mat-form-field>
+                  <br/>
+                  <div class="text text-danger" style="font-size:10px;font-weight:bold" *ngIf="submitted && !UserForm.controls['dep'].valid"> please select Department</div>
+                  
+                  <div class="text text-danger"  style="font-size:10px;font-weight:bold" *ngIf="!submitted && UserForm.controls['dep'].touched && !UserForm.controls['dep'].valid"> please select Department</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <div class="form-group ">
+                <div class="col-xl">
+
+                  <mat-form-field>
+
+                    <textarea required [(ngModel)]="qualification" [formControl]="UserForm.controls['qualification']" matInput placeholder="Qualification"
+                      type="text"></textarea>
+
+                  </mat-form-field>
+                  <br>
+                </div>
+              
+                <div class="text text-danger" style="font-size:10px;font-weight:bold" *ngIf="submitted && !UserForm.controls['qualification'].valid">
+                  please Enter Qualification</div>
+                <div class="text text-danger" style="font-size:10px;font-weight:bold" *ngIf="!submitted && UserForm.controls['qualification'].touched && !UserForm.controls['qualification'].valid">
+                please Enter Qualification</div>
+
+              </div>
+            </div>
+            <div class="col-md-12 col-lg-12">
+              <hr>
+              <mat-card-title style="color:#7266ba; ">Password Info</mat-card-title>
+
+              <!-- <hr> -->
+            </div>
+            <!-- <hr>Password Info -->
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <div class="form-group ">
+                <div class="col-xl">
+                  <mat-form-field>
+                    <input [(ngModel)]="password" [formControl]="UserForm.controls['password']" (change)="checkConfirmPass(password.value)" matInput
+                      placeholder="Password" type="password" pattern="((?=.*\d)(?=.*[a-zA-Z]).{4,20})" minlength="8" maxlength="12"
+                      required>
+                  </mat-form-field>
+                  <br />
+                  <div class="text text-danger"  *ngIf="submitted && !UserForm.controls['password'].valid">
+                    <small style="font-size:10px;font-weight:bold">Password should contain
+                        1 Numberic & 1 Capital letter</small>
+                  </div>
+                  <div class="text text-danger"  *ngIf="!submitted && UserForm.controls['password'].touched && !UserForm.controls['password'].valid">
+                    <small style="font-size:10px;font-weight:bold">Password should contain
+                        1 Numberic & 1 Capital letter</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <div class="form-group ">
+                <div class="col-xl">
+
+                  <mat-form-field>
+
+                    <input [(ngModel)]="confirm_password" [formControl]="UserForm.controls['confirm_password']" pattern="{{ match }}" type="{{ type }}"
+                      matInput placeholder="Confirm Password" type="text" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,12}" maxlength="12"
+                      required>
+                  </mat-form-field>
+                  <br />
+                  <div class="text text-danger" style="font-size:10px;font-weight:bold"  *ngIf="submitted && !UserForm.controls['confirm_password'].valid"> please Enter Conform Password
+                  </div>
+                  <div class="text text-danger" style="font-size:10px;font-weight:bold"  *ngIf="!submitted && UserForm.controls['confirm_password'].touched && !UserForm.controls['confirm_password'].valid">
+                    Password Not Matched </div>
+                 
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <div class="form-group ">
+                <div class="col-xl">
+
+                  <mat-form-field>
+
+                    <mat-select [(ngModel)]="hint_question_1" placeholder="Hint Question 1" [formControl]="UserForm.controls['hint_question_1']"
+                      required>
+                      <mat-option>None</mat-option>
+                      <mat-option value="1">What is your pet's name?</mat-option>
+                      <mat-option value="2">What is your surname?</mat-option>
+                      <mat-option value="3">Which is your favourite movie?</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <br />
+                  <div class="text text-danger" style="font-size:10px;font-weight:bold"  *ngIf="submitted && !UserForm.controls['hint_question_1'].valid">
+                    Hint Question 1 is required</div>
+                  <div class="text text-danger"  style="font-size:10px;font-weight:bold" *ngIf="!submitted &&UserForm.controls['hint_question_1'].touched && !UserForm.controls['hint_question_1'].valid">
+                  Hint Question 1 is required</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <div class="form-group ">
+                <div class="col-xl">
+
+                  <mat-form-field>
+
+                    <input [(ngModel)]="hint_answer_1" [formControl]="UserForm.controls['hint_answer_1']" matInput placeholder="Hint Answer 1"
+                      type="{{ type }}" minlength="2" maxlength="50" required>
+                  </mat-form-field>
+                  <br />
+                  <div class="text text-danger" style="font-size:10px;font-weight:bold"  *ngIf="submitted && !UserForm.controls['hint_answer_1'].valid">
+                    Hint Answer 1 is required</div>
+                  <div class="text text-danger"  style="font-size:10px;font-weight:bold"  *ngIf="!submitted && UserForm.controls['hint_answer_1'].touched && !UserForm.controls['hint_answer_1'].valid">
+                  Hint Answer 1 is required</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <div class="form-group ">
+                <div class="col-xl">
+
+                  <mat-form-field>
+
+                    <mat-select [(ngModel)]="hint_question_2" placeholder="Hint Question 2" [formControl]="UserForm.controls['hint_question_2']"
+                      required>
+                      <mat-option>None</mat-option>
+                      <mat-option value="Which is your place of birth?">Which is your place of birth?</mat-option>
+                      <mat-option value="When were you born?">When were you born?</mat-option>
+                      <mat-option value="Who is your favourite actor?">Who is your favourite actor?</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <br />
+                  <div class="text text-danger" style="font-size:10px;font-weight:bold" *ngIf="submitted && !UserForm.controls['hint_question_2'].valid">
+                    Hint Question 2 is required</div>
+                  <div class="text text-danger" style="font-size:10px;font-weight:bold" *ngIf="!submitted && UserForm.controls['hint_question_2'].touched && !UserForm.controls['hint_question_2'].valid">
+                  Hint Question 2 is required</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <div class="form-group ">
+                <div class="col-xl">
+
+                  <mat-form-field>
+
+                    <input [(ngModel)]="hint_answer_2" [formControl]="UserForm.controls['hint_answer_2']" matInput placeholder="Hint Answer 2"
+                      type="{{ type }}" minlength="2" maxlength="50" required>
+                  </mat-form-field>
+                  <br />
+                  <div class="text text-danger" style="font-size:10px;font-weight:bold"  *ngIf="submitted && !UserForm.controls['hint_answer_2'].valid">
+                    Hint Answer 2 is required</div>
+                  <div class="text text-danger" style="font-size:10px;font-weight:bold"  *ngIf="!submitted && UserForm.controls['hint_answer_2'].touched && !UserForm.controls['hint_answer_2'].valid">
+                  Hint Answer 2 is required</div>
+                  <br />
+                  <label>
+                    <input type="checkbox" (click)="hideAnswer()"> Hide Answer</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </mat-card>
+    </div>
+  </div>
+</div>
+
+
+<ng-template #basic1 let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add specilization</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+  <div class="modal-body">
+    <form class="form-horizontal" class="form-inline" [formGroup]="UserForm1">
+      <div class="row">
+        <div class=" col-md-6">
+          <div class="form-group">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input pattern="[a-zA-Z ]*" minlength="3" maxlength="50" required [(ngModel)]="specName" [formControl]="UserForm1.controls['specName']"
+                  matInput placeholder="Specilization" type="text">
+              </mat-form-field>
+
+              <div class="text text-danger" *ngIf="UserForm1.controls['specName'].errors?.minlength"> Specilization should have min 3 characters</div>
+              <div class="text text-danger" *ngIf="UserForm1.controls['specName'].errors?.maxlength">Specilization should have max 50 characters</div>
+
+
+              <div class="text text-danger" *ngIf="UserForm1.controls['specName'].errors?.pattern">Specilization should allow alphabets</div>
+
+
+
+
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" [disabled]="!UserForm1.valid" (click)="save()">Add</button>
+    <button type="button" class="btn btn-primary" (click)="reset()">Cancel</button>
+  </div>
+</ng-template>

@@ -1,0 +1,457 @@
+<div style="padding-left: 10px;padding-top: 10px;padding-right: 10px;margin-bottom: 10px;
+">
+  <div class="fixHeader" id="myHeader" style="margin-left:-20px;margin-right:-20px">
+    <mat-card style="background-color: #03a9f4; color:white; padding: 7px;">
+      <mat-card-title style="font-size:19px;font-weight:bold">SALE MANAGEMENT
+        <button style="    margin-right: 10px;
+        float: right;
+        background-color: white;
+        color: black !important; margin-top:-5px" class="btn btn-primary mat-ripple" md-ripple="reset"
+          (click)="reset()">RESET</button>&nbsp;
+
+        <button style="margin-right: 10px;
+      float: right;
+      background-color: white;
+      color: black !important;margin-top:-5px " class="btn btn-primary mat-ripple" md-ripple="submit"
+          [disabled]="!newSale['location']?.length || !patient.name?.length || !patient.mobile?.length"
+          (click)="showModal(basic);">SAVE</button>&nbsp;&nbsp;
+
+      </mat-card-title>
+    </mat-card>
+  </div>
+</div>
+
+
+<!-- [value]="sale.discount || 0" -->
+<div class="content">
+  <div style="padding-left:10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+    <mat-card style="padding-top:2px;padding-bottom:2px;height:3.8cm">
+      <div class="row">
+        <div class=" col-lg-3 col-md-4 col-sm-4">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+
+                <input [value]="this.billNo" matInput placeholder="Bill No#" type="text" readonly>
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+        <!-- <div class="col-lg-4 col-md-4 col-sm-12"> -->
+        <div class=" col-lg-3 col-md-4 col-sm-4">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+                <input [value]="this.billDate" matInput [matDatepicker]="picker" placeholder="Bill Date">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class=" col-lg-3 col-md-4 col-sm-4">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+                <input maxlength="10" [(ngModel)]="newSale.regId" matInput (keydown.enter)="findPatient($event)"
+                  placeholder="Registration Number" type="text">
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+        <div class=" col-lg-3 col-md-4 col-sm-4">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+                <input maxlength="10" [(ngModel)]="newSale.umr" matInput (keydown.enter)="findPatientumr($event)"
+                  placeholder="UMR#" type="text">
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+        <div class=" col-lg-3 col-md-4 col-sm-4">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+                <input required name="nameInput" minlength="3" maxlength="50" #uname="ngModel" pattern="^[A-Za-z -]+$"
+                  [(ngModel)]="patient.name" matInput placeholder="Name" type="text">
+              </mat-form-field>
+            </div>
+            <div class="text text-danger" *ngIf="uname.touched && uname.errors?.required"><small
+                style="padding-left:15px">Name is Mandatory</small></div>
+            <div class="text text-danger" *ngIf="uname.errors?.minlength"><small style="padding-left:15px">name should
+                have min 3 characters</small></div>
+            <div class="text text-danger" *ngIf="uname.errors?.maxlength"><small style="padding-left:15px">name should
+                have max 50 characters</small></div>
+            <div class="text text-danger" *ngIf="uname.errors?.pattern"><small style="padding-left:15px">Allow only
+                alphabets</small></div>
+
+          </div>
+        </div>
+
+        <div class=" col-lg-3 col-md-4 col-sm-4">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+
+                <input required minlength="10" (input)="checkNumeric($event)" maxlength="10" pattern="[6789][0-9]{9}"
+                  #umobile="ngModel" [(ngModel)]="patient.mobile" matInput placeholder="Mobile Number" type="text">
+              </mat-form-field>
+              <div class="text text-danger" *ngIf="umobile.touched && umobile.errors?.required"><small>Mobile Number is
+                  Mandatory</small></div>
+              <div class="text text-danger" *ngIf="umobile.errors?.minlength"><small>mobile should have min 10
+                  digits</small></div>
+              <div class="text text-danger" *ngIf="umobile.errors?.maxlength"><small>mobile should have max 10
+                  digits</small></div>
+              <div class="text text-danger" *ngIf="numericError"><small>Allow only numbers</small></div>
+
+
+            </div>
+          </div>
+        </div>
+        <!-- newSale :: {{ newSale | json}}
+          refSales :: {{ refSales | json}} -->
+
+        <div class="col-md-4">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+                <mat-select required [(ngModel)]="newSale.location" #ulocation="ngModel" placeholder="Location">
+                  <!-- <mat-option>...</mat-option> -->
+                  <!-- <mat-option value="Miyapur">Miyapur</mat-option>
+                  <mat-option value="KPHB"> KPHB</mat-option> -->
+
+                  <mat-option *ngFor="let c of Locations;let i=index" [value]="c.loc">
+                    {{c.loc}}
+
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="text text-danger" *ngIf="ulocation.touched && !ulocation.valid"><small
+                style="padding-left:15px">Loaction is Mandatory</small></div>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+  <!-- <form [formGroup]="SaleForm">  -->
+
+</div>
+
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="large" color="rgb(73, 165, 171)" type="ball-clip-rotate-pulse">
+</ngx-spinner>
+<div class="content">
+  <div style="padding-left:10px;padding-right:10px;margin-top:-1px;margin-left:-20px;margin-right:-20px">
+    <table class="table  table-responsive table-bordered table-condensed"
+      style="overflow-y: scroll; min-height:100%;margin-top:3px">
+
+
+      <tr style="background:#03a9f4;color:whitesmoke">
+        <th>S.NO</th>
+        <th>Item Name</th>
+        <th>Pack</th>
+        <th>Batch</th>
+
+        <th>Expiry Date</th>
+
+        <th>Qty</th>
+        <th>Avaialble Qty</th>
+        <th>MRP</th>
+
+        <!-- <th>Dis%</th> -->
+        <th>Amount</th>
+        <th>GST</th>
+        <th>Action</th>
+      </tr>
+
+      <!-- <pre>{{refSales|json}}</pre> -->
+
+      <tr *ngFor="let sale of refSales;let i= index">
+        <td> {{i + 1}}</td>
+        <td>
+          <ng-select appendTo="body" style="width:250px" [items]="medicines" bindLabel="medName" placeholder="Item Name"
+            (change)="onMedicineChange($event, sale);setDetails(sale);setBatches(sale)">
+          </ng-select>
+        </td>
+        <td>
+          <input style="width:50px;height:34px" [(ngModel)]="sale.packSize" placeholder="Pack" type="text" readonly>
+
+        </td>
+        <td>
+          <select placeholder="Batch" style="width:100px;height:34px"
+            (change)="setMedicineDetails(sale);calcAmount(sale)" [(ngModel)]="sale.batchNo">
+            <!-- <option value=""></option>  -->
+            <option *ngFor="let b of sale.batches" [value]="b">{{b}}</option>
+          </select>
+
+        </td>
+
+        <td>
+          <input style="width:130px;height:34px" [(ngModel)]="sale.expDate" placeholder="Exp date" type="text" readonly>
+
+        </td>
+
+        <td>
+          <input style="width:70px;height:34px" [(ngModel)]="sale.quantity" [disabled]="!sale.medicineName"
+            (input)="calcAmount(sale);calculateTotal()" placeholder="Qty" type="number" (input)="setMedicineDetails(sale)"
+            (keydown.tab)="addMore($event,sale)">
+          <div class="text text-danger" *ngIf="sale.quantity_error">Quantity is not available!</div>
+          <!-- <div class="text text-danger" *ngIf="sale.quantity_min">Quantity should atleast 1</div> -->
+        </td>
+
+        <td>
+          <input style="width:70px;height:34px" [(ngModel)]="sale.Available" placeholder="Avaialble Qty" type="text"
+            readonly>
+
+        </td>
+
+        <td>
+          <input style="width:70px;height:34px" [(ngModel)]="sale.mrp" placeholder="MRP" type="text" readonly>
+
+        </td>
+        <!-- <td>
+          <input style="width:50px;height:34px" [(ngModel)]="sale.discount" [disabled]="!sale.quantity" [value]="sale.discount||0"
+            (input)="calcAmount(sale)" placeholder="dis" type="number">
+        </td> -->
+        <td>
+          <input style="width:130px;height:34px" [value]="sale.amount || 0" placeholder="Amount" type="text" readonly>
+        </td>
+
+        <td>
+          <input style="width:50px;height:34px" [(ngModel)]="sale.gst" placeholder="GST" type="text"
+            (keydown.tab)="addMore($event,sale)" (keydown.enter)="addMore($event,sale)" readonly>
+        </td>
+        <td>
+          <a (click)="addMore($event)"><i class="fa fa-plus" style="font-size:18px;color:blue"></i></a>&nbsp;
+          <a *ngIf="refSales.length > 1" (click)="removeSaleItem(i);"><i class="fa fa-close"
+              style="font-size:18px;color:red"></i></a>
+        </td>
+      </tr>
+
+    </table>
+    <!-- <div class="row"> -->
+      <div class="disc-col">
+    <div class="col-xl">
+      <mat-form-field>
+        <input [(ngModel)]="newSale.total" matInput placeholder="Total" type="text" readonly >
+      </mat-form-field>
+    </div>
+
+    <div class="col-xl">
+      <mat-form-field>
+        <mat-select [(ngModel)]="value" (selectionChange)="calculatedisamount()" matInput placeholder="Dis type">
+          <mat-option value="%">%</mat-option>
+          <mat-option value="amt">amt</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="col-xl">
+      <mat-form-field>
+        <input [(ngModel)]="dis" (input)="discountchange()" matInput placeholder="Disount" type="text">
+      </mat-form-field>    
+    <div>
+      <small class="text text-danger" *ngIf="errorInfo"
+      style="padding-left:15px">Discount should not exceed 100</small>
+    </div>
+    <div>
+        <small class="text text-danger" *ngIf="error"
+        style="padding-left:15px">Discount should not Total Amount</small>
+      </div>
+  </div>
+    
+    <div class="col-xl">
+      <mat-form-field>
+        <input [(ngModel)]="tdisamount" matInput placeholder="Final Amount" type="text" readonly>
+      </mat-form-field>
+      
+    </div>
+  </div>
+  <!-- </div> -->
+  </div>
+
+</div>
+
+<ng-template #basic let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Save Particulars</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <!-- <div class="col-md-6">
+      <div class="form-group ">
+        <div class="col-xl">
+          <mat-form-field>
+            <input [(ngModel)]="newSale.total" matInput placeholder="Total" type="text" readonly>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="form-group ">
+        <div class="col-xl">
+          <mat-form-field>
+            <input [(ngModel)]="dis" (input)="discountchange()" matInput placeholder="Disount" type="text">
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="form-group ">
+        <div class="col-xl">
+          <mat-form-field>
+            <mat-select [(ngModel)]="value" (selectionChange)="calculatedisamount()" matInput placeholder="Dis type">
+              <mat-option value="%">%</mat-option>
+              <mat-option value="amt">amt</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </div> -->
+
+    <div class="col-md-6">
+      <div class="form-group ">
+        <div class="col-xl">
+          <mat-form-field style="margin-left: -23%;">
+            <input [(ngModel)]="tdisamount" matInput placeholder="Final Amount" type="text" readonly>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+
+      <div>
+        <table width="100%" class="table table-bordered table-condensed table-responsive">
+
+          <tr style="background:#03a9f4;color:whitesmoke">
+            <!-- <th>Sno</th> -->
+            <th>Payment Type</th>
+
+            <!-- <th>Action</th> -->
+
+          </tr>
+
+          <tr *ngFor="let c of multiplePayment1;let i= index">
+            <!-- <td> {{i + 1}}</td> -->
+            <td>
+
+              <div *ngFor="let option of options; let optI = index">
+
+                <div style="display:inline">
+                  <!-- <mat-form-field style="width:80px"> -->
+                  <select style="width:80px;" (ngModelChange)="changed($event, i)" (change)="paytype(c)"
+                    [(ngModel)]="c.payType" placeholder="Type">
+
+                    <option *ngFor="let type of types$ | async; let i = index" [value]="type.text"
+                      [disabled]="!type.allowed">
+                      {{type.text}}</option>
+                  </select>&nbsp;&nbsp;
+
+                  <!-- </mat-form-field>&nbsp;&nbsp; -->
+                  <a (click)="addMore1($event);secondrow()"><i class="fa fa-plus"
+                      style="font-size:15px;color:blue"></i></a>&nbsp;
+                  <a *ngIf="multiplePayment1.length>1" (click)="removeSaleItem1(i);secondrowremove()"><i
+                      class="fa fa-close" style="font-size:15px;color:red"></i></a>&nbsp;
+                  <div style="display:inline" *ngIf="c.payType==='Card'">
+
+                    <!-- <mat-form-field style="width:80px"> -->
+                    <input style="width:80px" [(ngModel)]="referenceNumber" placeholder="Ref No" type="text">
+
+                    <!-- </mat-form-field> -->
+
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- <a (click)="addMore1($event);secondrow()"><i class="fa fa-plus" style="font-size:10px;color:blue"></i></a>&nbsp;
+                    <a *ngIf="multiplePayment1.length>1" (click)="removeSaleItem1(i);secondrowremove()"><i class="fa fa-close" style="font-size:10px;color:red"></i></a> -->
+            </td>
+
+            <!-- <td>
+                    <a (click)="addMore1($event);secondrow()"><i class="fa fa-plus" style="font-size:10px;color:blue"></i></a>&nbsp;
+                    <a *ngIf="multiplePayment1.length>1" (click)="removeSaleItem1(i);secondrowremove()"><i class="fa fa-close" style="font-size:10px;color:red"></i></a>
+                  </td> -->
+
+          </tr>
+        </table>
+      </div>&nbsp;&nbsp;
+      <div style="float: left">
+
+        <table width="100%" class="table table-bordered table-condensed table-responsive">
+
+          <tr style="background:#03a9f4;color:whitesmoke">
+
+            <th>Amount</th>
+            <!-- <th>Action</th> -->
+          </tr>
+
+          <tr>
+            <td>
+              <!-- <mat-form-field style="width:80px"> -->
+              <input style="width:80px;height:22px" [disabled]="Xamount" min="0" max="total" (input)="amount2()"
+                [(ngModel)]="X" placeholder="Amount" type="text">
+
+              <!-- </mat-form-field> -->
+              <!-- <div>
+      
+                      <mat-form-field style="width:80px">
+                        <input [(ngModel)]="referenceNumber" matInput placeholder="Ref No" type="text">
+      
+                      </mat-form-field>
+      
+                    </div> -->
+            </td>
+
+
+            <!-- <td> <a (click)="secondrow()"><i class="fa fa-plus" style="font-size:18px;color:blue"></i></a></td> -->
+          </tr>
+
+          <tr>
+            <td *ngIf="!row">
+              <!-- <mat-form-field style="width:80px"> -->
+              <input style="width:80px;height:22px" (input)="amount1()" min="0" max="total" [(ngModel)]="Y"
+                placeholder="Amount" type="text">
+
+              <!-- </mat-form-field> -->
+            </td>
+          </tr>
+          <!-- <tr>
+      
+                  <td *ngIf="!row"><input placeholder="Amount2" (input)="amount1()" [(ngModel)]="Y" type="text"></td>
+                  <td> <a *ngIf="!row" (click)="secondrowremove()"><i class="fa fa-close" style="font-size:18px;color:red"></i></a></td>
+                </tr> -->
+        </table>
+      </div>
+    </div>
+    <div style="display:inline" *ngIf="paymenttype==='Due'&&patient.type==='OUTPATIENT'">
+      <mat-form-field>
+
+
+        <mat-select [(ngModel)]="newSale.authorisedBy" placeholder="Authorised by">
+
+          <mat-option value="Dr.Rajasekhar Kona">Dr.Rajasekhar Kona</mat-option>
+          <mat-option value="Dr.Sireesha Kolli">Dr.Sireesha Kolli</mat-option>
+
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <!-- modal.close('Save click') -->
+    <!-- 
+    tabindex="0" -->
+    <button type="button" class="btn btn-outline-dark" [disabled]="saveInProgress" (click)="save()">Submit</button>
+    <button type="button" class="btn btn-outline-danger" (click)="modal.close('Save click');">Close</button>
+  </div>
+</ng-template>

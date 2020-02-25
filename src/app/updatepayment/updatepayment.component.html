@@ -1,0 +1,235 @@
+<div style="padding-left: 10px;padding-top: 10px;padding-right: 10px;margin-bottom: 10px;">
+  <mat-card style="background-color: #03a9f4; color:white; padding: 7px;margin-left:-20px;margin-right:-20px">
+    <mat-card-title style="font-size:19px;font-weight:bold">UPDATE PAYMENT_TYPE
+      <button style="margin-right: 10px;
+              float: right;
+              background-color: white;
+              color: black !important;margin-top:-5px " class="btn btn-primary mat-ripple" md-ripple="reset"
+        (click)="reset()">RESET</button> &nbsp;&nbsp;
+
+      <!-- [disabled]="!DoctorForm.valid" -->
+      <button style="margin-right: 10px;
+            float: right;
+            background-color: white;
+            color: black !important;margin-top:-5px" class="btn btn-primary mat-ripple" md-ripple="submit"
+        (click)="save(UpdateForm.value);">SUBMIT</button>
+    </mat-card-title>
+  </mat-card>
+</div>
+<div class="content">
+  <div style="padding-left:10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+    <mat-card style="max-height: 80px; padding-top: 5px">
+      <form class="form-horizontal" class="form-inline" [formGroup]="UpdateForm">
+        <div class="row">
+          <div class=" col-lg-6 col-md-6 col-sm-12">
+            <div class="form-group ">
+              <div class="col-xl">
+                <mat-form-field style="margin-top:-5px">
+                  <input required [(ngModel)]="billNo" [formControl]="UpdateForm.controls['billNo']" minlength="9"
+                    maxlength="15" matInput placeholder="BillNo" type="text">
+                </mat-form-field>
+                <div
+                  *ngIf="!submitted && UpdateForm.controls['billNo'].hasError('required') && UpdateForm.controls['billNo'].touched"
+                  class="text text-danger">
+                  <small>BillNo is Mandatory</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class=" col-lg-6 col-md-6 col-sm-12">
+            <div class="form-group ">
+              <div class="col-xl">
+                <mat-form-field style="margin-top:-5px">
+
+                  <mat-select required [(ngModel)]="billType" [formControl]="UpdateForm.controls['billType']"
+                    placeholder="BillType">
+                    <mat-option>None</mat-option>
+                    <mat-option value="Osp Bill">Osp Bill</mat-option>
+                    <mat-option value="Patient Registration">Patient Registration</mat-option>
+                    <mat-option value="Sales">Sales</mat-option>
+                    <mat-option value="Laboratory Registration">Laboratory Registration</mat-option>
+                    <mat-option value="IP Advance Payment">IP Advance Payment</mat-option>
+                    <mat-option value="Ip Final Billing">Ip Final Billing</mat-option>
+                    <mat-option value="Lab Due Settlement">Lab Due Settlement</mat-option>
+                    <mat-option value="Osp Due Settlememt">Osp Due Settlememt</mat-option>
+                    <mat-option value="Sales Due Settlement">Sales Due Settlement</mat-option>
+                    <mat-option value="Sales Return">Sales Return</mat-option>
+                    <mat-option value="Ip Sales Return">Ip Sales Return</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div
+                  *ngIf="!submitted && UpdateForm.controls['billType'].hasError('required') && UpdateForm.controls['billType'].touched"
+                  class="text text-danger">
+                  <small>BillType is Mandatory</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </form>
+    </mat-card>
+  </div>
+</div>
+<div style="padding-left:10px;margin-top:-10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+  <table width="100%" class="table table-striped table-condensed" style="overflow-y: scroll;">
+    <tr style="background:#03a9f4;color:whitesmoke">
+      <th>BillNo</th>
+      <th>Due</th>
+      <th>Cash</th>
+      <th>Card</th>
+      <th>cheque</th>
+      <th>TotalAmount</th>
+      <th>FinalAmount</th>
+      <th>Pay</th>
+    </tr>
+    <tr *ngFor="let data of All">
+      <td>{{data.billNo}} </td>
+      <td>{{data.due}} </td>
+      <td>{{data.cash}} </td>
+      <td>{{data.card}} </td>
+      <td>{{data.cheque}} </td>
+      <td>{{data.totalAmount}} </td>
+      <td>{{data.finalAmount}} </td>
+      <td> <a style="color:blue" (click)="open(basic,data)">Pay</a> </td>
+    </tr>
+  </table>
+  <ng-template #basic let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title"> Tag Patient</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+
+      <div class="col-md-6">
+        <div class="form-group ">
+          <div class="col-xl">
+            <mat-form-field>
+              <input [(ngModel)]="this.finalamount" matInput placeholder="Total" type="text" readonly>
+
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <!-- <form class="form-horizontal" class="form-inline" [formGroup]="UpdateForm"> -->
+      <div class="row">
+        <div>
+          <table width="100%" class="table table-bordered table-condensed table-responsive">
+
+            <tr style="background:#03a9f4;color:whitesmoke">
+              <!-- <th>Sno</th> -->
+              <th>Payment Type</th>
+
+              <!-- <th>Action</th> -->
+
+            </tr>
+
+            <tr *ngFor="let c of multiplePayment1;let i= index">
+              <!-- <td> {{i + 1}}</td> -->
+              <td>
+
+                <div *ngFor="let option of options; let optI = index">
+
+                  <div style="display:inline">
+                    <!-- <mat-form-field style="width:80px"> -->
+                    <select style="width:80px;" (ngModelChange)="changed($event, i)" [(ngModel)]="c.payType"
+                      placeholder="Type">
+
+                      <option *ngFor="let type of types$ | async; let i = index" [value]="type.text"
+                        [disabled]="!type.allowed">
+                        {{type.text}}</option>
+                    </select>&nbsp;&nbsp;
+
+                    <!-- </mat-form-field>&nbsp;&nbsp; -->
+                    <a (click)="addMore1($event);secondrow()"><i class="fa fa-plus"
+                        style="font-size:15px;color:blue"></i></a>&nbsp;
+                    <a *ngIf="multiplePayment1.length>1" (click)="removeSaleItem1(i);secondrowremove()"><i
+                        class="fa fa-close" style="font-size:15px;color:red"></i></a>&nbsp;
+                    <div style="display:inline" *ngIf="c.payType==='Card'">
+
+                      <!-- <mat-form-field style="width:80px"> -->
+                      <input style="width:80px" [(ngModel)]="referenceNumber" placeholder="Ref No" type="text">
+
+                      <!-- </mat-form-field> -->
+
+                    </div>
+
+                  </div>
+                </div>
+
+                <!-- <a (click)="addMore1($event);secondrow()"><i class="fa fa-plus" style="font-size:10px;color:blue"></i></a>&nbsp;
+                        <a *ngIf="multiplePayment1.length>1" (click)="removeSaleItem1(i);secondrowremove()"><i class="fa fa-close" style="font-size:10px;color:red"></i></a> -->
+              </td>
+
+              <!-- <td>
+                        <a (click)="addMore1($event);secondrow()"><i class="fa fa-plus" style="font-size:10px;color:blue"></i></a>&nbsp;
+                        <a *ngIf="multiplePayment1.length>1" (click)="removeSaleItem1(i);secondrowremove()"><i class="fa fa-close" style="font-size:10px;color:red"></i></a>
+                      </td> -->
+
+            </tr>
+          </table>
+        </div>&nbsp;&nbsp;
+        <div style="float: left">
+
+          <table width="100%" class="table table-bordered table-condensed table-responsive">
+
+            <tr style="background:#03a9f4;color:whitesmoke">
+
+              <th>Amount</th>
+              <!-- <th>Action</th> -->
+            </tr>
+
+            <tr>
+              <td>
+                <!-- <mat-form-field style="width:80px"> -->
+                <input style="width:80px;height:22px" [disabled]="Xamount" min="0" max="total" (input)="amount2()"
+                  [(ngModel)]="X" placeholder="Amount" type="text">
+
+                <!-- </mat-form-field> -->
+                <!-- <div>
+          
+                          <mat-form-field style="width:80px">
+                            <input [(ngModel)]="referenceNumber" matInput placeholder="Ref No" type="text">
+          
+                          </mat-form-field>
+          
+                        </div> -->
+              </td>
+
+
+              <!-- <td> <a (click)="secondrow()"><i class="fa fa-plus" style="font-size:18px;color:blue"></i></a></td> -->
+            </tr>
+
+            <tr>
+              <td *ngIf="!row">
+                <!-- <mat-form-field style="width:80px"> -->
+                <input style="width:80px;height:22px" (input)="amount1()" min="0" max="total" [(ngModel)]="Y"
+                  placeholder="Amount" type="text">
+
+                <!-- </mat-form-field> -->
+              </td>
+            </tr>
+            <!-- <tr>
+          
+                      <td *ngIf="!row"><input placeholder="Amount2" (input)="amount1()" [(ngModel)]="Y" type="text"></td>
+                      <td> <a *ngIf="!row" (click)="secondrowremove()"><i class="fa fa-close" style="font-size:18px;color:red"></i></a></td>
+                    </tr> -->
+          </table>
+        </div>
+      </div>
+      <!-- </form> -->
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-primary" [disabled]="btnDisable"
+        (click)="update()">Submit</button>&nbsp;
+      <button type="button" class="btn btn-outline-danger" (click)="modal.dismiss('Cross click')">Close</button>
+    </div>
+    <!-- </div>
+  
+  </div> -->
+  </ng-template>
+</div>

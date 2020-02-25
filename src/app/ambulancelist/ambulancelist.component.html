@@ -1,0 +1,186 @@
+<div style="padding-left: 10px;padding-top: 10px;padding-right: 10px;margin-bottom: 10px;
+">
+  <mat-card style="background-color: #03a9f4; color:white; padding: 7px;margin-left:-20px;margin-right:-20px">
+    <mat-card-title style= "font-size:19px;font-weight:bold"> Ambulance List
+
+    </mat-card-title>
+
+  </mat-card>
+
+
+</div>
+<div style="padding-left:10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+    <mat-card style="max-height: 45px; padding-top: 2px">
+    <label>
+        <!-- <mat-form-field style="width:150px;margin-top:-5px"> -->
+
+        <input [(ngModel)]="filter"  placeholder="Search By PatientName" type="search">
+      <!-- </mat-form-field> -->
+    </label>
+  </mat-card>
+</div>
+<div style="padding-left:10px;margin-top:-10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+
+  <table width="100%" class="table table-striped table-condensed" style="overflow-y: scroll;">
+      <tbody style="font-size:11px;font-weight: bold">
+    <tr style="background:#03a9f4;color:whitesmoke">
+      <th>Service Id</th>
+      <th>Patient Name</th>
+      <th>Mobile Number</th>
+      <th>From Location</th>
+      <th>To Location</th>
+      <th>Date</th>
+      <th>Tag Patient</th>
+    </tr>
+    <tr *ngFor="let data of alist| filter: filter|paginate: { itemsPerPage: 15, currentPage: p }">
+      <td>{{data.patAmbulanceId}} </td>
+      <td>{{data.patName}} </td>
+      <td>{{data.mobileNo}} </td>
+      <td>{{data.fromLocation}} </td>
+      <td>{{data.toLocation}} </td>
+      <td>{{data.fromTime | date :  "dd.MM.y"}} </td>
+      <td><a style="color:blue" (click)="open(basic,data)">Tag Patient</a></td>
+    </tr>
+      </tbody>
+    </table>
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+</div>
+<ng-template #basic let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">  Tag Patient</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+
+      <form class="form-horizontal" class="form-inline" [formGroup]="AmbulanceForm">
+            <div class="row">
+                <div class="col-lg-4 col-md-3">
+                  <div class="form-group">
+                    <div class="col-xl">
+        
+                      <mat-form-field>
+        
+                        <input required [(ngModel)]="patAmbulanceId" formControlName="patAmbulanceId" matInput placeholder="Service Id" type="text" readonly>
+                      </mat-form-field>
+                    
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-md-3">
+                    <div class="form-group">
+                      <div class="col-xl">
+          
+                        <mat-form-field>
+          
+                          <input required [(ngModel)]="regNo"  formControlName="regNo" matInput placeholder="Patient RegNo" type="text">
+                        </mat-form-field>
+                        <div *ngIf="AmbulanceForm.controls['regNo'].hasError('required') && AmbulanceForm.controls['regNo'].touched"
+                        class="text text-danger">
+                        <small>Mandatory(if not entered)</small>
+                       </div>
+
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 col-md-3">
+                      <div class="form-group">
+                        <div class="col-xl">
+            
+                          <mat-form-field>
+            
+                            <input   required [(ngModel)]="billAmount" formControlName="billAmount" matInput placeholder="Amount" pattern="[0-9]*" type="text">
+                          </mat-form-field>
+                          <div *ngIf="AmbulanceForm.controls['billAmount'].hasError('required') && AmbulanceForm.controls['billAmount'].touched"
+                          class="text text-danger">
+                          <small>Mandatory(if not entered)</small>
+                         </div>
+                        <div *ngIf="AmbulanceForm.controls['billAmount'].hasError('pattern') && AmbulanceForm.controls['billAmount'].touched"
+                          class="text text-danger">
+                          <small>Enter valid type</small>
+                        </div>
+                        <!-- <div *ngIf="AmbulanceForm.controls['billAmount'].hasError('minlength') && AmbulanceForm.controls['billAmount'].touched"
+                        class="text text-danger">
+                        <small>minlength is 3</small>
+                      </div> -->
+                        </div>
+                      </div>
+                    </div>
+                  
+                    <div class="col-lg-4 col-md-3">
+                        <div class="form-group">
+                          <div class="col-xl">
+              
+                            <mat-form-field>
+              
+                              <input  required [(ngModel)]="paidTo"  formControlName="paidTo" matInput placeholder="Paid To" pattern="^[A-Za-z0-9 ]*" type="text">
+                            </mat-form-field>
+                            <div *ngIf="AmbulanceForm.controls['paidTo'].hasError('required') && AmbulanceForm.controls['paidTo'].touched"
+                            class="text text-danger">
+                            <small>Mandatory(if not entered)</small>
+                           </div>
+                          <div *ngIf="AmbulanceForm.controls['paidTo'].hasError('pattern') && AmbulanceForm.controls['paidTo'].touched"
+                            class="text text-danger">
+                            <small>Enter valid type</small>
+                          </div>
+                          </div>
+                        </div>
+                      </div>
+
+
+
+                      <div class="col-lg-4 col-md-3">
+                        <div class="form-group">
+                          <div class="col-xl">
+              
+                            <mat-form-field>
+              
+                              <input required [(ngModel)]="toTime" [formControl]="AmbulanceForm.controls['toTime']" matInput placeholder="Date" type="date">
+                            </mat-form-field>
+                            <div *ngIf="AmbulanceForm.controls['toTime'].hasError('required') && AmbulanceForm.controls['toTime'].touched"
+                            class="text text-danger">
+                            <small>Mandatory(if not entered)</small>
+                           </div>
+                          <div *ngIf="AmbulanceForm.controls['toTime'].hasError('pattern') && AmbulanceForm.controls['toTime'].touched"
+                            class="text text-danger">
+                            <small>Enter valid type</small>
+                          </div> 
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-4 col-md-3">
+                          <div class="form-group" >
+                            <div class="col-xl">
+                           <label  style="padding-right: 30px;">
+                           Amount Paid</label>&nbsp;
+                            <select required [(ngModel)]="amountStatus"  formControlName="amountStatus" style="padding-left: 90px;">
+                                <option>None</option>
+                              <option value="yes">Yes</option>
+                              <option value="No">No</option>
+                            </select>
+                            <div *ngIf="AmbulanceForm.controls['amountStatus'].hasError('required') && AmbulanceForm.controls['amountStatus'].touched"
+                            class="text text-danger">
+                            <small>Mandatory(if not entered)</small>
+                           </div>
+                          <!-- <div *ngIf="AmbulanceForm.controls['amountStatus'].hasError('pattern') && AmbulanceForm.controls['amountStatus'].touched"
+                            class="text text-danger">
+                            <small>Enter valid type</small>
+                          </div> -->
+                            </div>
+                          </div>
+                        </div>
+  
+  
+                    
+  
+                
+              </div>
+          </form>
+          </div>
+          <div class="modal-footer">
+              <button class="btn btn-primary mat-ripple" md-ripple="submit"  [disabled]="!AmbulanceForm.valid" (click)="save(AmbulanceForm.value);modal.close('Save click');refresh()">Save</button>
+              <button type="button" class="btn btn-danger mat-ripple" (click)="modal.close('Cancel click')">Cancel</button>
+             
+            </div>
+          </ng-template>

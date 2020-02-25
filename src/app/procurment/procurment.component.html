@@ -1,0 +1,849 @@
+<div style="padding-left: 10px;padding-top: 10px;padding-right: 10px;margin-bottom: 10px;margin-left:-20px;margin-right:-20px
+">
+  <mat-card style="background-color: #03a9f4; color:white; padding: 7px;">
+    <mat-card-title style="font-size:19px;font-weight:bold">GRN DETAILS
+      <button style="margin-right: 10px;
+      float: right;
+      background-color: white;
+      color: black !important;margin-top:-5px" class="btn btn-primary mat-ripple" md-ripple="reset" (click)="reset()">RESET</button>      &nbsp;&nbsp;
+
+      <!-- <button style="margin-right: 10px;
+      float: right;
+      background-color: white;
+      color: black !important; " class="btn btn-primary mat-ripple" md-ripple="submit" [disabled]="!ProForm.valid" (click)="save(ProForm.value);">SAVE</button> -->
+      <button style="margin-right: 10px;
+      float: right;
+      background-color: white;
+      color: black !important; margin-top:-5px" class="btn btn-primary mat-ripple" md-ripple="submit" [disabled]="!ProForm.valid"
+        (click)="open(basic)">SAVE</button>&nbsp;
+      <button style="margin-right: 10px;
+      float: right;
+      background-color: white;
+      color: black !important;margin-top:-5px" class="btn btn-primary mat-ripple" md-ripple="submit" class="btn btn-outline-primary"
+        [disabled]="!ProForm.valid" (click)="save1(ProForm.value)">SaveAsDraft</button>
+
+    </mat-card-title>
+
+
+  </mat-card>
+
+</div>
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="large" color="rgb(73, 165, 171)" type="ball-clip-rotate-pulse"></ngx-spinner>
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }" [template]="customLoadingTemplate"></ngx-loading>
+
+<div class="content">
+  <div style="padding-left:10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+    <mat-card style="padding-left:50px;">
+
+      <form class="form-horizontal" class="form-inline" [formGroup]="ProForm">
+
+        <div class="row">
+          <div class="col-lg-3 col-md-4 col-sm-12">
+            <div class="form-group ">
+              <div class="col-xl">
+
+                <mat-form-field>
+
+                  <input [value]="Proc[0]?Proc[0].procurementId:''" matInput placeholder="GRN_ID" type="text" readonly>
+                </mat-form-field>
+
+              </div>
+            </div>
+          </div>
+
+
+          <div class="col-lg-3 col-md-4 col-sm-12">
+            <div class="form-group ">
+              <div class="col-xl">
+                <mat-form-field>
+                  <input [max]="maxDate" [(ngModel)]="date_of_procurement" [formControl]="ProForm.controls['date_of_procurement']" matInput
+                    [matDatepicker]="picker" placeholder="GRN Date">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+
+              </div>
+
+            </div>
+          </div>
+
+
+
+          <div class="col-lg-3 col-md-4 col-sm-12">
+            <div class="form-group ">
+              <div class="col-xl">
+
+                <mat-form-field>
+                  <mat-select required [(ngModel)]="VendorName" placeholder="Vendor Name" [formControl]="ProForm.controls['VendorName']">
+                    <mat-option>none</mat-option>
+                    <mat-option *ngFor="let data of Proc[1];let i=index" [value]="data.vendorName">
+                      {{data.vendorName}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="text text-danger" *ngIf="ProForm.controls['VendorName'].touched && !ProForm.controls['VendorName'].valid">Mandatory(if not entered)</div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-4 col-sm-12">
+            <div class="form-group ">
+              <div class="col-xl">
+
+                <mat-form-field>
+                  <mat-select required [(ngModel)]="procurement_type" [formControl]="ProForm.controls['procurement_type']" placeholder="Procurement Type">
+                    <mat-option value="none">None</mat-option>
+                    <mat-option value="With PO">With PO</mat-option>
+                    <mat-option value="Without PO">Without PO</mat-option>
+
+                  </mat-select>
+                </mat-form-field>
+
+              </div>
+              <div class="text text-danger" *ngIf="ProForm.controls['procurement_type'].touched && !ProForm.controls['procurement_type'].valid">Mandatory(if not entered)</div>
+            </div>
+          </div>
+
+
+          <div *ngIf="procurement_type === 'With PO'" class="col-lg-3 col-md-4 col-sm-12">
+            <div class="form-group ">
+              <div class="col-xl">
+
+                <mat-form-field>
+                  <input [(ngModel)]="po_num" [formControl]="ProForm.controls['po_num']" matInput placeholder="PO #" type="text">
+
+                </mat-form-field>
+
+              </div>
+              <div class="text text-danger" *ngIf="ProForm.controls['po_num'].touched && !ProForm.controls['po_num'].valid">Mandatory(if not entered)</div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-4 col-sm-12">
+            <div class="form-group ">
+              <div class="col-xl">
+
+                <mat-form-field>
+                  <input required [(ngModel)]="in_num" [formControl]="ProForm.controls['in_num']" matInput placeholder="INVOICE #" type="text"
+                    (keyup.enter)="showdrafdetails()">
+
+                </mat-form-field>
+
+              </div>
+              <div class="text text-danger" *ngIf="ProForm.controls['in_num'].touched && !ProForm.controls['in_num'].valid">Mandatory(if not entered)</div>
+
+            </div>
+          </div>
+
+
+          <div class="col-lg-3 col-md-4 col-sm-12">
+            <div class="form-group ">
+              <div class="col-xl">
+
+                <mat-form-field>
+                  <mat-select required [(ngModel)]="currency" [formControl]="ProForm.controls['currency']" placeholder="Currency">
+                    <mat-option>None</mat-option>
+                    <mat-option value="INR">INR</mat-option>
+                    <mat-option value="$">$</mat-option>
+                    <mat-option value="Euro">Euro</mat-option>
+
+                  </mat-select>
+                </mat-form-field>
+
+              </div>
+
+              <div class="text text-danger" *ngIf="ProForm.controls['currency'].touched && !ProForm.controls['currency'].valid">Mandatory(if not entered)</div>
+            </div>
+          </div>
+
+
+
+          <div class="col-lg-3 col-md-4 col-sm-12">
+            <div class="form-group">
+              <div class="col-xl">
+                <mat-form-field>
+                  <mat-select required [(ngModel)]="location" [formControl]="ProForm.controls['location']" placeholder="Location">
+                    <mat-option>None</mat-option>
+                    <mat-option value="Miyapur">Miyapur</mat-option>
+                    <mat-option value="KPHB">KPHB</mat-option>
+
+
+                  </mat-select>
+                </mat-form-field>
+                <div class="text text-danger" *ngIf="ProForm.controls['location'].touched && !ProForm.controls['location'].valid">Please select Location </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-sm-12">
+            <div class="form-group ">
+              <div class="col-xl">
+
+
+
+                <mat-form-field>
+                  <input [(ngModel)]="status" [formControl]="ProForm.controls['status']" matInput placeholder="Status" type="text" readonly>
+
+                </mat-form-field>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </form>
+
+    </mat-card>
+  </div>
+  <!-- {{detail|json}} -->
+  <div style="padding-left:10px;margin-top:-10px;padding-right:10px;margin-left:-30px;margin-right:-30px">
+
+    <table class="table table-bordered  table-responsive" style="overflow-y: scroll">
+      <tr style="background:#03a9f4;color:whitesmoke;font-size:13px">
+        <th>SNo</th>
+        <th>Product Name</th>
+        <!-- <th>Link</th> -->
+        <th>Pack</th>
+        <th>Batch #</th>
+
+        <th>Expiry Dt</th>
+        <th>Qty</th>
+
+        <th>Free</th>
+        <th>MRP</th>
+        <th>Rate</th>
+        <th>Dis</th>
+        <th>Amount</th>
+        <th>GST</th>
+        <th>Action</th>
+
+      </tr>
+
+      <tr *ngFor="let item of detail;let i=index">
+        <td>{{i+1}}</td>
+        <td>
+
+
+          <ng-select appendTo="body" style="width:300px" [(ngModel)]="item.itemName" [items]="Proc[2]" bindLabel="name" placeholder="Item Name"
+            (change)="onMedicineChange($event, item)">
+          </ng-select>
+
+
+          <a *ngIf="item.itemName!=null" style="color:blue;height:34px" (click)="open2(content,data);showLink(item)">PreviousDetails</a>
+
+        </td>
+
+        <!-- <td> <a style="color:blue;height:34px" (click)="open2(content,data);showLink(item)">Link</a></td> -->
+
+        <td>
+
+          <input style="width:70px;height:34px" [(ngModel)]="item.packSize" placeholder="Pack" type="number">
+
+        </td>
+        <td>
+
+          <input style="width:70px;height:34px" [(ngModel)]="item.batch" placeholder="Batch #" type="text">
+
+        </td>
+
+        <td>
+          <!-- <input  [(ngModel)]= "item.expDate" matInput placeholder="Expiry Dt" type="date"> -->
+          <mat-form-field style="width:100px">
+            <!-- <input   [(ngModel)]= "item.manufacturedDate" matInput placeholder="Manuf Dt" type="date"> -->
+            <input [(ngModel)]="item.expDate" [min]="minDate" matInput [matDatepicker]="picker2" required placeholder="Choose date">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
+        </td>
+        <td>
+
+          <input style="width:50px;height:34px" [(ngModel)]="item.quantity" (input)="calcAmount(item)" (change)="calcAmount(item)"
+            placeholder="Qty" type="number">
+
+        </td>
+        <td>
+
+          <input style="width:50px;height:34px" [(ngModel)]="item.freeSample" placeholder="Free" type="number">
+
+        </td>
+
+        <td>
+
+          <input style="width:70px;height:34px" [(ngModel)]="item.mrp" (input)="calcAmount(item)" (change)="calcAmount(item)" placeholder="MRP"
+            type="number">
+
+        </td>
+        <td>
+
+          <input style="width:70px;height:34px" [(ngModel)]="item.costPrice" (input)="calcAmount(item)" (change)="calcAmount(item)"
+            placeholder="Rate" type="text">
+
+        </td>
+        <td>
+
+          <input style="width:50px;height:34px" [(ngModel)]="item.discount" (input)="calcAmount(item)" (change)="calcAmount(item)"
+            placeholder="Dis" type="number">
+
+        </td>
+
+        <td>
+
+          <input style="width:70px;height:34px" [(ngModel)]="item.netAmount1" placeholder="Amount" type="text" readonly>
+
+        </td>
+        <td>
+
+          <input style="width:50px;height:34px" [(ngModel)]="item.gst" (input)="calcAmount(item)" (change)="calcAmount(item)" placeholder="GST"
+            type="number" (keydown.tab)="addMore($event)" (keydown.enter)="addMore($event)">
+
+        </td>
+
+        <td>
+          <a (click)="addMore($event)"><i class="fa fa-plus" style="font-size:18px;color:blue"></i></a>&nbsp;
+          <a (click)="removeSaleItem(i);"><i class="fa fa-close" style="font-size:18px;color:red"></i></a>
+        </td>
+
+      </tr>
+    </table>
+  </div>
+
+  <a style="color:blue" (click)="open1(basic1)">Add Item Name</a>
+  <ng-template #basic let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">GRN DETAILS CONFIRMATION </h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+
+      <form class="form-horizontal" class="form-inline" [formGroup]="ProForm">
+
+        <div class="row">
+          <div class=" col-lg-3 col-md-4 col-sm-12">
+
+
+            <mat-form-field>
+
+              <input [value]="Proc[0]?Proc[0].procurementId:''" matInput placeholder="GRN_ID" type="text" readonly>
+            </mat-form-field>
+
+          </div>
+
+          <!--               
+                        <div class="col-lg-3 col-md-4 col-sm-12">
+                          
+                              <mat-form-field>
+                                <input [max]="maxDate" [(ngModel)]="date_of_procurement" [formControl]="ProForm.controls['date_of_procurement']" matInput
+                                  [matDatepicker]="picker" placeholder="GRN Date">
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                              </mat-form-field>
+              
+                        </div>
+               -->
+
+
+          <div class="col-lg-3 col-md-4 col-sm-12">
+
+
+            <mat-form-field>
+              <mat-select required [(ngModel)]="VendorName" placeholder="Vendor Name" [formControl]="ProForm.controls['VendorName']">
+                <mat-option>none</mat-option>
+                <mat-option *ngFor="let data of Proc[1];let i=index" [value]="data.vendorName">
+                  {{data.vendorName}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <div class="text text-danger" *ngIf="ProForm.controls['VendorName'].touched && !ProForm.controls['VendorName'].valid">Mandatory(if not entered)</div>
+
+          </div>
+          <div class="col-lg-3 col-md-4 col-sm-12">
+
+
+            <mat-form-field>
+              <mat-select required [(ngModel)]="procurement_type" [formControl]="ProForm.controls['procurement_type']" placeholder="Procurement Type">
+                <mat-option value="none">None</mat-option>
+                <mat-option value="With PO">With PO</mat-option>
+                <mat-option value="Without PO">Without PO</mat-option>
+
+              </mat-select>
+            </mat-form-field>
+
+
+            <div class="text text-danger" *ngIf="ProForm.controls['procurement_type'].touched && !ProForm.controls['procurement_type'].valid">Mandatory(if not entered)</div>
+
+          </div>
+
+
+          <div *ngIf="procurement_type === 'With PO'" class="col-lg-3 col-md-4 col-sm-12">
+
+
+            <mat-form-field>
+              <input [(ngModel)]="po_num" [formControl]="ProForm.controls['po_num']" matInput placeholder="PO #" type="text">
+
+            </mat-form-field>
+
+
+            <div class="text text-danger" *ngIf="ProForm.controls['po_num'].touched && !ProForm.controls['po_num'].valid">Mandatory(if not entered)</div>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-sm-12">
+
+
+            <mat-form-field>
+              <input required [(ngModel)]="in_num" [formControl]="ProForm.controls['in_num']" matInput placeholder="INVOICE #" type="text">
+
+            </mat-form-field>
+
+
+            <div class="text text-danger" *ngIf="ProForm.controls['in_num'].touched && !ProForm.controls['in_num'].valid">Mandatory(if not entered)</div>
+
+          </div>
+
+
+
+          <div class="col-lg-3 col-md-4 col-sm-12">
+
+
+            <mat-form-field>
+              <mat-select required [(ngModel)]="currency" [formControl]="ProForm.controls['currency']" placeholder="Currency">
+                <mat-option>None</mat-option>
+                <mat-option value="INR">INR</mat-option>
+                <mat-option value="$">$</mat-option>
+                <mat-option value="Euro">Euro</mat-option>
+
+              </mat-select>
+            </mat-form-field>
+
+
+            <div class="text text-danger" *ngIf="ProForm.controls['currency'].touched && !ProForm.controls['currency'].valid">Mandatory(if not entered)</div>
+          </div>
+
+
+
+
+          <div class="col-lg-3 col-md-4 col-sm-12">
+
+            <mat-form-field>
+              <mat-select required [(ngModel)]="location" [formControl]="ProForm.controls['location']" placeholder="Location">
+                <mat-option>None</mat-option>
+                <mat-option value="Miyapur">Miyapur</mat-option>
+                <mat-option value="KPHB">KPHB</mat-option>
+
+
+              </mat-select>
+            </mat-form-field>
+            <div class="text text-danger" *ngIf="ProForm.controls['location'].touched && !ProForm.controls['location'].valid">Please select Location </div>
+
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-sm-12">
+
+
+
+
+            <mat-form-field>
+              <input [(ngModel)]="status" [formControl]="ProForm.controls['status']" matInput placeholder="Status" type="text" readonly>
+
+            </mat-form-field>
+
+          </div>
+
+        </div>
+
+      </form>
+
+      <table class="table table-bordered table-responsive">
+        <tr style="background:#03a9f4;color:whitesmoke;font-size:13px">
+          <th>SNo</th>
+          <th>Item Name</th>
+          <th>Pack</th>
+          <th>Batch #</th>
+
+
+          <th>Expiry Dt</th>
+          <th>Qty</th>
+
+          <th>Free</th>
+          <th>MRP</th>
+          <th>Rate</th>
+
+        </tr>
+
+        <tr *ngFor="let item of detail;let i=index">
+          <td>{{i+1}}</td>
+          <td>
+
+
+            <ng-select appendTo="body" [(ngModel)]="item.itemName" style="width:200px" [items]="Proc[2]" bindLabel="name" placeholder="Item Name"
+              (change)="onMedicineChange($event, item)" readonly>
+            </ng-select>
+
+
+
+
+          </td>
+
+          <td>
+
+            <input style="width:70px;height:34px" [(ngModel)]="item.packSize" placeholder="Pack" type="number" readonly>
+
+          </td>
+          <td>
+
+            <input style="width:70px;height:34px" [(ngModel)]="item.batch" placeholder="Batch #" type="text" readonly>
+
+          </td>
+
+          <!-- <td>
+            <mat-form-field>
+              <input [(ngModel)]="item.manf" matInput placeholder="Manuf by" type="text" readonly>
+            </mat-form-field>
+          </td> -->
+          <!-- <td>
+            <mat-form-field>
+              <!-- <input   [(ngModel)]= "item.manufacturedDate" matInput placeholder="Manuf Dt" type="date"> -->
+          <!-- <input [max]="minDate" [(ngModel)]="item.manufacturedDate" matInput [matDatepicker]="picker1" placeholder="Choose date" readonly>
+              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+
+
+
+          </td> -->
+
+
+          <td>
+            <!-- <input  [(ngModel)]= "item.expDate" matInput placeholder="Expiry Dt" type="date"> -->
+            <mat-form-field style="width:100px">
+              <!-- <input   [(ngModel)]= "item.manufacturedDate" matInput placeholder="Manuf Dt" type="date"> -->
+              <input [(ngModel)]="item.expDate" [min]="minDate" matInput [matDatepicker]="picker2" placeholder="Choose date" readonly>
+              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+              <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+          </td>
+          <td>
+
+            <input style="width:70px;height:34px" [(ngModel)]="item.quantity" placeholder="Qty" type="text" readonly>
+
+          </td>
+          <td>
+
+            <input style="width:50px;height:34px" [(ngModel)]="item.freeSample" placeholder="Free" type="number" readonly>
+
+          </td>
+
+          <td>
+
+            <input style="width:70px;height:34px" [(ngModel)]="item.mrp" placeholder="Mrp" type="text" readonly>
+
+          </td>
+          <td>
+
+            <input style="width:70px;height:34px" [(ngModel)]="item.costPrice" placeholder="Rate" type="text" readonly>
+
+          </td>
+
+
+        </tr>
+      </table>
+
+    </div>
+    <h1 style="font-size:30px;padding-left:300px"> Total Pur Amount :{{rounddis}}</h1>
+    <h1 style="font-size:30px;padding-left:425px"> Discount:{{discountvaluee}}</h1>
+    <h1 style="font-size:30px;padding-left:425px"> GST Amt:{{gsttotal}}</h1>
+    <h1 style="font-size:30px;padding-left:370px"> Net Amount :{{totalround}}</h1>
+    <div class="modal-footer">
+      <!-- <button type="button" class="btn btn-outline-primary" (click)="save1(ProForm.value);modal.close('Save click')">SaveAsDraft</button>&nbsp; -->
+
+      <button type="button" class="btn btn-outline-primary" (click)="save(ProForm.value);modal.close('Save click')">Save</button>&nbsp;
+
+      <button type="button" class="btn btn-outline-danger" (click)="modal.close('Save click')">close</button>
+    </div>
+  </ng-template>
+
+
+
+  <ng-template #basic1 let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title"> Add Medicine Name</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+
+      <form class="form-horizontal" class="form-inline" [formGroup]="ProForm1">
+        <div class="row">
+          <div class="col-lg-4 col-md-3">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field>
+
+                  <input [value]="this.Id.medicineId" matInput placeholder="Medicine Id" type="text">
+                </mat-form-field>
+
+              </div>
+            </div>
+          </div>
+
+
+          <div class="col-lg-4 col-md-3">
+            <div class="form-group">
+              <div class="col-xl">
+                <!-- <label  style="padding-right: 70px;">
+                     Item Level</label>
+                      <select required [(ngModel)]="itemLevel" [formControl]="ProForm.controls['itemLevel']" style="padding-left: 80px;">
+                          <option>None</option>
+                        <option value="Medical">Medical</option>
+                        <option value="Non-Medical">Non-Medical</option>
+                        <option value="Both">Both</option>
+                      </select> -->
+                <mat-form-field>
+
+
+                  <mat-select required [(ngModel)]="itemLevel" [formControl]="ProForm1.controls['itemLevel']" placeholder="Item Level">
+
+                    <mat-option value="Medical">Medical</mat-option>
+                    <mat-option value="Non-Medical">Non-Medical</mat-option>
+                    <mat-option value="Both">Both</mat-option>
+
+                  </mat-select>
+
+                </mat-form-field>
+
+
+
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-3">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field>
+
+                  <input required [(ngModel)]="name" [formControl]="ProForm1.controls['name']" matInput placeholder="Name" type="text">
+                </mat-form-field>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-3">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field>
+
+                  <input required [(ngModel)]="manufacturer" [formControl]="ProForm1.controls['manufacturer']" matInput placeholder="Manufacturer"
+                    type="text">
+                </mat-form-field>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-3">
+            <div class="form-group">
+              <div class="col-xl">
+                <!-- <label  style="padding-right: 70px;">
+                         Package By</label>
+                          <select  [(ngModel)]="vendorPackage" [formControl]="ProForm.controls['vendorPackage']" style="padding-left: 70px;">
+                              <option>None</option>
+                            <option value="Vendor">Vendor</option>
+                            <option value="Manufacturer">Manufacturer</option>
+                          </select> -->
+
+                <mat-form-field>
+                  <mat-select required [(ngModel)]="vendorPackage" [formControl]="ProForm1.controls['vendorPackage']" matInput placeholder="Package by">
+
+                    <mat-option value="Vendor">Vendor</mat-option>
+                    <mat-option value="Manufacturer">Manufacturer</mat-option>
+
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-3">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field>
+
+                  <input required [(ngModel)]="brand" [formControl]="ProForm1.controls['brand']" matInput placeholder="Brand" type="text">
+                </mat-form-field>
+
+              </div>
+            </div>
+          </div>
+          <!-- <div class="col-lg-4 col-md-3">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field>
+
+                  <input [(ngModel)]="strengthUnits" [formControl]="ProForm1.controls['strengthUnits']" matInput placeholder="Strength Units"
+                    type="text">
+                </mat-form-field>
+
+              </div>
+            </div>
+          </div> -->
+          <!-- <div class="col-lg-4 col-md-3">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field>
+
+                  <input [(ngModel)]="saleUnits" [formControl]="ProForm1.controls['saleUnits']" matInput placeholder="Sales Units" type="text">
+                </mat-form-field>
+
+              </div>
+            </div>
+          </div> -->
+
+          <div class="col-lg-4 col-md-3">
+            <div class="form-group">
+              <div class="col-xl">
+                <!-- <label required  style="padding-right: 70px;">
+                               Drug Type</label>
+                                <select required [(ngModel)]="drugType" [formControl]="ProForm.controls['drugType']" style="padding-left: 80px;">
+                                    
+                                    <option style="padding-right: 50px;" value="Injection">Injection</option>
+                                    <option value="Tablet">Tablet</option>
+                                    <option value="Powder">Powder</option>
+                                    <option value="Vile">Vile</option>
+                                    <option value="Syrup">Syrup</option>
+                                    <option value="Surgicals">Surgicals</option>
+                                    <option value="Implants">Implants</option>
+                                    <option value="Disposables">Disposables</option>
+                                    <option value="Tissues">Tissues</option>
+                                    <option value="Cotton">Cotton</option>
+                                    <option value="Others">Others</option>
+         
+                                </select>
+                               -->
+                <mat-form-field>
+                  <mat-select required [(ngModel)]="drugType" [formControl]="ProForm1.controls['drugType']" matInput placeholder="drug type">
+
+                    <mat-option value="CAPSULES">CAPSULES</mat-option>
+                    <mat-option value="CREAMS">CREAMS</mat-option>
+                    <mat-option value="DISPOSABLES">DISPOSABLES</mat-option>
+                    <mat-option value="DROPS">DROPS</mat-option>
+                    <mat-option value="FOOD PRODUCTS">FOOD PRODUCTS</mat-option>
+                    <mat-option value="GENERAL">GENERAL</mat-option>
+                    <mat-option value="I.V FLUIDS">I.V FLUIDS</mat-option>
+                    <mat-option value="IMPLANTS">IMPLANTS</mat-option>
+                    <mat-option value="INHALERS">INHALERS</mat-option>
+                    <mat-option value="INJECTION">INJECTION</mat-option>
+                    <mat-option value="LIQUIDS">LIQUIDS</mat-option>
+                    <mat-option value="LOTIONS">LOTIONS</mat-option>
+                    <mat-option value="OINTMENTS">OINTMENTS</mat-option>
+                    <mat-option value="OTHERS">OTHERS</mat-option>
+                    <mat-option value="POWDERS">POWDERS</mat-option>
+                    <mat-option value="RESPULES">RESPULES</mat-option>
+                    <mat-option value="ROTACAPS">ROTACAPS</mat-option>
+                    <mat-option value="SACHETS">SACHETS</mat-option>
+                    <mat-option value="SOAPS">SOAPS</mat-option>
+                    <mat-option value="SOLUTIONS">SOLUTIONS</mat-option>
+                    <mat-option value="SPRAYS">SPRAYS</mat-option>
+                    <mat-option value="SUPPOSITORS">SUPPOSITORS</mat-option>
+                    <mat-option value="SURGICALS">SURGICALS</mat-option>
+                    <mat-option value="SUSPENSIONS">SUSPENSIONS</mat-option>
+                    <mat-option value="SUTURES">SUTURES</mat-option>
+                    <mat-option value="SYRUPS">SYRUPS</mat-option>
+                    <mat-option value="TABLETS">TABLETS</mat-option>
+                    <mat-option value="VILE">VILE</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-3">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field>
+
+                  <input [(ngModel)]="quantityPerDay" [formControl]="ProForm1.controls['quantityPerDay']" matInput placeholder="Qty Per Day"
+                    type="text">
+                </mat-form-field>
+
+              </div>
+            </div>
+          </div>
+          <!-- <div class="col-lg-4 col-md-3">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field>
+
+                  <input [(ngModel)]="minPurchaseQuantity" [formControl]="ProForm1.controls['minPurchaseQuantity']" matInput placeholder="Min Purchase Qty"
+                    type="text">
+                </mat-form-field>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-3">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field>
+
+                  <input [(ngModel)]="maxPurchaseQuantity" [formControl]="ProForm1.controls['maxPurchaseQuantity']" matInput placeholder="Max Purchase Qty"
+                    type="text">
+                </mat-form-field>
+
+              </div>
+            </div>
+          </div>
+
+
+
+ -->
+
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+
+      <button class="btn btn-primary mat-ripple" md-ripple="submit" [disabled]="!ProForm1.valid" (click)="saveas(ProForm1.value);modal.close('Save click');">Save</button>
+      <button type="button" class="btn btn-danger mat-ripple" (click)="modal.close('Cancel click')">Cancel</button>
+
+    </div>
+  </ng-template>
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Medicine Details</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+      <table id="classTable" class="table table-bordered table-responsive" style="overflow-y: scroll;">
+
+        <tr style="background:#03a9f4;color:whitesmoke;font-size:13px">
+          <th>Medicine Name</th>
+          <th>Pack Size</th>
+          <th>Procurment Dt</th>
+          <th>Qty</th>
+          <th>CostPrice</th>
+          <th>VendorName</th>
+        </tr>
+        <tr *ngFor="let l of MedicineDetails">
+          <td> {{l.MedicineName}} </td>
+          <td> {{l.PackSize}} </td>
+          <td> {{l.DateOfProcurement}} </td>
+          <td> {{l.Qty}} </td>
+          <td> {{l.Mrp}} </td>
+          <td>{{l.vendorName}}</td>
+        </tr>
+      </table>
+    </div>
+  </ng-template>

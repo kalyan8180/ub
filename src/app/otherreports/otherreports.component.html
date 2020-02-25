@@ -1,0 +1,285 @@
+<div style="padding-left: 10px;padding-top: 10px;padding-right: 10px;margin-bottom: 10px;margin-left:-20px;margin-right:-20px">
+    <div>
+      <mat-card style="background-color: #03a9f4; color:white; padding: 7px;">
+        <mat-card-title style= "font-size:19px;font-weight:bold">OP BILLING
+           <button style=" margin-right: 100px;
+              float: right; 
+              background-color: white; right: 0;
+              color: black !important;margin-top:-5px"
+            class="btn btn-primary mat-ripple" md-ripple="reset" (click)="reset()">RESET</button>&nbsp;
+  
+          <button style=" margin-right: 10px;
+            float: right;
+            background-color: white; right: 0;
+            color: black !important; margin-right: 15px;margin-top:-5px"
+            class="btn btn-primary mat-ripple" md-ripple="submit" [disabled]="!patient.name?.length||!patient.type?.length"
+            (click)="open1(basic1)">SAVE</button>
+  
+        </mat-card-title>
+      </mat-card>
+    </div>
+  </div>
+  <div class="content">
+    <div style="padding-left:10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+      <mat-card style="height:3.5cm;padding-top: 2px;padding-bottom: 5px">
+  
+  
+        <div class="row">
+          <div class="col-lg-3 col-md-4 col-sm-12 ">
+            <div class="form-group">
+              <div class="col-xl">
+                <mat-form-field  >
+  
+                  <input [value]="Lab[2]?Lab[2].id:''" matInput placeholder="Service #" type="text" readonly>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+  
+          <div class="col-lg-3 col-md-4 col-sm-12">
+            <div class="form-group">
+              <div class="col-xl">
+                <mat-form-field>
+                  <input [value]="Lab[2]?Lab[2].date:''" matInput placeholder="Date">
+  
+                </mat-form-field>
+  
+              </div>
+            </div>
+          </div>
+        </div>
+          <div class="row">
+          <div class="col-lg-3 col-md-4 col-sm-12 ">
+              <div class="form-group" style="margin-top: -20px">
+                <div class="col-xl">
+    
+                  <mat-form-field>
+                    <input [(ngModel)]="hello.regid" matInput (keydown.enter)="findPatient($event)" placeholder="Registration No"
+                      type="text">
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          <div class="col-lg-3 col-md-4 col-sm-12 ">
+            <div class="form-group" style="margin-top: -20px">
+              <div class="col-xl">
+  
+                <mat-form-field >
+  
+                  <input required minlength="3" maxlength="50" #uname="ngModel" pattern="^[A-Za-z -]+$" [(ngModel)]="patient.name"
+                    matInput placeholder="Name" type="text">
+                </mat-form-field>
+              </div>
+              <div class="text text-danger" *ngIf="uname.touched && !uname.valid">Name is Mandatory</div>
+              <div class="text text-danger" *ngIf="uname.errors?.minlength">name should have min 3 characters</div>
+              <div class="text text-danger" *ngIf="uname.errors?.maxlength">name should have max 50 characters</div>
+              <div class="text text-danger" *ngIf="uname.errors?.pattern">Allow only alphabets</div>
+            </div>
+          </div>
+         
+  
+  
+          <div class="col-lg-3 col-md-4 col-sm-12">
+            <div class="form-group" style="margin-top:-20px">
+              <div class="col-xl">
+                <mat-form-field>
+                  <mat-select placeholder="Ref By Doc">
+                    <ngx-mat-select-search></ngx-mat-select-search>
+                    <mat-option>None</mat-option>
+                    <mat-option *ngFor="let data of Lab[1]" [value]="data.firstName+' '+data.lastName">{{data.firstName}}
+                      {{data.lastName}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+  
+              </div>
+            </div>
+          </div>
+          <!-- <div class="col-lg-3 col-md-4 col-sm-12 ">
+            <div class="form-group">
+              <div class="col-xl">
+  
+                <mat-form-field>
+  
+                  <input [value]="Lab[2]?Lab[2].invoice:''" matInput placeholder="Invoice#" type="text" readonly>
+                </mat-form-field>
+              </div>
+            </div>
+          </div> -->
+          <div class="col-lg-3 col-md-4 col-sm-12 ">
+            <div class="form-group" style="margin-top:-20px">
+              <div class="col-xl">
+  
+                <mat-form-field>
+  
+                  <input required minglength="3" maxlength="50" #utype="ngModel" [(ngModel)]="patient.type" matInput
+                    placeholder="PatientType" type="text" readonly>
+                </mat-form-field>
+              </div>
+              <div class="text text-danger" *ngIf="utype.touched && !uname.valid">PatientType is Mandatory</div>
+              <div class="text text-danger" *ngIf="utype.errors?.minlength">Type should have min 3 characters</div>
+              <div class="text text-danger" *ngIf="utype.errors?.maxlength">Type should have max 50 characters</div>
+              <div class="text text-danger" *ngIf="utype.errors?.pattern">Allow only alphabets</div>
+  
+            </div>
+          </div>
+        </div>
+      
+      </mat-card>
+    </div>
+  </div>
+  <!-- Register :: {{ Register | json}}  -->
+  <!-- nikhil :: {{ hello | json}}
+  patient :: {{patient | json}} -->
+  <div class="content">
+    <div style="padding-left:10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+  
+  
+  
+      <table width="100%" class="table table-striped table-condensed" style="overflow-y: scroll;">
+        <tr style="background:#03a9f4;color:whitesmoke">
+          <th>S.NO</th>
+          <th>Service Name</th>
+          <th>Price</th>
+          <th>Discount Amount</th>
+          <th>Net Amount</th>
+          <th>Action</th>
+          <!-- <th>Manage</th>
+              <th>Save</th> -->
+        </tr>
+        <tr *ngFor="let ser of Register;let i=index">
+          <td> {{i+1}}</td>
+          <!-- <td>
+  
+            <select style="width:150px" placeholder="Service Name" [(ngModel)]="ser.serviceName" (change)="show(ser)">
+              <!-- <ngx-mat-select-search></ngx-mat-select-search> -->
+              <!-- <option></option>
+              <option *ngFor="let lab of Lab " [disabled]="lab.disabled" [value]="lab.serviceName">{{lab.serviceName}}</option>
+            </select>
+  
+          
+          </td> --> 
+  
+            
+          <td>
+              
+                      <ng-select style="width:350px"  [items]="Lab" bindLabel="serviceName" placeholder="Service Name"  (change)="onMedicineChange($event,ser);show(ser)">
+                       </ng-select>
+                
+                        </td>
+          <td>
+  
+  
+            <input [(ngModel)]="ser.amount" matInput placeholder="Price" type="text" (change)="calcAmount(ser)">
+  
+  
+          </td>
+  
+          <td>
+  
+  
+            <input [(ngModel)]="ser.discount" (change)="calcAmount(ser)" (keydown.tab)="addMore($event)" matInput
+              placeholder="Discount" type="number">
+  
+          </td>
+  
+          <td>
+  
+  
+            <input [(ngModel)]="ser.netAmount" matInput placeholder="Net Amount" type="text" readonly>
+  
+          </td>
+  
+          <td>
+  
+            <a (click)="addMore($event)"><i class="fa fa-plus" style="font-size:18px;color:blue"></i></a>&nbsp;
+            <a (click)="removeSaleItem(i);"><i class="fa fa-close" style="font-size:18px;color:red"></i></a>
+          </td>
+          <td>
+  
+        </tr>
+      </table>
+  
+  
+    </div>
+  </div>
+  
+  <ng-template #basic1 let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Summary of Services </h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+  
+      <table width="100%" class="table table-bordered" style="overflow-y: scroll;">
+        <tr style="background:#03a9f4;color:whitesmoke">
+          <th>Sno</th>
+          <th>Service</th>
+          <th>Price</th>
+  
+  
+        </tr>
+        <tr *ngFor="let ser of Register;let i=index">
+          <td> {{i+1}}</td>
+          <td>{{ ser.chargeName}}</td>
+          <td>{{ser.netAmount}}</td>
+        </tr>
+  
+      </table>
+  
+    </div>
+    <h1 style="padding-left:300px"> Total:{{total}}</h1>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-primary" (click)="open2(basic2)">Pay</button>&nbsp;&nbsp;
+      <button type="button" class="btn btn-outline-danger" (click)="modal.close('Save click')">close</button>
+    </div>
+  </ng-template>
+  
+  
+  <ng-template #basic2 let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Summary of Services </h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+  
+  
+      <div class="col-md-6">
+        <div class="form-group ">
+          <div class="col-xl">
+            <mat-form-field>
+              <input [(ngModel)]="total" matInput placeholder="Total" type="text" readonly>
+  
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class=" col-md-6">
+        <label>Payment Type :</label>
+        <div class="form-group">
+          <div class="col-xl">
+            <select style="width:150px" [(ngModel)]="paymentType" placeholder="Type">
+              <option value="advance">Advance</option>
+  
+              <!-- <option value="Credit">Credit</option> -->
+              <option value="Due">Due</option>
+              <option value="Cash">Cash</option>
+              <option value="Card">Card</option>
+              <option value=" Cash + Card"> Cash + Card</option>
+  
+            </select>
+  
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-primary" (click)="save()">submit</button>&nbsp;&nbsp;
+      <button type="button" class="btn btn-outline-danger" (click)="modal.close('Save click')">close</button>
+    </div>
+  </ng-template>

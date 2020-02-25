@@ -1,0 +1,9 @@
+label.btn-primary.active { 
+    background-color: #005EFF !important;/* rgb(85, 48, 216) !important; */ 
+  } 
+  label.btn-primary.inactive { 
+    background-color: #0CCB0C !important;/* rgb(85, 48, 216) !important; */
+  }
+  span.selected-room { 
+    color :#005EFF !important;
+  }

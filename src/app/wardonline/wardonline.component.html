@@ -1,0 +1,201 @@
+<div style="padding-left: 10px;padding-top: 10px;padding-right: 10px;margin-bottom: 10px;">
+  <mat-card style="background-color: #03a9f4; color:white; padding: 7px;margin-left:-20px;margin-right:-20px">
+    <mat-card-title style= "font-size:19px;font-weight:bold">Ward Online Issues
+      <!-- <button style="margin-right: 10px;
+            float: right;
+            background-color: white;
+            color: black !important; "
+        class="btn btn-primary mat-ripple" md-ripple="reset" (click)="reset()" >RESET</button> &nbsp;&nbsp; -->
+      <button style="margin-right: 10px;
+          float: right;
+          background-color: white;
+          color: black !important;margin-top:-5px" class="btn btn-primary mat-ripple" md-ripple="submit"    (click)="showModal(basic1)" [disabled]="!newSale['name']?.length ||!newSale['Type']?.length || disableBtn">
+      SAVE</button>
+
+    </mat-card-title>
+  </mat-card>
+
+
+</div>
+<div class="content">
+  <div style="padding-left:10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+    <!-- <mat-card id="new" style="padding-left:50px;"> -->
+        <mat-card style="max-height:80px; padding-top: 2px">
+      <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-12">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+
+                <input [value]="this.billNo" matInput placeholder="Bill No#" type="text" readonly>
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-4 col-sm-12 ">
+          <div class="form-group">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+
+                <mat-select required #type="ngModel" [(ngModel)]="newSale.Type" placeholder="Type">
+                  <mat-option>None</mat-option>
+                  <mat-option value="STORE TO DEPARTMENT">STORE TO DEPARTMENT</mat-option>
+                  <mat-option value="DEPARTMENT TO STORE">DEPARTMENT TO STORE</mat-option>
+
+
+                </mat-select>
+              </mat-form-field>
+
+            </div>
+            <div class="text text-danger" *ngIf="type.touched && type.errors?.required">Mandatory(if not entered)</div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-4 col-sm-12 ">
+          <div class="form-group">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+
+                <mat-select required #dep="ngModel" [(ngModel)]="newSale.name" placeholder="DEPARTMENT">
+                  <mat-option value="AMBULANCE">AMBULANCE</mat-option>
+                  <mat-option value="CTSCAN">CTSCAN</mat-option>
+                  <mat-option value="DAYCARE">DAYCARE</mat-option>
+                  <mat-option value="DOUBLE SHARING">DOUBLE SHARING</mat-option>
+                  <mat-option value="EMERGENCY">EMERGENCY</mat-option>
+                  <mat-option value="GENARAL WARD MALE">GENARAL WARD MALE</mat-option>
+                  <mat-option value="GENERAL WARD FEMALE">GENERAL WARD FEMALE</mat-option>
+                  <mat-option value="SINGLE SHARING">SINGLE SHARING</mat-option>
+                  <mat-option value="ADULT ICU">ADULT ICU</mat-option>
+                  <mat-option value="ISOLATION">ISOLATION</mat-option>
+                  <mat-option value="LAB">LAB</mat-option>
+                  <mat-option value="NICU">NICU</mat-option>
+                  <mat-option value="OT">OT</mat-option>
+                  <mat-option value="PICU">PICU</mat-option>
+                  <mat-option value="POST OP&PRE OP">POST OP&PRE OP</mat-option>
+                  <mat-option value="LABOUR ROOM">LABOUR ROOM</mat-option>
+                  <mat-option value="1st FLOOR">1st FLOOR</mat-option>
+                  <mat-option value="2nd FLOOR">2nd FLOOR</mat-option>
+                  <mat-option value="3rd FLOOR">3rd FLOOR</mat-option>
+                  <mat-option value="4th FLOOR">4th FLOOR</mat-option>
+                
+                </mat-select>
+              </mat-form-field>
+
+            </div>
+            <div class="text text-danger" *ngIf="dep.touched && dep.errors?.required">Mandatory(if not entered)</div>
+
+          </div>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
+</div>
+<!-- {{newSale|json}}
+{{refSales|json}} -->
+
+<div class="content">
+  <div style="padding-left:10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+    <table width="100%" class="table table-bordered table-condensed table-responsive">
+
+      <tr style="background:#03a9f4;color:whitesmoke">
+        <th>Sno</th>
+        <th>Item Name</th>
+        <th>Pack</th>
+        <th>Batch</th>
+        <th>Expiry Date</th>
+        <th>Qty</th>
+        <th>Avaialble Qty</th>
+        <th>MRP</th>
+        <th>Dis%</th>
+        <th>Amount</th>
+        <th>GST</th>
+        <th>Action</th>
+      </tr>
+
+      <tr *ngFor="let sale of refSales;let i= index">
+        <td> {{i + 1}}</td>
+        <td>
+          <ng-select  appendTo="body" style="width:250px" [items]="medicines" bindLabel="medName" placeholder="Item Name" (change)="onMedicineChange($event, sale);setBatches(sale);setDetails(sale)">
+          </ng-select>
+        </td>
+        <td>
+          <input style="width:50px;height:34px" [(ngModel)]="sale.packSize" placeholder="Pack" type="text" readonly>
+
+        </td>
+        <td>
+          <select placeholder="Batch" style="width:100px;height:34px" (change)="setMedicineDetails(sale);calcAmount(sale)" [(ngModel)]="sale.batchNo">
+                <!-- <option value=""></option>  -->
+                <option  *ngFor="let b of sale.batches" [value]="b">{{b}}</option>
+              </select>
+
+        </td>
+
+        <td>
+          <input style="width:130px;height:34px" [(ngModel)]="sale.expDate" placeholder="Exp date" type="text" readonly>
+
+        </td>
+
+        <td>
+          <input style="width:70px;height:34px" [(ngModel)]="sale.quantity" [disabled]="!sale.medicineName" (input)="calcAmount(sale)"
+            placeholder="Qty" type="number" (input)="setMedicineDetails(sale)">
+          <div class="text text-danger" *ngIf="sale.quantity_error">quantity is not available!</div>
+        </td>
+
+        <td>
+          <input style="width:70px;height:34px" [(ngModel)]="sale.Available" placeholder="Avaialble Qty" type="text" readonly>
+
+        </td>
+
+        <td>
+          <input style="width:70px;height:34px" [(ngModel)]="sale.mrp" placeholder="MRP" type="text" readonly>
+
+        </td>
+        <td>
+          <input style="width:50px;height:34px" [(ngModel)]="sale.discount" [disabled]="!sale.quantity" [value]="sale.discount||0"
+            (input)="calcAmount(sale)" placeholder="dis" type="number">
+        </td>
+        <td>
+          <input style="width:130px;height:34px" [value]="sale.amount || 0" placeholder="Amount" type="text" readonly>
+        </td>
+
+        <td>
+          <input style="width:50px;height:34px" [(ngModel)]="sale.gst" placeholder="GST" type="text" (keydown.tab)="addMore($event,sale)"
+            (keydown.enter)="addMore($event,sale)" readonly>
+        </td>
+        <td>
+          <a (click)="addMore($event)"><i class="fa fa-plus" style="font-size:18px;color:blue"></i></a>&nbsp;
+          <a *ngIf="refSales.length > 1" (click)="removeSaleItem(i);"><i class="fa fa-close" style="font-size:18px;color:red"></i></a>
+        </td>
+      </tr>
+
+
+
+    </table>
+
+  </div>
+
+</div>
+
+<ng-template #basic1 let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Do You Want To Save Details?</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+        </button>
+  </div>
+  <div class="modal-body">
+   
+      <button type="button" class="btn btn-outline-primary" (click)="save()">submit</button>&nbsp;&nbsp;
+      <button type="button" class="btn btn-outline-danger" (click)="modal.close('Save click')">close</button>
+      
+
+      </div>
+    
+    </ng-template>

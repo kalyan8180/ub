@@ -1,0 +1,170 @@
+<div style="padding-left: 10px;padding-top: 10px;padding-right:20px;margin-bottom: 10px;margin-left:-20px;margin-right:-35px">
+  <mat-card style="background-color: #03a9f4; color:white; padding:7px;">
+    <mat-card-title style= "font-size:19px;font-weight:bold">INVENTORY ENTRY
+      <button style="margin-right: 10px;
+            float: right;
+            background-color: white;
+            color: black !important;margin-top:-5px " class="btn btn-primary mat-ripple" md-ripple="reset" (click)="reset()">RESET</button>      &nbsp;&nbsp;
+      <button style="margin-right: 10px;
+          float: right;
+          background-color: white;
+          color: black !important;margin-top:-5px" class="btn btn-primary mat-ripple" md-ripple="submit" [disabled]="!ItemForm.valid" (click)="save(ItemForm.value)">SAVE</button>
+    </mat-card-title>
+  </mat-card>
+
+
+</div>
+<!-- <div class="content"> -->
+  <!-- <div style="padding-left:10px;padding-right:10px">
+    <mat-card id="new" style="padding-left:50infopx;">
+      <form class="form-horizontal" class="form-inline" [formGroup]="ItemForm">
+        <div class="row">
+
+
+
+          <div class="col-lg-6 col-md-6 col-sm-12">
+            <div class="form-group ">
+              <div class="col-xl">
+                <mat-form-field>
+
+                  <input [(ngModel)]="insertedDate" [formControl]="ItemForm.controls['insertedDate']" matInput [matDatepicker]="picker1" placeholder="Created Date">
+                  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                  <mat-datepicker #picker1></mat-datepicker>
+
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="col-lg-6 col-md-6 col-sm-12">
+            <div class="form-group ">
+              <div class="col-xl">
+                <mat-form-field>
+                  <input [(ngModel)]="modifiedDate" [formControl]="ItemForm.controls['modifiedDate']" matInput [matDatepicker]="picker3" placeholder="Modified Date">
+                  <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                  <mat-datepicker #picker3></mat-datepicker>
+
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </mat-card> -->
+    <div style="margin-top:-10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+    <table width="100%" style="margin-left:10px" class="table table-striped table-condensed">
+        <tbody style="font-size:11px;font-weight: bold">
+      <tr style="background:#03a9f4;color:whitesmoke">
+        <th>S.NO</th>
+        <th>Medicine Name</th>
+        <th>Item Level</th>
+        <th>Package By</th>
+        <th>Drug Type</th>
+        <th>Manufacturer</th>
+        <th>Brand </th>
+        <!-- <th>Strength Units</th>
+        <th>Sale Units</th> -->
+
+
+
+        <th>Action</th>
+      </tr>
+      <tr *ngFor="let item of refMedicine;let i=index">
+        <td>{{i+1}}</td>
+        <td>
+          <mat-form-field>
+            <input [(ngModel)]="item.name" matInput placeholder="Medicine Name" type="text">
+          </mat-form-field>
+        </td>
+        <td>
+
+          <ng-select  appendTo="body" style="width:200px;" [(ngModel)]="item.itemLevel" placeholder="Item level">
+
+            <ng-option value="Medical">Medical</ng-option>
+            <ng-option value="NON Medical">Non Medical</ng-option>
+            <ng-option value="Both">Both</ng-option>
+
+          </ng-select>
+
+        </td>
+        <td>
+
+          <ng-select  appendTo="body" style="width:150px;" [(ngModel)]="item.vendorPackage" matInput placeholder="Package by">
+
+            <ng-option value="Vendor">Vendor</ng-option>
+            <ng-option value="Manufacturer">Manufacturer</ng-option>
+
+          </ng-select>
+
+        </td>
+        <td>
+
+          <ng-select   appendTo="body" style="width:150px;" [(ngModel)]="item.drugType" matInput placeholder="Drug type">
+
+            <ng-option value="CAPSULES">CAPSULES</ng-option>
+            <ng-option value="CREAMS">CREAMS</ng-option>
+            <ng-option value="DISPOSABLES">DISPOSABLES</ng-option>
+            <ng-option value="DROPS">DROPS</ng-option>
+            <ng-option value="FOOD PRODUCTS">FOOD PRODUCTS</ng-option>
+            <ng-option value="GENERAL">GENERAL</ng-option>
+            <ng-option value="I.V FLUIDS">I.V FLUIDS</ng-option>
+            <ng-option value="IMPLANTS">IMPLANTS</ng-option>
+            <ng-option value="INHALERS">INHALERS</ng-option>
+            <ng-option value="INJECTION">INJECTION</ng-option>
+            <ng-option value="LIQUIDS">LIQUIDS</ng-option>
+            <ng-option value="LOTIONS">LOTIONS</ng-option>
+            <ng-option value="OINTMENTS">OINTMENTS</ng-option>
+            <ng-option value="OTHERS">OTHERS</ng-option>
+            <ng-option value="POWDERS">POWDERS</ng-option>
+            <ng-option value="RESPULES">RESPULES</ng-option>
+            <ng-option value="ROTACAPS">ROTACAPS</ng-option>
+            <ng-option value="SACHETS">SACHETS</ng-option>
+            <ng-option value="SOAPS">SOAPS</ng-option>
+            <ng-option value="SOLUTIONS">SOLUTIONS</ng-option>
+            <ng-option value="SPRAYS">SPRAYS</ng-option>
+            <ng-option value="SUPPOSITORS">SUPPOSITORS</ng-option>
+            <ng-option value="SURGICALS">SURGICALS</ng-option>
+            <ng-option value="SUSPENSIONS">SUSPENSIONS</ng-option>
+            <ng-option value="SUTURES">SUTURES</ng-option>
+            <ng-option value="SYRUPS">SYRUPS</ng-option>
+            <ng-option value="TABLETS">TABLETS</ng-option>
+            <ng-option value="VILE">VILE</ng-option>
+
+          </ng-select>
+
+        </td>
+        <td>
+          <mat-form-field>
+            <input [(ngModel)]="item.manufacturer" matInput placeholder="Manufacturer" type="text">
+          </mat-form-field>
+        </td>
+        <td>
+          <mat-form-field >
+            <input [(ngModel)]="item.brand" matInput placeholder="Brand" type="text">
+          </mat-form-field>
+
+        </td>
+        <!-- <td>
+          <mat-form-field>
+            <input [(ngModel)]="item.strengthUnits" matInput placeholder="Strength Units" type="text">
+          </mat-form-field>
+
+        </td>
+        <td>
+          <mat-form-field>
+            <input [(ngModel)]="item.saleUnits" matInput placeholder="Sale Units" (keydown.tab)="addMore($event)" (keydown.enter)="addMore($event)"
+              type="text">
+          </mat-form-field>
+
+        </td> -->
+
+        <td>
+
+          <a (click)="addMore($event)"><i class="fa fa-plus" style="font-size:18px;color:blue"></i></a>&nbsp;
+          <a (click)="removeSaleItem(i);"><i class="fa fa-close" style="font-size:18px;color:red"></i></a>
+        </td>
+      </tr>
+        </tbody>
+    </table>
+    </div>

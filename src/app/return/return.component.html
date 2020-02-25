@@ -1,0 +1,214 @@
+<div style="padding-left: 10px;padding-top: 10px;padding-right: 10px;margin-bottom: 10px;
+">
+  <div class="fixHeader" id="myHeader" style="margin-left:-20px;margin-right:-20px">
+    <mat-card style="background-color: #03a9f4; color:white; padding:7px;">
+      <mat-card-title style="font-size:19px;font-weight:bold">RETURN MANAGEMENT
+        <!-- <button style="margin-left: 100vh;" class="btn btn-primary mat-ripple" md-ripple="reset" (click)="reset()">RESET</button>&nbsp;
+          <button class="btn btn-primary mat-ripple" md-ripple="submit" (click)="save(VendorForm.value)">save</button>   -->
+        <button style="margin-right: 10px;
+          float: right;
+          background-color: white;
+          color: black !important;margin-top:-5px" class="btn btn-primary mat-ripple" md-ripple="submit" (click)="open(basic)">Save</button>        &nbsp;&nbsp;
+        <!-- <button style="margin-right: 10px;
+          float: right;
+          background-color: white;
+          color: black !important; "
+          class="btn btn-primary mat-ripple" class="btn btn-primary mat-ripple" md-ripple="submit" (click)="save();">save</button>&nbsp;&nbsp; -->
+      </mat-card-title>
+    </mat-card>
+  </div>
+</div>
+<div class="content">
+  <div style="padding-left:10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+    <mat-card style="max-height: 150px; padding-top: 2px;margin-bottom:2px">
+      <!--form class="form-horizontal" class="form-inline">-->
+      <div class="row">
+        <div class=" col-lg-3 col-md-4 col-sm-4">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+
+                <input [(ngModel)]="billDetail.billNo" maxlength="9" matInput (keydown.enter)="getBillDetails($event)" placeholder="Bill No#"
+                  type="text">
+
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+        <div class=" col-lg-3 col-md-4 col-sm-4">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+                <input [(ngModel)]="billDetail.billDate" matInput readonly placeholder="BillDate" type="text">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+
+        <div class=" col-lg-3 col-md-4 col-sm-4">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+
+                <input [(ngModel)]="billDetail.name" matInput readonly placeholder="Name" type="text">
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+        <div class=" col-lg-3 col-md-4 col-sm-4">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+
+                <input [(ngModel)]="billDetail.regId" maxlength="10" matInput readonly placeholder="Register No" type="text">
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+        <div class=" col-lg-3 col-md-4 col-sm-4">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+
+                <input [(ngModel)]="billDetail.mobile" matInput readonly placeholder="Mobile Number" type="text">
+              </mat-form-field>
+
+
+            </div>
+          </div>
+        </div>
+
+
+        <div class=" col-lg-3 col-md-4 col-sm-4">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+
+                <input [(ngModel)]="billDetail.location" matInput readonly placeholder="Location" type="text">
+              </mat-form-field>
+
+
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>
+      <!--/form>-->
+    </mat-card>
+  </div>
+
+  <div style="padding-left:10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+    <table width="100%" class="table table-bordered" style="overflow-y: scroll;margin-top:3px">
+      <tr style="background:#03a9f4;color:whitesmoke">
+        <th>S.NO</th>
+        <th>Medicine Name</th>
+        <th>Purchased Quantity</th>
+        <th>Return Quantity</th>
+        <th>Discount%</th>
+        <th>Return Amount</th>
+        <th>GST</th>
+
+      </tr>
+      <!-- {{newReturn.refSalesReturns|json}} -->
+      <tr *ngFor="let sale of newReturn.refSalesReturns;let i= index">
+        <td> {{i + 1}}</td>
+        <td>
+
+          <input [(ngModel)]="sale.medicineName" placeholder="Medicine Name" matInput type="text" readonly>
+
+        </td>
+
+        <td>
+          <input [(ngModel)]="sale.org_quantity" readonly matInput type="number">
+        </td>
+        <td>
+          <input [(ngModel)]="sale.quantity" #quantity matInput type="number" (change)="calcAmount(sale)" placeholder="Quantity">
+          <div class="text text-danger" *ngIf="sale.quantity_error">Quantity should not exceed {{sale.org_quantity}}</div>
+        </td>
+        <td>
+          <input [(ngModel)]="sale.discount" readonly matInput placeholder="discount" type="number">
+        </td>
+        <td>
+          <input [value]="sale.amount || 0" matInput placeholder="Amount" type="text" readonly>
+        </td>
+        <td>
+          <input [(ngModel)]="sale.gst" matInput placeholder="GST" type="text" readonly>
+        </td>
+
+      </tr>
+
+
+    </table>
+
+  </div>
+  <ng-template #basic let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">PAYMENT PAGE</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+
+      <!-- <div class="col-lg-6 col-md-6 col-sm-12">
+        <div class="form-group ">
+          <div class="col-xl">
+            <mat-form-field>
+
+              <input [(ngModel)]="billDetail.paymentType" matInput placeholder="SalesPayment type" type="text">
+            </mat-form-field>
+
+
+          </div>
+        </div>
+      </div> -->
+
+      <div class="col-lg-6 col-md-6 col-sm-12">
+        <div class="form-group ">
+          <div class="col-xl">
+
+            <label>Payment Type</label>
+            <select [(ngModel)]="this.newReturn.paymentType" style="width:200px">
+<!--          *ngIf="billDetail.paymentType !='Due'"
+              <option *ngIf="billDetail.paymentType =='Due'" value="Advance">Advance</option> -->
+              <option  value="Due">Due</option>
+              <option  value="Cash">Cash</option>
+              <option  value="Card">Card</option>
+              <!-- <option  value="Cash+Card">Cash+Card</option> -->
+
+            </select>
+
+
+          </div>
+        </div>
+      </div>
+
+      <h1 style="padding-left:100px"> Total:{{totalfix}}</h1>
+
+      <!-- <div class="col-lg-6 col-md-6 col-sm-12">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+  
+                <input [(ngModel)]="amount" matInput placeholder="SalesPayment type" type="text">
+              </mat-form-field>
+  
+  
+            </div>
+          </div>
+        </div> -->
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger mat-ripple" (click)="modal.close('Save click')">No</button>
+      <button class="btn btn-primary mat-ripple" md-ripple="submit" (click)="save()" [disabled]="saveInProgress">Save</button>
+
+
+
+    </div>
+  </ng-template>

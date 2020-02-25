@@ -1,0 +1,249 @@
+<div style="padding-left: 10px;padding-top: 10px;padding-right: 10px;margin-bottom: 10px;margin-left:-20px;margin-right:-20px">
+  <mat-card style="background-color: #03a9f4; color:white; padding: 7px;">
+    <mat-card-title style= "font-size:19px;font-weight:bold">Payment Voucher Details
+      <button style="margin-right: 10px;
+            float: right;
+            background-color: white;
+            color: black !important;margin-top:-5px "
+        class="btn btn-primary mat-ripple" md-ripple="reset" (click)="reset()" >RESET</button> &nbsp;&nbsp;
+      <button style="margin-right: 10px;
+          float: right;
+          background-color: white;
+          color: black !important;margin-top:-5px"
+        class="btn btn-primary mat-ripple" md-ripple="submit" [disabled]="!PaymentForm.valid"   (click)="save(PaymentForm.value)">
+      SAVE</button>
+     
+    </mat-card-title>
+  </mat-card>
+
+
+</div>
+<div class="content">
+  <div style="padding-left:10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+    <mat-card id="new" style="padding-left:50infopx;">
+      <form class="form-horizontal" class="form-inline" [formGroup]="PaymentForm">
+        <div class="row">
+            <div class="col-lg-3 col-md-4 col-sm-12">
+                <div class="form-group ">
+                  <div class="col-xl">
+                    <mat-form-field>
+    
+                      <input   [value]="Id[1]?Id[1].nextId:''"   matInput placeholder="Voucher No" type="text" readonly>
+                    </mat-form-field>
+             
+                 
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-4 col-sm-12">
+                <div class="form-group ">
+                  <div class="col-xl">
+                      <mat-form-field>
+                          <input  [(ngModel)]="date" [formControl]="PaymentForm.controls['date']"  matInput [matDatepicker]="picker1" placeholder="Voucher Date">
+                          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                          <mat-datepicker #picker1></mat-datepicker>
+                        </mat-form-field>
+                        <div *ngIf="PaymentForm.controls['date'].hasError('required') && PaymentForm.controls['date'].touched"
+                    class="text text-danger">
+                    <small>Mandatory(if not entered)</small>
+                   </div>
+                  </div>
+                </div>
+              </div>
+               
+          
+          <div class="col-lg-3 col-md-4 col-sm-12">
+              <div class="form-group ">
+                <div class="col-xl">
+                    <mat-form-field>
+                    <mat-select [(ngModel)]="paid" [formControl]="PaymentForm.controls['paid']" placeholder="Paid To" >
+                        <mat-option value="Others">Others</mat-option>
+                        <mat-option *ngFor="let c of Id[0]" [value]="c.userName">
+
+                          {{c.userName}}
+                        </mat-option>
+                       
+                      </mat-select>
+                      </mat-form-field>
+                       <div *ngIf="PaymentForm.controls['paid'].hasError('required') && PaymentForm.controls['paid'].touched"
+                      class="text text-danger">
+                      <small>Mandatory(if not entered)</small>
+                     </div> 
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="paid ==='Others'" class="col-lg-3 col-md-4 col-sm-12">
+              <div class="form-group ">
+                <div class="col-xl">
+                  <mat-form-field>
+  
+                    <!-- <input   matInput placeholder="Bank" type="text"> -->
+                    <input [(ngModel)]="name"  [formControl]="PaymentForm.controls['name']" matInput placeholder="Name" type="text"  minlength="3" maxlength="50" >
+                  </mat-form-field>
+                  <div *ngIf="PaymentForm.controls['name'].hasError('required') && PaymentForm.controls['name'].touched"
+                  class="text text-danger">
+                  <small>Mandatory(if not entered)</small>
+                 </div>
+                <!-- <div *ngIf="PaymentForm.controls['name'].hasError('pattern') && PaymentForm.controls['name'].touched"
+                  class="text text-danger">
+                  <small>Enter valid type</small>
+                </div> -->
+
+                <!-- pattern="[a-zA-Z ]*" -->
+                <div *ngIf="PaymentForm.controls['name'].hasError('minlength') && PaymentForm.controls['name'].touched"
+                class="text text-danger">
+                <small>minlength is 3</small>
+              </div>
+                </div>
+              </div>
+            </div>
+  
+  
+  
+          <div class="col-lg-3 col-md-4 col-sm-12">
+            <div class="form-group ">
+              <div class="col-xl">
+                <mat-form-field>
+
+                  <input required [(ngModel)]="amount"  pattern="^[0-9]*" [formControl]="PaymentForm.controls['amount']" matInput placeholder="Payment Amount" type="text">
+                </mat-form-field>
+                <div *ngIf="PaymentForm.controls['amount'].hasError('required') && PaymentForm.controls['amount'].touched"
+                class="text text-danger">
+                <small>Mandatory(if not entered)</small>
+               </div>
+              <div *ngIf="PaymentForm.controls['amount'].hasError('pattern') && PaymentForm.controls['amount'].touched"
+                class="text text-danger">
+                <small>Enter valid type</small>
+              </div>
+              <div *ngIf="PaymentForm.controls['amount'].hasError('minlength') && PaymentForm.controls['amount'].touched"
+              class="text text-danger">
+              <small>minlength is 1</small>
+            </div>
+            <div *ngIf="PaymentForm.controls['amount'].hasError('maxlength') && PaymentForm.controls['amount'].touched"
+              class="text text-danger">
+              <small>maxlength is 10</small>
+            </div> 
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-sm-12">
+            <div class="form-group ">
+              <div class="col-xl">
+                  <mat-form-field>
+                  <mat-select [(ngModel)]="payment" [formControl]="PaymentForm.controls['payment']" placeholder="Payment Type">
+                      <mat-option>None</mat-option>
+                      <mat-option value="Cheque">Cheque</mat-option>
+                      <mat-option value="Cash">Cash</mat-option>
+                    </mat-select>
+                    </mat-form-field>
+                     <div *ngIf="PaymentForm.controls['payment'].hasError('required') && PaymentForm.controls['payment'].touched"
+                    class="text text-danger">
+                    <small>Mandatory(if not entered)</small>
+                   </div> 
+                  
+
+              </div>
+            </div>
+          </div>
+
+
+          <div *ngIf="payment ==='Cheque'" class="col-lg-3 col-md-4 col-sm-12">
+            <div class="form-group ">
+              <div class="col-xl">
+                <mat-form-field>
+
+                  <!-- <input   matInput placeholder="Bank" type="text"> -->
+                  <input [(ngModel)]="Bankname"  [formControl]="PaymentForm.controls['Bankname']" matInput placeholder="Bank Name" type="text"  pattern="[a-zA-Z ]*" minlength="3" maxlength="50" >
+                </mat-form-field>
+                <div *ngIf="PaymentForm.controls['Bankname'].hasError('required') && PaymentForm.controls['Bankname'].touched"
+                class="text text-danger">
+                <small>Mandatory(if not entered)</small>
+               </div>
+              <div *ngIf="PaymentForm.controls['Bankname'].hasError('pattern') && PaymentForm.controls['Bankname'].touched"
+                class="text text-danger">
+                <small>Enter valid type</small>
+              </div>
+              <div *ngIf="PaymentForm.controls['Bankname'].hasError('minlength') && PaymentForm.controls['Bankname'].touched"
+              class="text text-danger">
+              <small>minlength is 3</small>
+            </div>
+              </div>
+            </div>
+          </div>
+           <div   *ngIf="payment ==='Cheque'" class="col-lg-3 col-md-4 col-sm-12">
+            <div class="form-group ">
+              <div class="col-xl">
+                <mat-form-field>
+
+                  <input [(ngModel)]="ChqNo" [formControl]="PaymentForm.controls['ChqNo']" pattern="^[0-9]*"  matInput placeholder="Chq.No" type="text" minlength="8" maxlength="17" >
+                </mat-form-field>
+                <div *ngIf="PaymentForm.controls['ChqNo'].hasError('required') && PaymentForm.controls['ChqNo'].touched"
+                class="text text-danger">
+                <small>Mandatory(if not entered)</small>
+               </div>
+              <div *ngIf="PaymentForm.controls['ChqNo'].hasError('pattern') && PaymentForm.controls['ChqNo'].touched"
+                class="text text-danger">
+                <small>Enter valid type</small>
+              </div>
+              <div *ngIf="PaymentForm.controls['ChqNo'].hasError('minlength') && PaymentForm.controls['ChqNo'].touched"
+              class="text text-danger">
+              <small>minlength is 8</small>
+            </div>
+            <div *ngIf="PaymentForm.controls['ChqNo'].hasError('maxlength') && PaymentForm.controls['ChqNo'].touched"
+              class="text text-danger">
+              <small>maxlength is 17</small>
+            </div>
+              </div>
+            </div>
+          </div>
+          <div   *ngIf="payment ==='Cheque'"  class="col-lg-3 col-md-4 col-sm-12">
+            <div class="form-group ">
+              <div class="col-xl">
+                  <mat-form-field>
+                      <input [(ngModel)]="todata"  data-date-format='yyyy-mm-dd'  id="selectdateadmin" class="form-control"  [formControl]="PaymentForm.controls['todata']" data-date-format='YYYY-MM-DD'  matInput [matDatepicker]="picker" placeholder="Chq.Date">
+                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                    <div *ngIf="PaymentForm.controls['todata'].hasError('required') && PaymentForm.controls['todata'].touched"
+                    class="text text-danger">
+                    <small>Mandatory(if not entered)</small>
+                   </div> 
+              </div>
+            </div>
+          </div>
+        
+          
+          <div class="col-lg-3 col-md-4 col-sm-12">
+            <div class="form-group ">
+              <div class="col-xl">
+                  <mat-form-field>
+                  <mat-select [(ngModel)]="voucher" [formControl]="PaymentForm.controls['voucher']" placeholder="Voucher Type" required>
+                      <mat-option value="Others">Others</mat-option>
+                      <mat-option value="Advance">Advance</mat-option>
+                      <mat-option value="Expense">Expense</mat-option>
+                    </mat-select>
+                    </mat-form-field>
+                     <div *ngIf="PaymentForm.controls['payment'].hasError('required') && PaymentForm.controls['payment'].touched"
+                    class="text text-danger">
+                    <small>Mandatory(if not entered)</small>
+                   </div> 
+                  
+
+              </div>
+            </div>
+          </div>
+          </div>
+          <div class="row">
+              
+                  <!-- <label style="padding-left:30px;" [(ngModel)]="remarks" [formControl]="PaymentForm.controls['remarks']">Narration:</label>
+                  <textarea rows="2" cols="140"></textarea>
+                 -->
+                 Narration:<textarea required rows="2" [(ngModel)]="remarks" formControlName="remarks"  cols="140">
+                </textarea>
+          </div>
+          </form>
+          </mat-card>
+          </div> 
+          </div>

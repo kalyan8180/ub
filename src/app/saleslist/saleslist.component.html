@@ -1,0 +1,203 @@
+<div style="padding-left: 10px;padding-top: 10px;padding-right: 10px;margin-bottom: 10px;margin-left:-20px;margin-right:-20px
+">
+  <mat-card style="background-color: #03a9f4; color:white; padding: 5px;">
+    <mat-card-title style="font-size:19px;font-weight:bold"> Sale Management List
+
+    </mat-card-title>
+
+  </mat-card>
+
+
+</div>
+
+<div style="padding-left:10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+  <mat-card style="max-height: 45px; padding-top: 2px">
+    <label>
+        <div class="row">
+            <div class="col-lg-3 col-md-4 col-sm-12 ">
+    
+              <div class="form-group " style="margin-left:-30px">
+                <div class="col-xl" >
+                    <!-- <mat-form-field style="width:100px;margin-top:-5pxpx" id="value"> -->
+
+        <input [(ngModel)]="filter"  placeholder="Search" type="search">
+      <!-- </mat-form-field> -->
+      </div>
+      </div>
+      </div>
+   
+        
+            <div class="col-lg-3 col-md-4 col-sm-12 " style="padding-left: 100px">    
+                <mat-form-field style="width:50px;margin-left:30px" id="value">
+  
+                
+                    <mat-select  [(ngModel)]="count" (selectionChange)="showAll(count)" matInput placeholder="Days">
+                      <mat-option value="2">2</mat-option>
+                      <mat-option value="7">7</mat-option>
+                     
+                      <mat-option value="15">15</mat-option>
+                      
+                      <mat-option value="30">30</mat-option>
+                      <mat-option value="All">All</mat-option>
+                      
+                    </mat-select>
+      
+                  </mat-form-field>
+                 
+      </div>
+    </div>
+    </label>
+  </mat-card>
+</div>
+<div style="padding-left:10px;margin-top:-10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+
+  <table width="100%" class="table table-striped table-condensed" style="overflow-y: scroll;">
+    <tbody style="font-size:11px;font-weight: bold">
+      <tr style="background:#03a9f4;color:whitesmoke">
+        <th>SNO</th>
+
+        <th>Bill NO
+
+          <!-- <span>
+                        <span [hidden]="!a"></span>
+                  <span [hidden]="reverse">▼</span>
+                  <span [hidden]="!reverse">▲</span>
+                  </span> -->
+        </th>
+        <th>Name</th>
+        <th>Billed by</th>
+        <!-- <th>Transaction Type</th> -->
+        <th>Mobile Number</th>
+        <th>Date</th>
+        <th>Amount</th>
+        <th>Receipt</th>
+        <th>Edit</th>
+      </tr>
+      <tr *ngFor="let data of All|filter:filter| paginate: { itemsPerPage: 15, currentPage: p };let i=index">
+        <td>{{15 * (p - 1) +i+1}}</td>
+        <td>{{data.billNo}}</td>
+        <td>{{data.patientName}}</td>
+        <td>{{data.userName}}</td>
+        <!-- <td>{{data.transactionType}}</td> -->
+        <td>{{data.mobileNo}}</td>
+        <td>{{data.Date}}</td>
+        <td>{{data.Amount}}</td>
+        <td> <a style="color:green" (click)="showPdf(data)">Receipt</a></td>
+        <td> <a style="color:blue" (click)="open(basic,data)">Edit</a></td>
+
+      </tr>
+    </tbody>
+  </table>
+  <pagination-controls (pageChange)="p = $event"></pagination-controls>
+  <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="large" color="rgb(73, 165, 171)" type="ball-clip-rotate-pulse"></ngx-spinner>
+  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }" [template]="customLoadingTemplate"></ngx-loading>
+</div>
+<ng-template #basic let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">SalesList update</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+  </div>
+  <div class="modal-body">
+    <table id="classTable" class="table table-bordered table-responsive" style="overflow-y: scroll;">
+
+      <tr style="background:#03a9f4;color:whitesmoke;font-size:13px">
+
+        <th>Medicine Name</th>
+        <th>Batch#</th>
+        <th>Expiry Date</th>
+        <th>Quantity</th>
+        <th>Mrp</th>
+        <th>Avaialble Quantity</th>
+        <th>Discount%</th>
+        <th>Amount</th>
+        <th>Gst</th>
+
+      </tr>
+      <!-- <tbody> -->
+      <tr *ngFor="let data of Edit">
+
+
+        <td>
+          <select style="width:150px" placeholder="Medicine name" [(ngModel)]="data.medicineName" (change)="onMedicineChange($event,data);setBatches(data)">
+                      <option>none<option>
+                         <option *ngFor="let c of Medicines" [value]="c.medName">
+                           {{c.medName}}
+                        </option>
+                       </select>
+        </td>
+        <!-- <td>{{data.mrp}}</td>
+              <td> {{data.quantity}} </td>
+              <td> {{data.amount}} </td> -->
+        <td>
+          <input [(ngModel)]="data.batch" type="text">
+
+        </td>
+        <td> <input readonly [(ngModel)]="data.expiryDt" type="text"> </td>
+
+        <td> <input readonly [(ngModel)]="data.quantity" type="text" [disabled]="!data.medicineName" (change)="calcAmount(data)"
+            (input)="setMedicineDetails(data)"> </td>
+        <td><input readonly [(ngModel)]="data.mrp" type="text" (change)="calcAmount(data)"></td>
+        <td> <input readonly [(ngModel)]="data.availablequantity" type="text">
+
+        </td>
+        <td> <input readonly [(ngModel)]="data.discount" type="text" (change)="calcAmount(data)"> </td>
+        <td> <input readonly [(ngModel)]="data.amount" type="text"> </td>
+        <td> <input readonly [(ngModel)]="data.gst" type="text"> </td>
+
+      </tr>
+      <!-- </tbody> -->
+    </table>
+  </div>
+  <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark" (click)="open2(basic2)">Save</button>
+        </div> -->
+</ng-template>
+<!-- <ng-template #basic2 let-modal>
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Summary of Services </h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+      
+      
+          <div class="col-md-6">
+            <div class="form-group ">
+              <div class="col-xl">
+                <mat-form-field>
+                  <input [(ngModel)]="total" matInput placeholder="Total" type="text" readonly>
+      
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class=" col-md-6">
+            <label>Payment Type :</label>
+            <div class="form-group">
+              <div class="col-xl">
+                <select style="width:150px" [(ngModel)]="paymentType" placeholder="Type">
+                  <option value="advance">Advance</option>
+      
+               
+                  <option value="Due">Due</option>
+                  <option value="Cash">Cash</option>
+                  <option value="Card">Card</option>
+                
+      
+                </select>
+      
+              </div>
+            </div>
+          </div>
+        </div>
+      
+      
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-primary" (click)="save()">submit</button>&nbsp;&nbsp;
+          <button type="button" class="btn btn-outline-danger" (click)="modal.close('Save click')">close</button>
+        </div>
+      </ng-template>
+       -->

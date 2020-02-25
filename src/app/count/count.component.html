@@ -1,0 +1,84 @@
+<div style="padding-left: 10px;padding-top: 10px;padding-right: 10px;margin-bottom: 10px;
+">
+  <mat-card style="background-color: #03a9f4; color:white; padding: 15px;">
+    <mat-card-title> DOCTOR STATISTICS
+       
+    </mat-card-title>
+
+  </mat-card>
+
+
+</div>
+<div style="padding-left:10px;padding-top:10px;padding-right:10px">
+  <mat-card>
+    <label> 
+      <mat-form-field>
+         
+        <mat-select  [(ngModel)]="year" (selectionChange)="fetchStatistics($event)"  matInput placeholder="Year">
+
+          <mat-option>none</mat-option>
+            <mat-option *ngFor="let data of array;let i=index"  [value]="data.years">
+             
+               {{data.years}}
+            </mat-option>
+
+        </mat-select>
+
+              </mat-form-field>
+            </label>
+  </mat-card>
+
+</div>
+<div style="padding-left:10px;padding-top:10px;padding-right:10px">
+
+    <table width="100%" class="table table-striped table-condensed" style="overflow-y: scroll;">
+      <tr style="background:#03a9f4;color:whitesmoke">
+        <th>Sno</th>
+        
+        <th>Dr.Name #</th>
+        <th>Month</th>
+        <th>Year</th>
+        <th>Count</th>
+      </tr>
+      <tr *ngFor="let s of statistics;let i=index;">
+        <td>{{i+1}}</td>
+        <td>{{s.doctorName}}</td>
+        <td>{{s.month}}</td>
+        <td>{{s.year}}</td>
+        <td><a style="width:150px;color:green" (click)="open(content);showDetails(s)">{{s.count}}</a></td>
+      </tr>
+      </table>
+      </div>
+      <ng-template #content let-modal>
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <table class="table table-striped table-condensed">
+                <thead style="background:rgb(215, 206, 206)">
+                <th> RegId </th>
+                <th>Umr No</th>
+                <th> Name </th>
+                <th> Date Of Joining </th>
+               
+                </thead>
+                <tbody>
+          <tr *ngFor="let data of New">
+              <td> {{data.regId}} </td>
+            <td> {{data.umr}} </td>
+            
+            <td>{{data.name}}</td>
+            <td> {{data.DOJ}} </td>
+            <!-- <td> {{data.doctor}} </td> -->
+          </tr>
+          </tbody> 
+          </table>       
+                  
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+        </div>
+      </ng-template>

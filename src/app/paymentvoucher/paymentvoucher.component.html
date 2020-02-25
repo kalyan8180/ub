@@ -1,0 +1,268 @@
+<div style="padding-left: 10px;padding-top: 10px;padding-right: 10px;margin-bottom: 10px;margin-left:-20px;margin-right:-20px
+">
+  <mat-card style="background-color: #03a9f4; color:white; padding: 7px;">
+    <mat-card-title style= "font-size:19px;font-weight:bold" >PAYMENT VOUCHER LIST
+
+
+    </mat-card-title>
+
+
+  </mat-card>
+</div>
+<div style="padding-left:10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+    <mat-card style="max-height: 45px; padding-top: 2px">
+
+
+    <label>
+      <div class="row">
+        <div class="col-lg-3 col-md-4 col-sm-12 ">
+
+          <div class="form-group " style="margin-left:-20px">
+            <div class="col-xl">
+                <!-- <mat-form-field style="width:100px;margin-top:-5pxpx" id="value"> -->
+
+                <input [(ngModel)]="filter"  placeholder="Search" type="search">
+              <!-- </mat-form-field> -->
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-lg-3 col-md-4 col-sm-12 " style="padding-left: 100px">
+
+          <mat-form-field style="width:50px;margin-left:30px" id="value">
+
+            <mat-select [(ngModel)]="count" (selectionChange)="showAll(count)" matInput placeholder="Days">
+              <mat-option value="2">2</mat-option>
+              <mat-option value="7">7</mat-option>
+
+              <mat-option value="15">15</mat-option>
+
+              <mat-option value="30">30</mat-option>
+              <mat-option value="All">All</mat-option>
+
+            </mat-select>
+
+          </mat-form-field>
+        </div>
+      </div>
+    </label>
+</mat-card>
+</div>
+
+<div style="padding-left:10px;margin-top:-10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+
+  <table width="100%" class="table table-striped table-condensed" style="overflow-y: scroll;">
+      <tbody style="font-size:11px;font-weight: bold">
+    <tr style="background:#03a9f4;color:whitesmoke">
+
+      <th>Vocher No</th>
+
+      <th (click)="sort('a')">Date
+
+        <span>
+                                    <span [hidden]="!a"></span>
+        <span [hidden]="reverse">▼</span>
+        <span [hidden]="!reverse">▲</span>
+        </span>
+      </th>
+      <!-- <th>Raised by</th> -->
+      <th>Paid To</th>
+      <th>Vocher Type</th>
+      <th>Amount</th>
+      <th>Payment Mode</th>
+      <!-- <th>Bank</th>
+                <th>Cheque No</th>
+                <th>Cheque Date</th> -->
+      <th>Tracker</th>
+    </tr>
+
+    <tr *ngFor="let data of All  | filter: filter">
+
+      <td>{{data.paymentNo}}</td>
+      <!-- <td>{{data.paymentDate | date : "dd.MM.y"}}</td> -->
+      <td>{{data.paymentDate}}</td>
+      <!-- <td></td> -->
+      <td>{{data.paidTo}}</td>
+      <td>{{data.voucherType}}</td>
+      <td>{{data.voucherAmount}}</td>
+      <td>{{data.paymentType}}</td>
+      <!-- <td>{{data.bank}}</td>
+                 <td>{{data.checkNo}}</td>
+                 <td>{{data.checkDate  | date : "dd.MM.y"}}</td>
+                 -->
+
+
+      <!--                   
+                  <td><a style="color:blue" (click)="open(basic,data)">Edit</a></td> -->
+      <td><a style="color:green" (click)="pdf(data)">Tracker</a> </td>
+    </tr>
+      </tbody>
+  </table>
+</div>
+
+<ng-template #basic let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title"> Edit</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+  </div>
+  <div class="modal-body">
+
+    <form class="form-horizontal" class="form-inline" [formGroup]="PaymentForm">
+      <div class="row">
+        <div class="col-lg-4 col-md-3">
+          <div class="form-group">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input style="color:blue" [(ngModel)]="paymentNo" formControlName="paymentNo" matInput placeholder="Vocher No" type="text">
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-3">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+                <input value={{paymentDate|date}} formControlName="paymentDate" matInput placeholder="Voucher Date">
+
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-3">
+          <div class="form-group">
+            <div class="col-xl">
+
+              <mat-form-field>
+                <mat-select [(ngModel)]="paidTo" formControlName="paidTo" placeholder="Paid To">
+                  <mat-option value="others">Others</mat-option>
+                  <mat-option *ngFor="let c of Id[0]" [value]="c.userName">
+
+                    {{c.userName}}
+                  </mat-option>
+
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="paidTo ==='others'" class="col-lg-4 col-md-3">
+          <div class="form-group">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input [(ngModel)]="name" formControlName="name" matInput placeholder="Name" type="text">
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-3">
+          <div class="form-group">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input [(ngModel)]="voucherAmount" formControlName="voucherAmount" matInput placeholder="Payment Amount" type="text">
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-3">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+                <mat-select [(ngModel)]="paymentType" formControlName="paymentType" placeholder="Payment Type">
+
+                  <mat-option value="Cheque">Cheque</mat-option>
+                  <mat-option value="Cash">Cash</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+
+
+            </div>
+          </div>
+        </div>
+
+
+        <div *ngIf="paymentType ==='Cheque'" class="col-lg-4 col-md-3">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+
+
+                <input [(ngModel)]="bank" formControlName="bank" matInput placeholder="Bank Name" type="text">
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+        <div *ngIf="paymentType ==='Cheque'" class="col-lg-4 col-md-3">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+
+                <input [(ngModel)]="checkNo" formControlName="checkNo" matInput placeholder="Chq.No" type="text">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="paymentType ==='Cheque'" class="col-lg-4 col-md-3">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+                <input value={{checkDate|date}} formControlName="checkDate" matInput placeholder="Chq.Date">
+
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-3">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+                <mat-select [(ngModel)]="voucherType" formControlName="voucherType" placeholder="Voucher Type ">
+
+                  <mat-option value="Advance">Advance</mat-option>
+                  <mat-option value="Expense">Expense</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+
+
+            </div>
+          </div>
+        </div>
+
+
+
+        <div class="row">
+
+          <!-- <label style="padding-left:30px;" [(ngModel)]="remarks" [formControl]="PaymentForm.controls['remarks']">Narration:</label>
+                                <textarea rows="2" cols="140"></textarea>
+                               -->
+          &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Narration:<textarea required rows="2" [(ngModel)]="remarks"
+            formControlName="remarks" cols="95">
+                              </textarea>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary mat-ripple" md-ripple="submit" (click)="save(PaymentForm.value)">Save</button>
+    <button class="btn btn-danger mat-ripple" (click)="modal.close('Cancel click')">Cancel</button>
+
+  </div>
+</ng-template>

@@ -1,0 +1,106 @@
+<div style="padding-left: 10px;padding-top: 10px;padding-right: 10px;margin-bottom: 10px;
+">
+  <div class="fixHeader" id="myHeader" style="margin-left:-20px;margin-right:-20px">
+    <mat-card style="background-color: #03a9f4; color:white; padding:7px;">
+      <mat-card-title style="font-size:19px;font-weight:bold">STOCK ADJUSTMENT
+
+        <button style="margin-right: 10px;
+          float: right;
+
+          background-color: white;
+          color: black !important;margin-top:-5px" class="btn btn-primary mat-ripple" md-ripple="submit"
+          (click)="update()">UPDATE</button> &nbsp;&nbsp;
+        <button style="margin-right: 10px;
+          float: right;
+          background-color: white;
+          color: black !important;margin-top:-5px" class="btn btn-primary mat-ripple" md-ripple="submit"
+          (click)="save()">SUBMIT</button> &nbsp;&nbsp;
+        <!-- <button style="margin-right: 10px;
+          float: right;
+          background-color: white;
+          color: black !important;margin-top:-5px" class="btn btn-primary mat-ripple" md-ripple="submit" (click)="reset()">RESET</button> -->
+      </mat-card-title>
+    </mat-card>
+  </div>
+</div>
+<div class="content">
+  <div style="padding-left:10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+    <mat-card style="padding-left:50infopx;padding-top:2px;padding-bottom:2px;">
+      <div class="row">
+        <div class="col-lg-3 col-md-3 col-sm-12" style="margin-top:5px" class="col-lg-3 col-md-3  col-sm-12">
+          <div class="form-group ">
+            <div class="col-xl">
+              <ng-select style="width:230px;" appendTo="body" [items]="Medicines" bindLabel="medicinename"
+                placeholder="MEDICINE NAME" (change)="onChange($event)">
+              </ng-select>
+
+            </div>
+          </div>
+        </div>
+        <div class=" col-lg-3 col-md-4 col-sm-4">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+                <input [(ngModel)]="batch" matInput placeholder="Batch" type="text">
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-12">
+          <div class="form-group">
+            <div class="col-xl">
+
+
+              <mat-form-field>
+                <input matInput [(ngModel)]="expiredate" [matDatepicker]="picker1" [min]="minDate"
+                  placeholder="Expiry Date">
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+              </mat-form-field>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </mat-card>
+  </div>
+</div>
+<div class="content">
+  <div style="padding-left:10px;padding-right:10px;margin-top:-1px;margin-left:-20px;margin-right:-20px">
+    <table class="table table-bordered table-condensed" style="overflow-y: scroll; min-height:100%;margin-top:3px">
+
+
+      <tr style="background:#03a9f4;color:whitesmoke">
+        <th>S.NO</th>
+
+        <th>QTY WHILE PURCHASE</th>
+        <th>SOLD QTY</th>
+        <th>CURRENT QTY</th>
+        <th>MODIFY(+ -)</th>
+        <th>QTY AFTER ADJUSTMENT</th>
+      </tr>
+
+
+      <tr *ngFor="let g of Grndetails;let i= index">
+        <td> {{i + 1}}</td>
+
+        <td>{{g.detailedQty}}</td>
+        <td>{{g.saleQty}}</td>
+
+        <td>{{g.closingQty}}</td>
+
+        <td>
+          <input [(ngModel)]="g.Modify" matInput type="number" (input)="calcAmount(g)" placeholder="Modify"></td>
+        <td> <input [(ngModel)]="g.modifiedQty" matInput type="number" placeholder="MODIFIED QTY" readonly></td>
+      </tr>
+
+
+
+    </table>
+
+  </div>
+
+</div>

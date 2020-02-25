@@ -1,0 +1,521 @@
+<div
+  style="padding-left: 10px;padding-top: 10px;padding-right: 10px;margin-bottom: 10px;margin-left:-20px;margin-right:-20px">
+  <div>
+    <mat-card style="background-color: #03a9f4; color:white; padding: 7px;">
+      <mat-card-title style="font-size:19px;font-weight:bold">OSP BILLING
+        <button style=" margin-right: 100px;
+              float: right; 
+              background-color: white; right: 0;
+              color: black !important;margin-top:-5px" class="btn btn-primary mat-ripple" md-ripple="reset"
+          (click)="reset()">RESET</button>&nbsp;
+
+        <button style=" margin-right: 10px;
+            float: right;
+            background-color: white; right: 0;
+            color: black !important; margin-right: 15px;margin-top:-5px" class="btn btn-primary mat-ripple"
+          md-ripple="submit" (click)="open1(basic1)" [disabled]="!RegisterForm.valid">SAVE</button>
+
+      </mat-card-title>
+    </mat-card>
+  </div>
+</div>
+<div class="content">
+  <div style="padding-left:10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+    <mat-card style="padding-top:2px;padding-bottom:2px;height:3.8cm">
+      <form class="form-horizontal" class="form-inline" [formGroup]="RegisterForm">
+
+        <div class="row">
+          <div class="col-lg-3 col-md-4 col-sm-12 ">
+            <div class="form-group">
+              <div class="col-xl">
+                <mat-form-field>
+
+                  <input [value]="Details[0]?Details[0].ospId:''" matInput placeholder="OSP Service#" type="text"
+                    readonly>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-sm-12">
+            <div class="form-group ">
+              <div class="col-xl">
+                <mat-form-field>
+                  <input matInput [(ngModel)]="enteredDate" [formControl]="RegisterForm.controls['enteredDate']"
+                    [matDatepicker]="picker1" placeholder="Date">
+                  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                  <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+                <!-- <div *ngIf="PaymentForm.controls['date'].hasError('required') && PaymentForm.controls['date'].touched"
+                    class="text text-danger">
+                    <small>Mandatory(if not entered)</small>
+                   </div> -->
+              </div>
+            </div>
+          </div>
+
+
+          <div class="col-lg-3 col-md-4 col-sm-12 ">
+            <div class="form-group">
+              <div class="col-xl">
+                <mat-form-field>
+
+                  <input [(ngModel)]="patientName" required minlength="3" maxlength="50"
+                    [formControl]="RegisterForm.controls['patientName']" matInput placeholder="Name" type="text">
+                </mat-form-field>
+              </div>
+            </div>
+            <!-- pattern="^[A-Za-z -]+$" -->
+            <div class="text text-danger"
+              *ngIf="RegisterForm.controls['patientName'].touched && !RegisterForm.controls['patientName'].valid">
+              <small style="padding-left:15px"> Name is Mandatory</small></div>
+            <div class="text text-danger" *ngIf="RegisterForm.controls['patientName'].errors?.minlength"><small
+                style="padding-left:15px">Name should have min 3 characters</small></div>
+            <div class="text text-danger" *ngIf="RegisterForm.controls['patientName'].errors?.maxlength"><small
+                style="padding-left:15px">Name should have max 50 characters</small></div>
+            <!-- <div class="text text-danger" *ngIf="RegisterForm.controls['patientName'].errors?.pattern">Allow only alphabets</div> -->
+
+          </div>
+          <div class="col-lg-3 col-md-4 col-sm-12">
+            <div class="form-group ">
+              <div class="col-xl">
+                <mat-form-field>
+                  <input matInput [max]="minDate" [(ngModel)]="dob" (dateChange)="calculateAge($event.value)"
+                    [formControl]="RegisterForm.controls['dob']" [matDatepicker]="picker2" placeholder="DOB">
+                  <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                  <mat-datepicker #picker2></mat-datepicker>
+                </mat-form-field>
+                <!-- <div *ngIf="PaymentForm.controls['date'].hasError('required') && PaymentForm.controls['date'].touched"
+                      class="text text-danger">
+                      <small>Mandatory(if not entered)</small>
+                     </div> -->
+                <div class="text text-danger"
+                  *ngIf="RegisterForm.controls['dob'].touched && !RegisterForm.controls['dob'].valid"><small
+                    style="padding-left:15px"> Dob is Mandatory</small></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-4 col-sm-12">
+            <div class="form-group age-group-fields">
+              <div class="col-xl">
+                <mat-form-field>
+                  <input [formControl]="RegisterForm.controls['years']"
+                    (change)="calcDoB(yearsEle.value, monthsEle.value, daysEle.value)" style="width:60px" #yearsEle
+                    matInput placeholder="Years" type="number">
+                </mat-form-field>
+                <mat-form-field>
+                  <input [formControl]="RegisterForm.controls['months']"
+                    (change)="calcDoB(yearsEle.value, monthsEle.value, daysEle.value)" style="width:60px" #monthsEle
+                    matInput placeholder="months" type="number">
+                </mat-form-field>
+                <mat-form-field>
+                  <input [formControl]="RegisterForm.controls['days']"
+                    (change)="calcDoB(yearsEle.value, monthsEle.value, daysEle.value)" style="width:60px" #daysEle
+                    matInput placeholder="Days" type="number">
+                </mat-form-field>
+              </div>
+
+            </div>
+          </div>
+
+
+          <div class="col-lg-3 col-md-4 col-sm-12 ">
+            <div class="form-group">
+              <div class="col-xl">
+                <mat-form-field>
+
+                  <input required pattern="[6789][0-9]{9}" [formControl]="RegisterForm.controls['mobile']"
+                    minlength="10" maxlength="10" [(ngModel)]="mobile" matInput placeholder="MobileNo" type="text">
+                </mat-form-field>
+              </div>
+              <div class="text text-danger"
+                *ngIf="RegisterForm.controls['mobile'].touched && !RegisterForm.controls['mobile'].valid"><small
+                  style="padding-left:15px">plaese enter mobileNo</small></div>
+              <div class="text text-danger" *ngIf="RegisterForm.controls['mobile'].errors?.pattern"><small
+                  style="padding-left:15px">valid pattern</small></div>
+              <div class="text text-danger" *ngIf="RegisterForm.controls['mobile'].errors?.maxlength"><small
+                  style="padding-left:15px">allow 10 digits</small></div>
+              <div class="text text-danger" *ngIf="RegisterForm.controls['mobile'].errors?.minlength"><small
+                  style="padding-left:15px">allow 10 digits</small></div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-sm-12">
+            <div class="form-group ">
+              <div class="col-xl">
+                <mat-form-field>
+
+
+                  <mat-select required [(ngModel)]="gender" [formControl]="RegisterForm.controls['gender']"
+                    placeholder="Gender">
+                    <mat-option>None</mat-option>
+                    <mat-option value="Female">Female</mat-option>
+                    <mat-option value="Male">Male</mat-option>
+                    <!-- <mat-option value="Others">Others</mat-option> -->
+
+                  </mat-select>
+
+                </mat-form-field>
+                <div class="text text-danger"
+                  *ngIf="RegisterForm.controls['gender'].touched && !RegisterForm.controls['gender'].valid">
+                  <small>Please select Gender </small></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-sm-12">
+            <div class="form-group">
+              <div class="col-xl">
+                <mat-form-field>
+                  <mat-select required [(ngModel)]="refferedById" [formControl]="RegisterForm.controls['refferedById']"
+                    placeholder="Ref By Doc">
+                    <ngx-mat-select-search></ngx-mat-select-search>
+                    <mat-option>None</mat-option>
+                    <mat-option *ngFor="let c of Details[2]"
+                      [value]="c.firstName+' '+c.middleName+' '+c.lastName+'-'+c.userId">
+                      {{c.firstName}} {{c.middleName}} {{c.lastName}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div class="text text-danger"
+                  *ngIf="RegisterForm.controls['refferedById'].touched && !RegisterForm.controls['refferedById'].valid">
+                  <small>Please select Doctor </small></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </mat-card>
+  </div>
+</div>
+
+
+<div class="content">
+  <div style="padding-left:10px;padding-right:10px;margin-top:-1px;margin-left:-20px;margin-right:-40px">
+    <table class="table table-bordered table-condensed" style="overflow-y: scroll; min-height:100%;margin-top:3px">
+
+      <tr style="background:#03a9f4;color:whitesmoke">
+        <th>S.No</th>
+        <th>Service Name</th>
+        <th>Qty</th>
+        <th>Price</th>
+        <!-- <th>Discount Amount</th> -->
+        <th>NetAmount</th>
+        <th>Action</th>
+        <!-- <th>Manage</th>
+                  <th>Save</th> -->
+      </tr>
+      <tr *ngFor="let ser of Register;let i=index">
+        <td> {{i+1}}</td>
+
+
+        <td>
+
+          <ng-select style="width:350px" [items]="Details[1]" bindLabel="serviceName" placeholder="Service Name"
+          (change)="onMedicineChange($event,ser);show(ser);" >
+          </ng-select>
+        </td>
+
+        <td>
+
+          <input [(ngModel)]="ser.quantity" matInput placeholder="Qty" type="number" (input)="calcAmount(ser)"
+            (change)="calcAmount($event,ser)">
+
+        </td>
+        <td>
+
+
+          <input [(ngModel)]="ser.price" matInput placeholder="Price" type="text" (input)="calcAmount(ser)"
+            (change)="calcAmount(ser)" readonly>
+
+
+        </td>
+
+        <!-- <td>
+
+
+          <input [(ngModel)]="ser.discount" (input)="calcAmount(ser)" (keydown.tab)="addMore($event)" matInput placeholder="Discount"
+            type="number">
+
+        </td> -->
+
+        <td>
+
+
+          <input [(ngModel)]="ser.amount" matInput placeholder="Net Amount" type="text" readonly>
+
+        </td>
+
+        <td>
+
+          <a (click)="addMore($event)"><i class="fa fa-plus" style="font-size:18px;color:blue"></i></a>&nbsp;
+          <a (click)="removeSaleItem(i);"><i class="fa fa-close" style="font-size:18px;color:red"></i></a>
+        </td>
+        <td>
+
+      </tr>
+    </table>
+    <div class="disc-col">
+    <div class="col-xl">
+        <mat-form-field>
+          <input [(ngModel)]="total" matInput placeholder="Total" type="text" readonly>
+        </mat-form-field>
+      </div>
+
+      <div class="col-xl">
+          <mat-form-field>
+            <mat-select [(ngModel)]="value" (selectionChange)="calculatedisamount()" matInput placeholder="Dis type">  
+              <mat-option value="%">%</mat-option>
+              <mat-option value="amt">amt</mat-option>  
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+      <div class="col-xl">
+          <mat-form-field>
+            <input [(ngModel)]="dis" (input)="discountchange()" matInput placeholder="Disount" type="text">
+          </mat-form-field>
+          <div>
+              <small class="text text-danger" *ngIf="value == '%' && dis>100">Discount should not exceed 100</small>
+            </div>
+            <div>
+                <small class="text text-danger" *ngIf="errorInfo">Discount should not exceed Total Amount</small>
+              </div>
+        </div>
+
+        
+
+          <div class="col-xl">
+              <mat-form-field>
+                <input [(ngModel)]="tdisamount" matInput placeholder="Final Amount" type="text" readonly>    
+              </mat-form-field>
+            </div>
+    </div>
+  </div>
+</div>
+
+
+<ng-template #basic1 let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Summary of Services </h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <table width="100%" class="table table-bordered" style="overflow-y: scroll;">
+      <tr style="background:#03a9f4;color:whitesmoke">
+        <th>Sno</th>
+        <th>Service</th>
+        <th>Price</th>
+
+
+      </tr>
+      <tr *ngFor="let ser of Register;let i=index">
+        <td> {{i+1}}</td>
+        <td>{{ ser.serviceName}}</td>
+        <td>{{ser.amount}}</td>
+      </tr>
+
+    </table>
+
+  </div>
+  <h1 style="margin-left:36%"> Total Amount:{{total}}</h1>
+  <h1 style="margin-left:36%"> Final Amount:{{tdisamount}}</h1>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-primary" (click)="open2(basic2)">Pay</button>&nbsp;&nbsp;
+    <button type="button" class="btn btn-outline-danger" (click)="modal.close('Save click')">close</button>
+  </div>
+</ng-template>
+
+
+<ng-template #basic2 let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Summary of Services </h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <div class="col-md-6">
+      <div class="form-group ">
+        <div class="col-xl">
+          <mat-form-field>
+            <input [(ngModel)]="tdisamount" matInput placeholder="Final Amount" type="text" readonly>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class=" col-md-6">
+      <label>Payment Type :</label>
+      <div class="form-group">
+        <div class="col-xl">
+          <select style="width:150px" [(ngModel)]="paymentType" placeholder="Type">
+              <option value="advance">Advance</option>
+  
+              <!-- <option value="Credit">Credit</option> -->
+    <!-- <option value="Due">Due</option>
+              <option value="Cash">Cash</option>
+              <option value="Card">Card</option>
+               <option value="Cash+Card">Cash+Card</option> 
+  
+            </select>
+
+        </div>
+      </div>
+    </div> -->
+
+    <div class="row">
+
+      <div>
+
+        <table width="100%" class="table table-bordered table-condensed table-responsive">
+
+          <tr style="background:#03a9f4;color:whitesmoke">
+            <!-- <th>Sno</th> -->
+            <th>Payment Type</th>
+
+            <!-- <th>Action</th> -->
+
+          </tr>
+
+          <tr *ngFor="let c of multiplePayment1;let i= index">
+            <!-- <td> {{i + 1}}</td> -->
+            <td>
+
+              <div *ngFor="let option of options; let optI = index">
+
+                <div style="display:inline">
+                  <!-- <mat-form-field style="width:80px"> -->
+                  <select style="width:80px;" (ngModelChange)="changed($event, i)" [(ngModel)]="c.payType"
+                    placeholder="Type">
+
+                    <option *ngFor="let type of types$ | async; let i = index" [value]="type.text"
+                      [disabled]="!type.allowed">
+                      {{type.text}}</option>
+                  </select>&nbsp;&nbsp;
+
+                  <!-- </mat-form-field>&nbsp;&nbsp; -->
+                  <a (click)="addMore1($event);secondrow()"><i class="fa fa-plus"
+                      style="font-size:15px;color:blue"></i></a>&nbsp;
+                  <a *ngIf="multiplePayment1.length>1" (click)="removeSaleItem1(i);secondrowremove()"><i
+                      class="fa fa-close" style="font-size:15px;color:red"></i></a>&nbsp;
+                  <div style="display:inline" *ngIf="c.payType==='Card'">
+
+                    <!-- <mat-form-field style="width:80px"> -->
+                    <input style="width:80px" [(ngModel)]="referenceNumber" placeholder="Ref No" type="text">
+
+                    <!-- </mat-form-field> -->
+
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- <a (click)="addMore1($event);secondrow()"><i class="fa fa-plus" style="font-size:10px;color:blue"></i></a>&nbsp;
+                    <a *ngIf="multiplePayment1.length>1" (click)="removeSaleItem1(i);secondrowremove()"><i class="fa fa-close" style="font-size:10px;color:red"></i></a> -->
+            </td>
+
+            <!-- <td>
+                    <a (click)="addMore1($event);secondrow()"><i class="fa fa-plus" style="font-size:10px;color:blue"></i></a>&nbsp;
+                    <a *ngIf="multiplePayment1.length>1" (click)="removeSaleItem1(i);secondrowremove()"><i class="fa fa-close" style="font-size:10px;color:red"></i></a>
+                  </td> -->
+
+          </tr>
+        </table>
+      </div>&nbsp;&nbsp;
+      <div style="float: left">
+
+        <table width="100%" class="table table-bordered table-condensed table-responsive">
+
+          <tr style="background:#03a9f4;color:whitesmoke">
+
+            <th>Amount</th>
+            <!-- <th>Action</th> -->
+          </tr>
+
+          <tr>
+            <td>
+              <!-- <mat-form-field style="width:80px"> -->
+              <input style="width:80px;height:22px" [disabled]="Xamount" min="0" max="total" (input)="amount2()"
+                [(ngModel)]="X" placeholder="Amount" type="text">
+
+              <!-- </mat-form-field> -->
+              <!-- <div>
+      
+                      <mat-form-field style="width:80px">
+                        <input [(ngModel)]="referenceNumber" matInput placeholder="Ref No" type="text">
+      
+                      </mat-form-field>
+      
+                    </div> -->
+            </td>
+
+
+            <!-- <td> <a (click)="secondrow()"><i class="fa fa-plus" style="font-size:18px;color:blue"></i></a></td> -->
+          </tr>
+
+          <tr>
+            <td *ngIf="!row">
+              <!-- <mat-form-field style="width:80px"> -->
+              <input style="width:80px;height:22px" (input)="amount1()" min="0" max="total" [(ngModel)]="Y"
+                placeholder="Amount" type="text">
+
+              <!-- </mat-form-field> -->
+            </td>
+          </tr>
+          <!-- <tr>
+      
+                  <td *ngIf="!row"><input placeholder="Amount2" (input)="amount1()" [(ngModel)]="Y" type="text"></td>
+                  <td> <a *ngIf="!row" (click)="secondrowremove()"><i class="fa fa-close" style="font-size:18px;color:red"></i></a></td>
+                </tr> -->
+        </table>
+      </div>
+
+
+    </div>
+    <!-- <div style="display:inline" *ngIf="paymentType==='Due'"> -->
+
+    <div class="row">
+      <div class="col-xs-6" style="display:inline" *ngIf="authorizationDD">
+        <div class="col-xs-3">
+          <mat-form-field>
+
+
+            <mat-select [(ngModel)]="authorisedBy" placeholder="Authorised by">
+
+              <mat-option value="Dr.Rajasekhar Kona">Dr.Rajasekhar Kona</mat-option>
+              <mat-option value="Dr.Sireesha Kolli">Dr.Sireesha Kolli</mat-option>
+
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+
+
+        <div class="col-xs-3">
+          <mat-form-field>
+            <input [(ngModel)]="authorisedComment" matInput placeholder="Comments" type="text">
+
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+
+
+  </div>
+
+
+
+  <!-- </div> -->
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-primary" (click)="save()"
+      [disabled]="ospSave">Submit</button>&nbsp;&nbsp;
+    <button type="button" class="btn btn-outline-danger" (click)="refresh()">Close</button>
+  </div>
+</ng-template>

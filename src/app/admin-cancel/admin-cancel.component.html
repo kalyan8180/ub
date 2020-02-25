@@ -1,0 +1,62 @@
+<div style="padding-left: 10px;padding-top: 10px;padding-right: 10px;margin-bottom: 10px;
+">
+  <div class="fixHeader" id="myHeader" style="margin-left:-20px;margin-right:-20px">
+    <mat-card style="background-color: #03a9f4; color:white; padding: 7px;">
+      <mat-card-title style="font-size:19px;font-weight:bold">ADMIN CANCELLATION
+
+        <button style="margin-right: 10px;
+      float: right;
+      background-color: white;
+      color: black !important;margin-top:-5px " class="btn btn-primary mat-ripple" md-ripple="reset" (click)="reset()">RESET</button>        &nbsp;
+        <button style=" margin-right: 10px;
+        float: right;
+        background-color: white;
+        color: black !important; margin-right: 10px;margin-top:-5px" class="btn btn-primary mat-ripple" (click)="save(AdminForm.value)">SUBMIT</button> &nbsp;
+
+      </mat-card-title>
+    </mat-card>
+  </div>
+</div>
+<div class="content">
+  <div style="padding-left:10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+    <mat-card style="height:1.8cm;padding-top: 2px;padding-bottom: 5px">
+
+      <form class="form-horizontal" class="form-inline" [formGroup]="AdminForm">
+
+        <div class="col-lg-3 col-md-4 col-sm-12">
+          <div class="form-group">
+            <div class="col-xl">
+              <mat-form-field>
+
+                <input  required [(ngModel)]="reg" [formControl]="AdminForm.controls['reg']" matInput placeholder="Reg#" type="text">
+              </mat-form-field>
+
+              <div class="text text-danger" style="font-size:10px;padding-right:5px;font-weight:bold" *ngIf="!submitted && AdminForm.controls['reg'].touched && !AdminForm.controls['reg'].valid">
+                Please Enter Reg#</div>
+
+
+              <div class="text text-danger" style="font-size:10px;padding-right:5px;font-weight:bold" *ngIf="submitted&& !AdminForm.controls['reg'].valid">
+                Please Enter Reg#</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-12 ">
+          <div class="form-group">
+            <div class="col-xl">
+              <mat-form-field>
+
+                <input required [(ngModel)]="reason" [formControl]="AdminForm.controls['reason']" matInput placeholder="Reason For Cancel" type="text">
+              </mat-form-field>
+              <div class="text text-danger" style="font-size:10px;padding-right:5px;font-weight:bold" *ngIf="!submitted && AdminForm.controls['reason'].touched && !AdminForm.controls['reason'].valid">
+                Please Enter Reason</div>
+
+
+              <div class="text text-danger" style="font-size:10px;padding-right:5px;font-weight:bold" *ngIf="submitted&& !AdminForm.controls['reason'].valid">
+                Please Enter Reason</div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </mat-card>
+  </div>
+</div>

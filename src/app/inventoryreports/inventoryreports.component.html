@@ -1,0 +1,170 @@
+<div style="padding-left: 10px;padding-top: 10px;padding-right: 10px;margin-bottom: 10px;">
+    <div class="fixHeader" id="myHeader" style="margin-left:-20px;margin-right:-20px">
+        <mat-card style="background-color: #03a9f4; color:white; padding: 7px;">
+            <mat-card-title style= "font-size:19px;font-weight:bold"> ITEM EXPIRY STATUS
+                <button style="    margin-right: 10px;
+                float: right;
+                background-color: white;
+                color: black !important;margin-top:-5px "
+                    class="btn btn-primary mat-ripple" md-ripple="reset" (click)="reset()">RESET</button> &nbsp;
+                <button style="margin-right: 10px;
+      float: right;
+      background-color: white;
+      color: black !important; margin-right: 10px;margin-top:-5px"
+                    class="btn btn-primary mat-ripple" [disabled]=!InventoryForm.valid (click)="save(InventoryForm.value);refresh()">PRINT</button>&nbsp;
+                 
+            </mat-card-title>
+        </mat-card>
+    </div>
+</div>
+<div class="content">
+    <div style="padding-left:10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+        <mat-card style="padding-left:50infopx;">
+
+            <form class="form-horizontal" class="form-inline" [formGroup]="InventoryForm">
+
+                <div class="row">
+              <div class="col-lg-4 col-md-3 col-sm-12 ">
+                  <div class="form-group">
+                       <div class="col-xl">
+        
+                          <mat-form-field>
+                  <input required [(ngModel)]="fromDate" [formControl]="InventoryForm.controls['fromDate']" matInput [matDatepicker]="picker" placeholder=" From Date">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                     </mat-form-field>
+              <div *ngIf="InventoryForm.controls['fromDate'].hasError('required') && InventoryForm.controls['fromDate'].touched"
+         class="text text-danger">
+         <small>Date is Mandatory</small>
+                </div>
+                       </div>
+                          </div>
+                            </div>
+                            <div class="col-lg-4 col-md-3 col-sm-12 ">
+                                    <div class="form-group">
+                                        <div class="col-xl">
+            
+                                            <mat-form-field>
+                  <input required [(ngModel)]="toDate" [formControl]="InventoryForm.controls['toDate']" matInput [matDatepicker]="picker1" placeholder=" To Date">
+              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                     <mat-datepicker #picker1></mat-datepicker>
+                      </mat-form-field>
+              <div *ngIf="InventoryForm.controls['toDate'].hasError('required') && InventoryForm.controls['toDate'].touched"
+                    class="text text-danger">
+                      <small> Date is Mandatory </small>
+                     </div>
+                   </div>
+                    </div>
+                  </div>
+            
+
+
+                     <div class="col-lg-4 col-md-3 col-sm-12 ">
+                        <div class="form-group">
+                            <div class="col-xl">
+                                <mat-form-field>
+
+
+                                    <input matInput placeholder="Stockpoint" type="text">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div> 
+                     <div class="col-lg-4 col-md-3 col-sm-12 ">
+                        <div class="form-group">
+                            <div class="col-xl">
+                                <mat-form-field>
+
+
+                                    <input matInput placeholder="ItemLevel1" type="text">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div> 
+                     <div class="col-lg-4 col-md-3 col-sm-12 ">
+                        <div class="form-group">
+                            <div class="col-xl">
+                                <mat-form-field>
+
+
+                                    <input matInput placeholder="ItemLevel2" type="text">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div> 
+                    <div class="col-lg-4 col-md-3 col-sm-12 ">
+                        <div class="form-group">
+                            <div class="col-xl">
+                                <mat-form-field>
+
+
+                                    <input matInput placeholder="ItemLevel3" type="text">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div> 
+                    <div class="col-lg-4 col-md-3 col-sm-12 ">
+                        <div class="form-group">
+                            <div class="col-xl">
+                                <mat-form-field>
+
+
+                                    <input matInput placeholder="ItemClass" type="text">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div> 
+                    <div class="col-lg-4 col-md-3 col-sm-12 ">
+                        <div class="form-group">
+                            <div class="col-xl">
+                                <mat-form-field>
+
+
+                                    <input matInput placeholder="ItemName" type="text">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div> 
+                
+                   
+
+
+                
+
+                    <div class="col-lg-4 col-md-3 col-sm-12 c">
+                        <!-- <div class="form-group">
+                            <div class="col-xl" style="padding-right:10px"> --> 
+                            <mat-radio-group>
+                            
+            <mat-radio-button value="Personal"> WithHeader</mat-radio-button> &nbsp;&nbsp;
+            <mat-radio-button value="Corporate">WithOutHeader</mat-radio-button>&nbsp;
+                                   
+
+  </mat-radio-group>
+     </div> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+     
+                  
+      <div class="col-lg-4 col-md-3 col-sm-12 d">
+                       
+
+
+         <mat-radio-group>
+                                   
+             <mat-radio-button value="Ip"> MonthWise</mat-radio-button> &nbsp;
+             <mat-radio-button value="Op">BetweenDates</mat-radio-button>&nbsp;
+           <mat-radio-button value="Both">To Date Only</mat-radio-button>&nbsp;
+
+          </mat-radio-group>
+
+
+                           
+                    </div>
+
+                                      
+
+                </div>
+            </form>
+        </mat-card>
+    </div>
+</div>

@@ -1,0 +1,498 @@
+<div style="padding-left: 10px;padding-top: 10px;padding-right: 10px;margin-bottom: 10px;
+">
+  <div class="fixHeader" id="myHeader" style="margin-left:-20px;margin-right:-20px">
+    <mat-card style="background-color: #03a9f4; color:white; padding: 7px;">
+      <mat-card-title  style="font-size:19px;font-weight:bold">VENDOR REGISTRATION
+
+        <button style="float: right; 
+        background-color: white; right: 0;
+        color: black !important;margin-top:-5px"
+          class="btn btn-primary mat-ripple" md-ripple="reset" (click)="reset()">RESET</button>&nbsp;
+        <button style=" margin-right: 10px;
+          float: right; 
+          background-color: white; right: 0;
+          color: black !important; margin-right: 15px;margin-top:-5px"
+          class="btn btn-primary mat-ripple" md-ripple="submit"   (click)="save(VendorForm.value)">SAVE</button>
+      </mat-card-title>
+      <!-- [disabled]="!VendorForm.valid&&!Vendordisable" -->
+    </mat-card>
+  </div>
+</div>
+
+<div class="content">
+  <div style="padding-left:10px;padding-right:10px;margin-top:-5px;margin-left:-20px;margin-right:-20px">
+    <mat-card style="padding-bottom: 2px;padding-left:50px;padding-top: 2px">
+
+      <form class="form-horizontal" class="form-inline" [formGroup]="VendorForm">
+
+        <div class="row">
+          <div class="col-lg-3 col-md-4 col-sm-12 ">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field>
+
+                  <input  [value]="this.Vendor.vendorId" matInput placeholder=" Vendor Code" type="text" readonly>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-sm-12 ">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field>
+
+
+                  <mat-select required [(ngModel)]="vendorType" [formControl]="VendorForm.controls['vendorType']" placeholder="VendorType">
+                    <mat-option>None</mat-option>
+                    <mat-option value="Medical">Medical</mat-option>
+                    <mat-option value="NonMedical">NonMedical</mat-option>
+                    <mat-option value="Both">Both</mat-option>
+
+                  </mat-select>
+                </mat-form-field>
+              </div>
+        
+              <div class="text text-danger"  style="font-size:10px;margin-left:13px;font-weight:bold" *ngIf="submitted && !VendorForm.controls['vendorType'].valid">Please select valid VendorType </div>
+              <div class="text text-danger"  style="font-size:10px;margin-left:13px;font-weight:bold" *ngIf="!submitted && VendorForm.controls['vendorType'].touched && !VendorForm.controls['vendorType'].valid">Please select valid VendorType </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-sm-12 ">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field>
+
+
+                  <mat-select required [(ngModel)]="businessType" [formControl]="VendorForm.controls['businessType']" placeholder="BusinessType">
+                    <mat-option>None</mat-option>
+                    <mat-option value="Dealer">Dealer</mat-option>
+                    <mat-option value="Manufacture">Manufacture</mat-option>
+                    <mat-option value="Both">Both</mat-option>
+
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold" *ngIf="submitted && !VendorForm.controls['businessType'].valid">Please select valid BusinessType </div>
+              
+                          
+              <div class="text text-danger"  style="font-size:10px;margin-left:13px;font-weight:bold" *ngIf="!submitted && VendorForm.controls['businessType'].touched && !VendorForm.controls['businessType'].valid">Please select valid BusinessType </div>
+              
+                          
+            </div>
+          </div>
+
+
+
+          <div class="col-lg-3 col-md-4 col-sm-12 ">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field>
+
+                  <input required minlength="3" maxlength="50"  [(ngModel)]="vendorName" [formControl]="VendorForm.controls['vendorName']"
+                    matInput placeholder="Vendor Name" type="text">
+                </mat-form-field>
+
+              </div>
+              <div class="text text-danger"  style="font-size:10px;margin-left:13px;font-weight:bold" *ngIf="submitted && !VendorForm.controls['vendorName'].valid">Vendor Name is Mandatory</div>
+              <div class="text text-danger"  style="font-size:10px;margin-left:13px;font-weight:bold" *ngIf="!submitted && VendorForm.controls['vendorName'].touched && !VendorForm.controls['vendorName'].valid">Vendor Name is Mandatory</div>
+
+              <div class="text text-danger"  style="font-size:10px;margin-left:13px;font-weight:bold" *ngIf="VendorForm.controls['vendorName'].errors?.minlength">Vendor Name should have 2 characters</div>
+              <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"  *ngIf="VendorForm.controls['vendorName'].errors?.maxlength">Vendor Name should have 50 characters</div>
+              <!-- <div class="text text-danger" *ngIf="VendorForm.controls['vendorName'].errors?.pattern">Allow only alphabets</div> -->
+            </div>
+          </div>
+
+          <!-- <div class="col-lg-3 col-md-4 col-sm-12 ">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field>
+
+                  <input matInput placeholder="Short Name" type="text">
+                </mat-form-field>
+              </div>
+            </div>
+          </div>  -->
+          <div class="col-lg-3 col-md-4 col-sm-12 ">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field>
+
+                  <input [(ngModel)]="globalId"  [formControl]="VendorForm.controls['globalId']" matInput placeholder="Global Id" type="text">
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-4 col-sm-12 ">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field>
+
+                  <input [value]="this.Vendor.regId"  matInput placeholder="Reg#" type="text" readonly>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-sm-12 ">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field>
+
+                  <input required minlength="2" maxlength="50" pattern="^[A-Za-z -]+$" [(ngModel)]="regName" [formControl]="VendorForm.controls['regName']" matInput placeholder="Regd Name" type="text">
+                </mat-form-field>
+              </div>
+              <div class="text text-danger"  style="font-size:10px;margin-left:13px;font-weight:bold" *ngIf="submitted && !VendorForm.controls['regName'].valid">Regd Name is Mandatory</div>
+              
+                   
+              <div class="text text-danger"  style="font-size:10px;margin-left:13px;font-weight:bold"  *ngIf="!submitted && VendorForm.controls['regName'].touched && !VendorForm.controls['regName'].valid">Regd Name is Mandatory</div>
+
+              <div class="text text-danger"  style="font-size:10px;margin-left:13px;font-weight:bold" *ngIf="VendorForm.controls['regName'].errors?.minlength">Regd Name should have min 2 characters</div>
+              <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"  *ngIf="VendorForm.controls['regName'].errors?.maxlength">Regd Name should have 50 characters</div>
+              <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"  *ngIf="VendorForm.controls['regName'].errors?.pattern">Allow only alphabets</div>
+
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-4 col-sm-12 ">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field>
+
+                  <input  style='text-transform:uppercase' maxlength="10" required pattern="^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$" [(ngModel)]="panNo" [formControl]="VendorForm.controls['panNo']" matInput placeholder="PAN#" type="text">
+                </mat-form-field>
+              </div>
+              <div class="text text-danger"  style="font-size:10px;margin-left:13px;font-weight:bold" *ngIf="submitted && !VendorForm.controls['panNo'].valid">PAN Number is Mandatory</div>
+              <div class="text text-danger"  style="font-size:10px;margin-left:13px;font-weight:bold" *ngIf="!submitted && VendorForm.controls['panNo'].touched && !VendorForm.controls['panNo'].valid">PAN Number is Mandatory</div>
+              <div class="text text-danger"  style="font-size:10px;margin-left:13px;font-weight:bold"  *ngIf="VendorForm.controls['panNo'].errors?.pattern">Enter valid PanNo</div>
+              <div class="text text-danger"   style="font-size:10px;margin-left:13px;font-weight:bold" *ngIf="VendorForm.controls['panNo'].errors?.maxlength">maxlength 10</div>
+            </div>
+          </div>
+          <!-- <div class="col-lg-3 col-md-4 col-sm-12 ">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field>
+
+                  <input [(ngModel)]="amount"  [formControl]="VendorForm.controls['amount']"  matInput placeholder="Currency" type="text">
+                </mat-form-field>
+              </div>
+            </div>
+          </div> -->
+
+          <div class="col-lg-3 col-md-4 col-sm-12 ">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field>
+
+                  <input [(ngModel)]="gstNo" [formControl]="VendorForm.controls['gstNo']" matInput placeholder="Gst#" type="text">
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-sm-12 ">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field>
+
+              
+
+                    <mat-select  [(ngModel)]="paymentTerms" [formControl]="VendorForm.controls['paymentTerms']" placeholder="Payment Terms">
+                        <mat-option>None</mat-option>
+                        <mat-option value="Cheque">Cheque</mat-option>
+                        <mat-option value="Cash">Cash</mat-option>
+                        <mat-option value="Card">Card</mat-option>
+                        <mat-option value="Cash + Card">Cash + Card</mat-option>
+                 
+                    
+    
+                      </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="col-lg-3 col-md-4 col-sm-12">
+            <div class="form-group">
+              <div class="col-xl">
+                <mat-form-field>
+                  <input [min]="minDate" [(ngModel)]="registered_date" [formControl]="VendorForm.controls['registered_date']" matInput [matDatepicker]="picker4"
+                    placeholder="Registered Date" [formControl]="date">
+                  <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                  <mat-datepicker #picker4></mat-datepicker>
+                  
+                </mat-form-field>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-4 col-sm-12 ">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field>
+
+                  <input [(ngModel)]="deliveryDays" [formControl]="VendorForm.controls['deliveryDays']" matInput placeholder="Deliver Days"
+                    type="text">
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="col-lg-3 col-md-4 col-sm-12 c ">
+            <div class="form-group">
+              <div class="col-xl">
+                <label>Suppliers</label>
+                <mat-radio-group [(ngModel)]="suppliers" [formControl]="VendorForm.controls['suppliers']">
+                  <mat-radio-button value="Local"> Local</mat-radio-button> &nbsp;
+                  <mat-radio-button value="Govt">Govt</mat-radio-button>&nbsp;
+                  <mat-radio-button value="Foriegn">Foriegn</mat-radio-button>
+                  <mat-radio-button value="Other">Other</mat-radio-button>
+                </mat-radio-group>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </form>
+
+    </mat-card>
+  </div>
+  <br>
+
+
+  <div style="padding-left:10px;padding-right:10px;padding-top:1px;margin-top:-10px;">
+    <mat-card style="padding-top: 1px;padding-bottom: 2px;padding-left:50px;margin-left:-20px;margin-right:-20px">
+
+      <mat-card-title>Address & contactDetails</mat-card-title>
+
+
+    </mat-card>
+  </div>
+
+  <div class="content">
+    <div style="padding-left:10px;padding-right:10px;margin-top:-10px">
+      <mat-card style="height:5.3cm;padding-top: 2px;padding-bottom: 2px;padding-left:50px;margin-left:-20px;margin-right:-20px">
+
+        <form class="form-horizontal" class="form-inline">
+
+          <div class="row">
+            <div class="col-lg-3 col-md-4 col-sm-12 ">
+              <div class="form-group">
+                <div class="col-xl">
+
+                  <mat-form-field>
+
+                    <input required minlength="3" maxlength="100" [(ngModel)]="adress1" [formControl]="VendorForm.controls['adress1']" matInput placeholder="Address1" type="text">
+                  </mat-form-field>
+                </div>
+                <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold" *ngIf="submitted && !VendorForm.controls['adress1'].valid">Address is Mandatory</div>
+                <div class="text text-danger"  style="font-size:10px;margin-left:13px;font-weight:bold" *ngIf="!submitted && VendorForm.controls['adress1'].touched && !VendorForm.controls['adress1'].valid">Address is Mandatory</div>
+        <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"  *ngIf="VendorForm.controls['adress1'].errors?.minlength">Address should have min 3 characters</div>
+    <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"  *ngIf="VendorForm.controls['adress1'].errors?.maxlength">Address  should have  max 100 characters</div>
+ 
+                
+                          
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-12 ">
+              <div class="form-group">
+                <div class="col-xl">
+
+                  <mat-form-field>
+
+                    <input [(ngModel)]="adress2" [formControl]="VendorForm.controls['adress2']" matInput placeholder="Address2" type="text">
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-12 ">
+              <div class="form-group">
+                <div class="col-xl">
+
+                  <mat-form-field>
+
+                    <input required minlength="3" maxlength="50"  pattern="^[A-Za-z -]+$" [(ngModel)]="area" [formControl]="VendorForm.controls['area']" matInput placeholder="Area" type="text">
+                  </mat-form-field>
+                </div>
+                <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold" *ngIf="submitted && !VendorForm.controls['area'].valid">Area is Mandatory</div>
+                <div class="text text-danger"  style="font-size:10px;margin-left:13px;font-weight:bold" *ngIf="!submitted && VendorForm.controls['area'].touched && !VendorForm.controls['area'].valid">Area is Mandatory</div>
+                <div class="text text-danger"  style="font-size:10px;margin-left:13px;font-weight:bold" *ngIf="VendorForm.controls['area'].errors?.minlength">Area should have min 3 characters</div>
+            <div class="text text-danger"  style="font-size:10px;margin-left:13px;font-weight:bold" *ngIf="VendorForm.controls['area'].errors?.maxlength">Area  should have  max 50 characters</div>
+            <div class="text text-danger"  style="font-size:10px;margin-left:13px;font-weight:bold" *ngIf="VendorForm.controls['area'].errors?.pattern">Allow only alphabets</div>
+                        
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-12 ">
+              <div class="form-group">
+                <div class="col-xl">
+
+                  <mat-form-field>
+
+                    <input  required minlength="3"  maxlength="50" pattern="^[A-Za-z -]+$" [(ngModel)]="city" [formControl]="VendorForm.controls['city']" matInput placeholder="City" type="text">
+                  </mat-form-field>
+                </div>
+                <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold" *ngIf="VendorForm.controls['city'].touched && !VendorForm.controls['city'].valid">City is Mandatory</div>
+                <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"  *ngIf="VendorForm.controls['city'].errors?.minlength">City should have min 3 characters</div>
+            <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold" *ngIf="VendorForm.controls['city'].errors?.maxlength">City  should have  max 50 characters</div>
+            <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold" *ngIf="VendorForm.controls['city'].errors?.pattern">Allow only alphabets</div>
+                        
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-12 ">
+              <div class="form-group">
+                <div class="col-xl">
+
+                  <mat-form-field>
+
+                    <input [(ngModel)]="state" [formControl]="VendorForm.controls['state']" matInput placeholder="State" type="text">
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-12 ">
+              <div class="form-group">
+                <div class="col-xl">
+
+                  <mat-form-field>
+
+                    <input [(ngModel)]="country" [formControl]="VendorForm.controls['country']" matInput placeholder="Country" type="text">
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-12 ">
+              <div class="form-group">
+                <div class="col-xl">
+
+                  <mat-form-field>
+
+                    <input [(ngModel)]="contactPerson" [formControl]="VendorForm.controls['contactPerson']" matInput placeholder="ContactPerson"
+                      type="text">
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-12 ">
+              <div class="form-group">
+                <div class="col-xl">
+
+                  <mat-form-field>
+
+                    <input required pattern="[6789][0-9]{9}" minlength="10" maxlength="10" [(ngModel)]="mobile" [formControl]="VendorForm.controls['mobile']" matInput placeholder="Mobile" type="text">
+                  </mat-form-field>
+                </div>
+                <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"  *ngIf="submitted && !VendorForm.controls['mobile'].valid">Mobile Number is Mandatory</div>
+                <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold" *ngIf="!submitted && VendorForm.controls['mobile'].touched && !VendorForm.controls['mobile'].valid">Mobile Number is Mandatory</div>
+                <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold" *ngIf="VendorForm.controls['mobile'].errors?.pattern">valid pattern</div>
+                <div class="text text-danger"  style="font-size:10px;margin-left:13px;font-weight:bold" *ngIf="VendorForm.controls['mobile'].errors?.maxlength">allow 10 digits</div>
+                <div class="text text-danger"  style="font-size:10px;margin-left:13px;font-weight:bold" *ngIf="VendorForm.controls['mobile'].errors?.minlength">allow 10 digits</div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-12 ">
+              <div class="form-group">
+                <div class="col-xl">
+
+                  <mat-form-field>
+
+                    <input [(ngModel)]="fax" [formControl]="VendorForm.controls['fax']" matInput placeholder="FAX" type="text">
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-12 ">
+              <div class="form-group">
+                <div class="col-xl">
+
+                  <mat-form-field>
+
+                    <input   pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" [(ngModel)]="mail" [formControl]="VendorForm.controls['mail']" matInput placeholder="Email" type="text">
+                  </mat-form-field>
+                </div>
+                <div class="text text-danger" *ngIf="VendorForm.controls['mail'].touched && !VendorForm.controls['mail'].valid">Mandatory(if not entered)</div>
+                
+                <div class="text text-danger" *ngIf="VendorForm.controls['mail'].errors?.pattern">enter valid pattern</div>
+                
+              </div>
+            </div>
+          </div>
+
+        </form>
+
+      </mat-card>
+    </div>
+    <br>
+
+    <div style="margin-top: -10px;margin-left:-18px;margin-right:-18px">
+      <mat-card style="padding-top: 2px;padding-bottom: 2px;padding-left:50px;">
+
+        <mat-card-title>BankAccountDetails</mat-card-title>
+
+
+      </mat-card>
+
+
+
+
+      <table width="100%" class="table table-striped table-condensed" style="overflow-y: scroll;" style="padding-left:10px;padding-right:10px;margin-top: -1px">
+        <tr style="background:#03a9f4;color:whitesmoke;">
+          <th>Sno</th>
+          <th>BankName</th>
+          <th>BranchName</th>
+          <th>BranchAddress</th>
+          <th>AccountNo</th>
+          <th>AccountType</th>
+          <th>IFSC Code</th>
+          <th>MICR Code</th>
+          <th>BeneficiaryBankName</th>
+        </tr>
+
+        <tr *ngFor="let item of items">
+          <td>1</td>
+          <td>
+            <input [(ngModel)]="bankName" placeholder="BankName" matInput type="text">
+          </td>
+          <td><input [(ngModel)]="bankBranch" matInput placeholder="BranchName" type="text"></td>
+          <td>
+            <input [(ngModel)]="branchAdress" matInput placeholder="BranchAddress" type="text">
+          </td>
+          <td>
+            <input [(ngModel)]="accountNo" matInput placeholder="AccountNo" type="text">
+          </td>
+          <td>
+            <input [(ngModel)]="accountType" matInput placeholder="AccounType" type="text">
+          </td>
+          <!-- <td>
+            <!-- <input type="button" (click)="addRow()"  class="btn"><i class="fa fa-trash"></i>
+                    <input type="button" (click)="delRow()"  class="btn btn-secondary">   -->
+          <!-- </td> -->
+          <td>
+            <input [(ngModel)]="ifscCode" matInput placeholder="IFSC Code" type="text">
+          </td>
+          <td>
+            <input [(ngModel)]="micrCode" matInput placeholder="MICR Code" type="text">
+          </td>
+          <td>
+            <input [(ngModel)]="beneficiaryBankName" matInput placeholder="BeneficiaryBankName" type="text">
+          </td>
+        </tr>
+      </table>
+    </div>
+
+  
+
+ 

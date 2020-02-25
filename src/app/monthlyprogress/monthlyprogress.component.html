@@ -1,0 +1,184 @@
+<div style="padding-left: 10px;padding-top: 10px;padding-right: 10px;margin-bottom: 10px;
+">
+  <div class="fixHeader" id="myHeader" style="margin-left:-20px;margin-right:-20px">
+    <mat-card style="background-color: #03a9f4; color:white; padding: 7px;">
+        <mat-card-title style= "font-size:19px;font-weight:bold">MONTHLY PROGRESS
+        <button style=" margin-right: 100px;
+        float: right; 
+        background-color: white; right: 0;margin-top:-5px;
+        color: black !important;" class="btn btn-primary mat-ripple" md-ripple="reset"
+          (click)="showAll();">RESET</button>&nbsp;
+
+      </mat-card-title>
+
+
+    </mat-card>
+
+
+  </div>
+</div>
+<div class="content" style="margin-left:-20px;margin-right:-20px">
+    <div style="padding-left:10px;padding-right:10px">
+        <mat-card style="max-height: 45px; padding-top: 2px">
+      <label>
+        <!-- <form class="form-horizontal" class="form-inline" [formGroup]="PatientForm">  -->
+        <div class="row">
+          <div class="col-lg-3 col-md-4 col-sm-12 ">
+
+            <div class="form-group ">
+              <div class="col-xl" style="padding-top:2px">
+                <!-- <mat-form-field  style="width:100px;" id="value"> -->
+
+                  <input [(ngModel)]="filter" matInput placeholder="Search" type="search">
+                <!-- </mat-form-field> -->
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-sm-12 ">
+
+            <div class="form-group ">
+              <div class="col-xl">
+
+
+                <mat-form-field  style="width:120px;" id="value">
+
+                  <mat-select [(ngModel)]="consulting" (selectionChange)="filterData(consulting)" matInput
+                    placeholder="ConsultingDr">
+
+                    <!-- <mat-option value="">none</mat-option> -->
+                    <mat-option value="">All</mat-option>
+                    <mat-option *ngFor="let data of All[0];let i=index" [value]="data.userName">
+                      {{data.userName}}
+
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="col-lg-3 col-md-4 col-sm-12 ">
+
+            <div class="form-group ">
+              <div class="col-xl">
+
+                <mat-form-field    style="width:120px;" id="value">
+
+                  <mat-select [(ngModel)]="year" matInput placeholder="Year">
+                    <mat-option value="">All</mat-option>
+                    <mat-option value="2015">2015</mat-option>
+                    <mat-option value="2016">2016</mat-option>
+                    <mat-option value="2017">2017</mat-option>
+                    <mat-option value="2018">2018</mat-option>
+                    <mat-option value="2019">2019</mat-option>
+
+
+                  </mat-select>
+
+                </mat-form-field>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-sm-12 ">
+
+            <div class="form-group ">
+              <div class="col-xl">
+
+                <mat-form-field   style="width:120px;" id="value">
+
+                  <mat-select [(ngModel)]="month" matInput placeholder="Month">
+
+                    <mat-option value="">All</mat-option>
+                    <mat-option value="01">01</mat-option>
+                    <mat-option value="02">02</mat-option>
+                    <mat-option value="03">03</mat-option>
+                    <mat-option value="04">04</mat-option>
+                    <mat-option value="05">05</mat-option>
+                    <mat-option value="06">06</mat-option>
+                    <mat-option value="07">07</mat-option>
+                    <mat-option value="08">08</mat-option>
+                    <mat-option value="09">09</mat-option>
+                    <mat-option value="10">10</mat-option>
+                    <mat-option value="11">11</mat-option>
+                    <mat-option value="12">12</mat-option>
+
+
+                  </mat-select>
+
+                </mat-form-field>
+
+              </div>
+            </div>
+          </div>
+
+
+
+
+
+        </div>
+        <!-- </form>  -->
+      </label>
+    </mat-card>
+
+
+  </div>
+</div>
+<div class="content" style="margin-left:-20px;margin-right:-20px">
+  <div style="padding-left:10px;padding-top:10px;padding-right:10px;margin-top:-20px">
+
+    <table width="100%" class="table table-striped table-condensed" style="overflow-y: scroll;">
+        <tbody style="font-size:11px;font-weight: bold">
+      <tr style="background:#03a9f4;color:whitesmoke">
+        <th>S.NO</th>
+        <th>Month</th>
+        <th>Year</th>
+        <th>No Of O/P</th>
+        <th>No Of I/P</th>
+        <th>No Of Other Patients</th>
+        <th>Total Patients</th>
+        <th> Total Registration Fees</th>
+        <th>Total Consultation Fees</th>
+        <th>Total Lab Fees</th>
+        <th>Total I/P Bills</th>
+
+
+      </tr>
+      <tr
+        *ngFor="let data of All[1]| monthlyprogress : year : month | filter : paginate: { itemsPerPage: 15, currentPage: p };let i=index">
+        <td>{{15 * (p - 1) +i+1 }}</td>
+        <td>{{data.month}}</td>
+        <td>{{data.year}}</td>
+        <td>{{data.outCount}}</td>
+        <td>{{data.inCount}}</td>
+        <td>{{data.otherCount}}</td>
+        <td>{{data.totalCount}}</td>
+        <td>{{data.regFee}}</td>
+        <td>{{data.consultationFee}}</td>
+        <td>{{data.labIpFee}}</td>
+        <td>{{data.ipBills}}</td>
+      </tr>
+      <!-- <tfoot>
+           <tr style="width:20px">
+             <th>Sum</th>
+             <th></th>
+             <th></th>
+             <th>Total</th>
+             <th>Total</th>
+             <th>Total</th>
+             <th>Total</th>
+             <th>Total</th>
+             <th>Total</th>
+             <th>Total</th>
+             <th>Total</th>
+           </tr>
+          </tfoot> -->
+    </table>
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+
+  </div>
+</div>
+<!-- <a (click)="back()">Back</a> -->

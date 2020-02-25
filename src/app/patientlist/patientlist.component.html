@@ -1,0 +1,552 @@
+<div style="padding-left: 10px;padding-top: 10px;padding-right: 10px;margin-bottom: 10px;margin-left:-20px;margin-right:-20px
+">
+  <mat-card style="background-color: #03a9f4; color:white; padding: 7px;">
+    <mat-card-title style="font-size:19px;font-weight:bold">INPATIENT LIST
+    </mat-card-title>
+  </mat-card>
+
+
+</div>
+<div style="padding-left:10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+  <mat-card style="max-height: 45px; padding-top: 2px">
+    <div class="row">
+      <div class="col-lg-2 col-md-2 col-sm-12 ">
+        <div class="form-group " style="margin-top:2px">
+          <div class="col-xl">
+            <!-- <mat-form-field style="width:100px;margin-top:-5pxpx" id="value"> -->
+            <input [(ngModel)]="filter" placeholder="Search" type="search">
+            <!-- </mat-form-field> -->
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-2 col-md-2 col-sm-12 " style="padding-left:100px">
+
+        <mat-form-field style="width:50px" id="value">
+
+          <mat-select [(ngModel)]="count" (selectionChange)="showInPatients(count)" matInput placeholder="Days">
+            <mat-option value="2">2</mat-option>
+            <mat-option value="7">7</mat-option>
+
+            <mat-option value="15">15</mat-option>
+
+            <mat-option value="30">30</mat-option>
+            <mat-option value="All">All</mat-option>
+
+          </mat-select>
+
+        </mat-form-field>
+
+      </div>
+
+      <div class="col-lg-2 col-md-2 col-sm-12 " style="padding-left:50px;margin-top:-20px-100px;">
+        <mat-form-field style="width:120px;" id="value">
+          <!-- <div style="margin-left:-50px"> -->
+          <mat-select [(ngModel)]="dischargeType" (selectionChange)="discharge(dischargeType)" matInput
+            placeholder="Discharge Type">
+
+            <mat-option value="DISCHARGED">DISCHARGED</mat-option>
+            <mat-option value="NOT DISCHARGED">NOT DISCHARGED</mat-option>
+
+
+          </mat-select>
+          <!-- </div> -->
+        </mat-form-field>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-12 ">
+        <button class="btn btn-primary" (click)="showExel()">Export to Excel</button>
+        <!-- <a><i class="fa fa-file-excel-o" style="font-size:15px;color:red" (click)="showExel()">Export to Excel</i></a> -->
+      </div>
+    </div>
+
+
+
+
+
+  </mat-card>
+
+
+</div>
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="large" color="rgb(73, 165, 171)" type="ball-clip-rotate-pulse">
+</ngx-spinner>
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }" [template]="customLoadingTemplate">
+</ngx-loading>
+
+<div style="padding-left:10px;padding-right:10px;margin-top:-10px;margin-left:-20px;margin-right:-20px">
+
+  <table class="table c table-striped table-condensed">
+    <tbody style="font-size:11px;font-weight: bold">
+      <tr style="background:#03a9f4;color:whitesmoke">
+        <th>S.No</th>
+        <th>UMR#</th>
+
+        <th (click)="sort('a')">RegId
+
+          <span>
+            <span [hidden]="!a"></span>
+            <span [hidden]="reverse">▼</span>
+            <span [hidden]="!reverse">▲</span>
+          </span>
+        </th>
+        <th>Name</th>
+        <th>Patient Type</th>
+        <th>Date Of Admission</th>
+        <th> Date Of Discharge</th>
+        <th>Room</th>
+        <th>ConsultingDr</th>
+        <th>Advance Amount</th>
+        <th>Cost so far</th>
+        <th>Accept Payments</th>
+        <th>Services Availed</th>
+        <th>Tracker</th>
+        <th>DetailReport</th>
+      </tr>
+      <tr
+        *ngFor="let data of Plist|filter:filter |orderBy: key : reverse |paginate: { itemsPerPage: 15, currentPage: p };let i=index">
+
+        <td>{{ 15 * (p - 1) +i+1 }}</td>
+        <td>{{data.umr}}</td>
+        <td><a style="color:blue" *ngIf="data.patType=='INPATIENT'"
+            (click)="openEdit(edit,data);getFeedetails(data)">{{data.regId}}</a>
+          <span *ngIf="data.patType!='INPATIENT'">{{data.regId}}</span>
+        </td>
+
+        <td>{{data.name}}</td>
+        <td>{{data.patType}}</td>
+        <td>{{data.DOJ}}</td>
+        <td>{{data.DOD}}</td>
+        <!-- <td>{{(!data.DOD || data.DOD == 'Not-Discharged')?data.DOD: (data.DOD|date:"dd.MM.y")}}</td> -->
+        <td> <a style="color:red" (click)="openBed(floor,data)">{{data.room}}</a></td>
+        <td>{{data.doctor}}</td>
+        <td>{{data.advance}}</td>
+        <td>{{data.soFar}}</td>
+        <td><a *ngIf="data.patType === 'INPATIENT'" style="color:blue" (click)="open(basic1,data)">
+            Payment</a>
+          <p *ngIf="data.patType === 'OUTPATIENT'">&nbsp;</p>
+        </td>
+        <td> <a style="color:green" (click)="showNotes(data)">services</a></td>
+        <td> <a style="color:green" (click)="showReports(basic2);getBills(data)">Tracker</a></td>
+        <td> <a style="color:green" (click)="showDetailreport(data)">DetailReport</a></td>
+      </tr>
+    </tbody>
+  </table>
+  <pagination-controls (pageChange)="p = $event"></pagination-controls>
+</div>
+
+
+
+<ng-template #basic1 let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Payment</h4>
+    <button type="button" class="close" aria-label="Close" (click)="resetpay();modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class=" col-md-6">
+      <div class="form-group">
+        <div class="col-xl">
+
+          <mat-form-field>
+
+            <input required [(ngModel)]="advance" (input)="getadvanceamount()" pattern="(0|[0-9]\d*)"
+              [formControl]="PatientForm1.controls['advance']" matInput placeholder="Amount" type="text">
+          </mat-form-field>
+
+        </div>
+
+        <div class="text text-danger"
+          *ngIf="PatientForm1.controls['advance'].touched && !PatientForm1.controls['advance'].valid">Mandatory(if not
+          entered)</div>
+
+        <div class="text text-danger" *ngIf="PatientForm1.controls['advance'].errors?.pattern">Allow only numbers</div>
+
+
+      </div>
+    </div>
+
+    <div class=" col-md-6">
+      <div class="form-group">
+        <div class="col-xl">
+
+          <label>Type :</label>
+          <select style="width:150px" placeholder="Type" type="text">
+
+            <option value="Advnce">Advance</option>
+
+          </select>
+
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row">
+
+      <div>
+        <table width="100%" class="table table-bordered table-condensed table-responsive">
+
+          <tr style="background:#03a9f4;color:whitesmoke">
+            <!-- <th>Sno</th> -->
+            <th>Payment Type</th>
+
+            <!-- <th>Action</th> -->
+
+          </tr>
+
+          <tr *ngFor="let c of multiplePayment1;let i= index">
+            <!-- <td> {{i + 1}}</td> -->
+            <td>
+
+              <div *ngFor="let option of options; let optI = index">
+
+                <div style="display:inline">
+                  <!-- <mat-form-field style="width:80px"> -->
+                  <select style="width:80px;" (ngModelChange)="changed($event, i)" [(ngModel)]="c.payType"
+                    placeholder="Type">
+
+                    <option *ngFor="let type of types$ | async; let i = index" [value]="type.text"
+                      [disabled]="!type.allowed">
+                      {{type.text}}</option>
+                  </select>&nbsp;&nbsp;
+
+                  <!-- </mat-form-field>&nbsp;&nbsp; -->
+                  <a (click)="addMore1($event);secondrow()"><i class="fa fa-plus"
+                      style="font-size:15px;color:blue"></i></a>&nbsp;
+                  <a *ngIf="multiplePayment1.length>1" (click)="removeSaleItem1(i);secondrowremove()"><i
+                      class="fa fa-close" style="font-size:15px;color:red"></i></a>&nbsp;
+                  <div style="display:inline" *ngIf="c.payType==='Card'">
+
+                    <!-- <mat-form-field style="width:80px"> -->
+                    <input style="width:80px" [(ngModel)]="referenceNumber" placeholder="Ref No" type="text">
+
+                    <!-- </mat-form-field> -->
+
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- <a (click)="addMore1($event);secondrow()"><i class="fa fa-plus" style="font-size:10px;color:blue"></i></a>&nbsp;
+                    <a *ngIf="multiplePayment1.length>1" (click)="removeSaleItem1(i);secondrowremove()"><i class="fa fa-close" style="font-size:10px;color:red"></i></a> -->
+            </td>
+
+            <!-- <td>
+                    <a (click)="addMore1($event);secondrow()"><i class="fa fa-plus" style="font-size:10px;color:blue"></i></a>&nbsp;
+                    <a *ngIf="multiplePayment1.length>1" (click)="removeSaleItem1(i);secondrowremove()"><i class="fa fa-close" style="font-size:10px;color:red"></i></a>
+                  </td> -->
+
+          </tr>
+        </table>
+      </div>&nbsp;&nbsp;
+      <div style="float: left">
+
+        <table width="100%" class="table table-bordered table-condensed table-responsive">
+
+          <tr style="background:#03a9f4;color:whitesmoke">
+
+            <th>Amount</th>
+            <!-- <th>Action</th> -->
+          </tr>
+
+          <tr>
+            <td>
+              <!-- <mat-form-field style="width:80px"> -->
+              <input style="width:80px;height:22px" [disabled]="Xamount" min="0" max="total" (input)="amount2()"
+                [(ngModel)]="X" placeholder="Amount" type="text">
+
+              <!-- </mat-form-field> -->
+              <!-- <div>
+      
+                      <mat-form-field style="width:80px">
+                        <input [(ngModel)]="referenceNumber" matInput placeholder="Ref No" type="text">
+      
+                      </mat-form-field>
+      
+                    </div> -->
+            </td>
+
+
+            <!-- <td> <a (click)="secondrow()"><i class="fa fa-plus" style="font-size:18px;color:blue"></i></a></td> -->
+          </tr>
+
+          <tr>
+            <td *ngIf="!row">
+              <!-- <mat-form-field style="width:80px"> -->
+              <input style="width:80px;height:22px" (input)="amount1()" min="0" max="total" [(ngModel)]="Y"
+                placeholder="Amount" type="text">
+
+              <!-- </mat-form-field> -->
+            </td>
+          </tr>
+          <!-- <tr>
+      
+                  <td *ngIf="!row"><input placeholder="Amount2" (input)="amount1()" [(ngModel)]="Y" type="text"></td>
+                  <td> <a *ngIf="!row" (click)="secondrowremove()"><i class="fa fa-close" style="font-size:18px;color:red"></i></a></td>
+                </tr> -->
+        </table>
+      </div>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-danger" (click)="resetpay();modal.close('Save click')">cancel</button>
+
+    <button class="btn btn-primary mat-ripple" md-ripple="submit" [disabled]="!PatientForm1.valid"
+      (click)="save(PatientForm.value);modal.close('Save click')">Submit</button>
+
+
+  </div>
+</ng-template>
+
+
+<ng-template #basic2 let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">ALL BILLS</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <table class="table table-">
+      <thead>
+        <th> Name </th>
+        <th> Action </th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of Bills | keyvalue">
+
+          <td> {{item.key}}</td>
+          <td><a href="{{item.value}}" target="_blank">open</a></td>
+        </tr>
+      </tbody>
+
+    </table>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-danger" (click)="modal.close('Save click')">cancel</button>
+
+
+
+
+  </div>
+</ng-template>
+
+
+
+<ng-template #floor let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Bed Allocation</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+
+      <div class="col-md-4">
+        <label> Select Floor:</label>
+        <div class="form-group">
+
+          <div class="col-xl">
+
+
+
+            <select [(ngModel)]="floor1" style="width:150px" (change)="showFloors(floor1)" placeholder="Floor"
+              type="text">
+              <option>none</option>
+              <option *ngFor="let data of BEDS" [value]="data">{{data}}</option>
+
+            </select>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <label>Select Room Type:</label>
+        <div style="color:rebeccapurple" *ngFor="let n of WARDS" (click)="roomtype(n.roomType)">
+          <button style="font-size :11px;width:130px;" type="button" class="btn btn-outline-dark"
+            (click)="bedColor(n)">{{n.roomType}}</button>
+        </div>
+      </div>
+
+      <!--div class="col-md-6">
+                    <div *ngFor="let b of Colors;let i=index">
+          
+                      <a style="width:150px" [ngStyle]="{'color':getColor(b.status)}"> <i class="fa fa-user-md">{{b.bedName}}</i></a>
+          
+          
+                    </div>
+                  </div-->
+      <div class="col-md-8">
+        <div class="d-flex radio btn-group-toggle flex-wrap" data-toggle="buttons">
+          <label *ngFor="let b of Colors;"
+            (click)="b.status != 'OCCUPIED'?(selectedBed==b.bedName? selectedBed=null:selectedBed=b.bedName):null"
+            class="btn p-2 m-1"
+            [ngClass]="{'disabled btn-danger inactive':b.status == 'OCCUPIED', 'btn-primary':b.status != 'OCCUPIED', 'active':selectedBed == b.bedName, 'inactive':selectedBed != b.bedName}">
+            <input type="radio" name="bed-allot" [id]="b.bedName" autocomplete="off"> {{b.bedName}}
+          </label>
+
+        </div>
+
+      </div>
+    </div>
+    <br>
+    <br>
+    <div class="row">
+      <div class="col-md-4">&nbsp;
+        <label>Selected Room: <span class="selected-room">{{selectedBed}}</span></label>
+        <!--div class="form-group">
+          
+                      <div class="col-xl">
+                        <select  [(ngModel)]="bed"   style="width:150px" type="text">
+                            <option>none</option>
+                          <option *ngFor="let b of availColors" [value]="b.bedName">{{b.bedName}}</option>
+                         
+                      </select>
+          
+                      </div>
+                    </div-->
+      </div>
+
+    </div>
+    <div class="row">
+
+
+      <div class="col-md-4">
+        <div class="form-group ">
+          <div class="col-xl">
+
+            <mat-form-field>
+
+              <input [(ngModel)]="tdate" matInput placeholder="TO" type="date">
+            </mat-form-field>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-primary" (click)="roomChange()">SAVE</button>
+    <button type="button" class="btn btn-outline-danger" (click)="modal.close('Save click')">CLOSE</button>
+
+
+  </div>
+</ng-template>
+
+
+
+
+<ng-template #edit let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Edit Fee Details</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <!-- <form class="form-horizontal" class="form-inline" [formGroup]="PatientForm">
+        <div class="row"> -->
+    <div class="col-md-6">
+      <div class="form-group" style="padding-right:20 px;">
+        <div class="col-xl">
+          <label>Registration Fee :</label>
+
+
+          <input required [(ngModel)]="regFee" pattern="(0|[0-9]\d*)" type="text" readonly>
+
+
+        </div>
+
+        <!-- <div class="text text-danger" *ngIf="RegisterForm.controls['regFee'].touched && !RegisterForm.controls['regFee'].valid">Mandatory(if not entered)</div>
+        
+              <div class="text text-danger" *ngIf="RegisterForm.controls['regFee'].errors?.pattern">Allow only numbers</div>
+         -->
+
+      </div>
+    </div>
+
+
+
+    <div class="col-md-6">
+      <div class="form-group" style="padding-right:20px;">
+        <div class="col-xl">
+          <label>Old Consulting Dr: </label>
+
+
+          <input [(ngModel)]="Consultant" type="text" readonly>
+
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6" *ngIf="Doctors.length > 0">
+
+      <!-- {{Consultant}} -->
+      <div class="form-group">
+
+        <div class="col-xl">
+
+          <label>New Consulting Dr :</label>
+
+          <!-- <select [(ngModel)]="Consultant" style="width:200px" (change)="userdetails(Consultant);consultationdetails()">
+          
+              <option *ngFor="let c of Doctors;let i=index" [selected]="(Consultant == c.fullName) ? true : false" [value]="c.fullName+'-'+c.userId">
+                  {{ c.fullName }}
+                 
+                 </option> 
+                </select> -->
+
+          <select [(ngModel)]="Consultantx" style="width:180px"
+            (change)="userdetails(Consultantx);consultationdetails()">
+
+            <option *ngFor="let c of Doctors;let i=index"
+              [value]="c.firstName+' '+c.middleName+' '+c.lastName+'-'+c.userId">
+              {{c.firstName}} {{c.middleName}} {{c.lastName}}
+
+            </option>
+          </select>
+
+
+        </div>
+      </div>
+
+
+    </div>
+    <div class="col-md-6">
+      <div class="form-group" style="padding-right:20px;">
+        <div class="col-xl">
+          <label>Consultation Fee : </label>
+
+
+          <input required [(ngModel)]="ConsultantFee" pattern="(0|[0-9]\d*)" type="text" readonly>
+
+
+        </div>
+
+        <!-- <div class="text text-danger" *ngIf="RegisterForm.controls['regFee'].touched && !RegisterForm.controls['regFee'].valid">Mandatory(if not entered)</div>
+          
+                <div class="text text-danger" *ngIf="RegisterForm.controls['regFee'].errors?.pattern">Allow only numbers</div>
+           -->
+
+      </div>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-primary"
+      (click)="editDetails();modal.close('Save click')">Save</button>&nbsp;
+    <button type="button" class="btn btn-outline-danger" (click)="modal.close('Save click')">Cancel</button>
+
+
+
+  </div>
+</ng-template>

@@ -1,0 +1,30 @@
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+@import 'assets/libs/assets/animate.css';
+@import 'assets/libs/assets/font-awesome/css/font-awesome.min.css';
+@import 'assets/libs/assets/simple-line-icons/css/simple-line-icons.css';
+/* @import 'src/assets/libs/jquery/bootstrap/dist/css/bootstrap.css';   */
+
+@import 'assets/css/font.css';
+@import 'assets/css/app.css';
+ /* @import "~@ng-select/ng-select/themes/material.theme.css";  */
+ @import "~@ng-select/ng-select/themes/default.theme.css";
+
+.fullscreen 
+{
+    width: 100%;
+    height: 100%;
+}
+.cdk-global-overlay-wrapper, .cdk-overlay-container {
+    z-index: 99999 !important;
+ }
+/* 
+ .ng-dropdown-panel.ng-dropdown-panel-items .ng-option.ng-option-marked {
+    background-color: blue;
+    color: #333;
+} */
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+    background-color:rgb(73, 165, 171);
+    color: #333;
+}

@@ -1,0 +1,108 @@
+<div style="padding-left: 10px;padding-top: 10px;padding-right: 10px;margin-bottom: 10px;
+">
+  <div class="fixHeader" id="myHeader" style="margin-left:-20px;margin-right:-20px">
+    <mat-card style="background-color: #03a9f4; color:white; padding: 7px;">
+      <mat-card-title style= "font-size:19px;font-weight:bold">DOCTOR VIEW
+    
+      </mat-card-title>
+    </mat-card>
+  </div>
+  <!-- <div>{{app-doctors}}</div> -->
+</div>
+<div style="padding-left:10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+    <mat-card style="max-height: 45px; padding-top: 2px">
+      <label style="padding-top:2px"> 
+          <!-- <mat-form-field style="width:100px;margin-top:-5pxpx" id="value"> -->
+           
+                  <input [(ngModel)]="filter" matInput placeholder="Search" type="search" >
+                <!-- </mat-form-field> -->
+              </label>
+    </mat-card>
+  </div>
+  <div *ngIf="!opentable" style="padding-left:10px;margin-top:-10px;padding-right:10px;margin-right:-20px;margin-left:-20px">
+
+      <table width="100%" class="table table-striped table-condensed" style="overflow-y: scroll;">
+        <tr style="background:#03a9f4;color:whitesmoke">
+          <th>Sno</th>
+          <th>UserId</th>
+          <th>Dr.Name #</th>
+          <th>JoinDate</th>
+          <th>Department</th>
+          <th>Specialization</th>
+          <th>Total Patient Treated</th>
+          <th> Total Lab Services</th>
+        
+        </tr>
+        <tr *ngFor="let data of Doc | filter:filter |paginate: { itemsPerPage: 15, currentPage: p };let i=index">
+          <td>{{i+1}}</td>
+          <td>{{data.userId}}</td>
+          <td>{{data.userName}}</td>
+          <td>{{data.joinDate}}</td>
+          <td>{{data.Department}}</td>
+          <td>{{data.specilization}}</td>
+          <!-- [routerLink]="['/count', data.userId]" -->
+          <td><a style="color:blue" (click)="showAll(data)"> {{data.count}} </a> </td>
+          <td>{{data.labCount}}</td>
+        </tr>
+        </table>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        </div>
+        <div *ngIf="opentable" style="padding-left:10px;margin-top:-10px;padding-right:10px;margin-right:-20px;margin-left:-20px">
+
+          <table width="100%" class="table table-striped table-condensed" style="overflow-y: scroll;">
+            <tr style="background:#03a9f4;color:whitesmoke">
+              <th>S>NO</th>
+              
+              <th>Dr.Name #</th>
+              <th>Month</th>
+              <th>Year</th>
+              <th>Count</th>
+      
+            </tr>
+            
+            <tr *ngFor="let s of date;let i=index;">
+              <td>{{i+1}}</td>
+              <td>{{s.userName}}</td>
+              <td>{{s.month}}</td>
+              <td>{{s.year}}</td>
+              <td><a style="width:150px;color:rgb(16, 135, 204)" (click)="open(content);showDetails(s)">{{s.count}}</a></td>
+            </tr>
+            </table>
+            </div>
+            <ng-template #content let-modal>
+              <div class="modal-header">
+                <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
+                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                  <table class="table table-striped table-condensed">
+                      <thead style="background:rgb(215, 206, 206)">
+                      <th> RegId </th>
+                      <th>Umr No</th>
+                      <th> Name </th>
+                      <th> Date Of Joining </th>
+                     
+                      </thead>
+                      <tbody>
+                <tr *ngFor="let data of New">
+                    <td> {{data.regId}} </td>
+                  <td> {{data.umr}} </td>
+                  
+                  <td>{{data.name}}</td>
+                  <td> {{data.DOJ}} </td>
+                  <!-- <td> {{data.doctor}} </td> -->
+                </tr>
+                </tbody> 
+                </table>       
+                        
+              </div>
+              <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button> -->
+              </div>
+            </ng-template>
+            
+       <a (click)="back()">Back</a>
+
+    

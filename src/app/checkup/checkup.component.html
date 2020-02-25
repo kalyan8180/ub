@@ -1,0 +1,111 @@
+<div style="padding-left: 10px;padding-top: 10px;padding-right: 10px;margin-bottom: 10px;
+">
+  <div class="fixHeader" id="myHeader" style="margin-left:-20px;margin-right:-20px">
+    <mat-card style="background-color: #03a9f4; color:white; padding: 7px;">
+      <mat-card-title style="font-size:19px;font-weight:bold">HEALTH-CHECKUP
+        <button style="    margin-right: 10px;
+        float: right;
+        background-color: white;
+        color: black !important; margin-top:-5px" class="btn btn-primary mat-ripple" md-ripple="reset"
+          (click)="reset()">RESET</button>&nbsp;
+        <!-- (click)="reset()" -->
+        <button style="margin-right: 10px;
+      float: right;
+      background-color: white;
+      color: black !important;margin-top:-5px " class="btn btn-primary mat-ripple" md-ripple="submit"
+          (click)="save();reset()"
+          [disabled]="!newSale.masterServiceName?.length ||!newSale.cost?.length || disableBtn">SAVE</button>&nbsp;&nbsp;
+
+      </mat-card-title>
+    </mat-card>
+  </div>
+</div>
+<div class="content">
+  <div style="padding-left:10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+    <mat-card style="padding-top:2px;padding-bottom:2px">
+      <!-- <form class="form-horizontal" class="form-inline" [formGroup]="ChekupForm"> -->
+
+      <div class="row">
+        <div class=" col-lg-3 col-md-4 col-sm-4">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+
+                <input [value]="Details[0]?Details[0].checkupId:''" matInput placeholder="Checkup-Id" type="text"
+                  readonly>
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+        <!-- location: {{Details|json}} -->
+        <div class=" col-lg-3 col-md-4 col-sm-4">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+                <input type="text" [(ngModel)]="newSale.masterServiceName" minlength="3" maxlength="50"
+                  #umasterServiceName="ngModel" pattern="^[A-Za-z -]+$" matInput placeholder="Checkup-Name" required>
+              </mat-form-field>
+            </div>
+            <div class="text text-danger" *ngIf="umasterServiceName.touched && umasterServiceName.errors?.required">
+              <small style="padding-left:15px">Checkup Name is Mandatory</small></div>
+            <div class="text text-danger" *ngIf="umasterServiceName.errors?.minlength"><small style="padding-left:15px">
+                Checkup Name should
+                have min 3 characters</small></div>
+            <div class="text text-danger" *ngIf="umasterServiceName.errors?.maxlength"><small
+                style="padding-left:15px">Checkup Name should
+                have max 50 characters</small></div>
+            <div class="text text-danger" *ngIf="umasterServiceName.errors?.pattern"><small
+                style="padding-left:15px">Allow only
+                alphabets</small></div>
+          </div>
+        </div>
+        <div class=" col-lg-3 col-md-4 col-sm-4">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+                <input type="text" #ucost="ngModel" [(ngModel)]="newSale.cost" matInput placeholder="Price" required>
+              </mat-form-field>
+
+            </div>
+            <div class="text text-danger" *ngIf="ucost.touched && ucost.errors?.required"><small>Cost Field is
+                Mandatory</small></div>
+          </div>
+        </div>
+
+
+
+      </div>
+      <!-- </form> -->
+    </mat-card>
+  </div>
+</div>
+<div class="content">
+  <div style="padding-left:10px;padding-right:10px;margin-top:-1px;margin-left:-20px;margin-right:-20px">
+    <table class="table table-bordered table-condensed" style="overflow-y: scroll; min-height:100%;margin-top:3px">
+
+
+      <tr style="background:#03a9f4;color:whitesmoke">
+
+        <th>ServiceName</th>
+        <th>Action</th>
+
+      </tr>
+      <!-- <pre>{{Register|json}}</pre> -->
+      <tr *ngFor="let ser of Register">
+
+        <td>
+          <ng-select style=" width:250px" [items]="Details[1]" (change)="onServiceNameSelect($event, ser)"
+            bindLabel="serviceName" placeholder="Item Name">
+          </ng-select>
+
+        </td>
+        <td>
+          <a (click)="addMore($event)"><i class="fa fa-plus" style="font-size:18px;color:blue"></i></a>&nbsp;
+          <a (click)="removeSaleItem(i);"><i class="fa fa-close" style="font-size:18px;color:red"></i></a>
+        </td>
+
+      </tr>
+    </table>
+  </div>
+</div>

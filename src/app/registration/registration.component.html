@@ -1,0 +1,1700 @@
+<div style="padding-left: 10px;padding-top: 10px;padding-right: 10px;margin-bottom: 10px;
+">
+
+  <div class="fixHeader" id="myHeader" style=" margin-left:-20px;margin-right:-20px">
+    <mat-card style="background-color:#03a9f4; color:white; padding:7px;">
+      <mat-card-title style="font-size:19px;font-weight:bold">{{titleName.Patient}}
+        <button style=" margin-right: 10px;
+      float: right;
+      background-color: white;
+      color: black !important; margin-right: 10px;margin-top:-5px" class="btn btn-primary mat-ripple"
+          (click)="open(basic)">CONFIRM</button> &nbsp;
+        <button style="    margin-right: 10px;
+      float: right;
+      background-color: white;
+      color: black !important;margin-top:-5px " class="btn btn-primary mat-ripple" md-ripple="reset"
+          (click)="reset()">RESET</button> &nbsp;
+      </mat-card-title>
+    </mat-card>
+  </div>
+</div>
+<div class="content">
+  <div style="padding-left:10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+    <mat-card style="padding-left:50infopx;">
+
+      <form class="form-horizontal" class="form-inline" [formGroup]="RegisterForm">
+
+        <div class="row">
+          <div class="col-lg-2 col-md-3  col-sm-12 ">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field style="width:140px">
+
+                  <input [value]="Patient[5]?Patient[5].umr:''" matInput placeholder="UMR#" type="text" readonly>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="col-lg-3 col-md-4 col-sm-12 ">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field>
+
+                  <input [value]="Patient[4]?Patient[4].nextRegId:''" matInput placeholder="Registration#" type="text" readonly>
+                </mat-form-field>
+
+              </div>
+            </div>
+          </div> -->
+
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group">
+              <div class="col-xl">
+
+
+                <mat-form-field style="width:140px">
+                  <input required [(ngModel)]="regDate" [formControl]="RegisterForm.controls['regDate']" matInput
+                    [matDatepicker]="picker3" placeholder="Registration Date" [formControl]="date">
+                  <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                  <mat-datepicker #picker3></mat-datepicker>
+                </mat-form-field>
+
+                <div class="text text-danger" style="font-size:10px;padding-right:5px;font-weight:bold"
+                  *ngIf="!submitted && RegisterForm.controls['regDate'].touched && !RegisterForm.controls['regDate'].valid">
+                  Regdate is Mandatory</div>
+
+
+                <div class="text text-danger" style="font-size:10px;padding-right:5px;font-weight:bold"
+                  *ngIf="submitted&& !RegisterForm.controls['regDate'].valid">
+                  Regdate is Mandatory</div>
+
+              </div>
+            </div>
+          </div>
+          <!-- <div class="col-lg-3 col-md-4 col-sm-12">
+            <div class="form-group">
+              <div class="col-xl">
+                <mat-form-field>
+                  <input [(ngModel)]="regValidity" [formControl]="RegisterForm.controls['regValidity']" matInput [matDatepicker]="picker4"
+                    placeholder="Registration Validity" [formControl]="date">
+                  <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                  <mat-datepicker #picker4></mat-datepicker>
+                </mat-form-field>
+
+              </div>
+            </div>
+          </div> -->
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field style="width:140px">
+
+                  <input [(ngModel)]="appNo" [formControl]="RegisterForm.controls['appNo']" matInput
+                    placeholder="Appointment#" type="text">
+                </mat-form-field>
+
+                <!-- <div class="text text-danger" *ngIf="RegisterForm.controls['appNo'].touched && !RegisterForm.controls['appNo'].valid">Mandatory(if not entered)</div> -->
+                <!-- <div class="text text-danger" *ngIf="RegisterForm.controls['appNo'].errors?.pattern">Allow only numbers</div> -->
+
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group">
+              <div class="col-xl">
+                <mat-form-field style="width:140px">
+                  <mat-select required [(ngModel)]="title" [formControl]="RegisterForm.controls['title']"
+                    placeholder="Title" (selectionChange)="genderfucntion(title)">
+                    <mat-option value="Baby">Baby </mat-option>
+                    <mat-option value="Baby Boy Of">Baby Boy Of</mat-option>
+                    <mat-option value="Baby Girl Of">Baby Girl Of</mat-option>
+                    <mat-option value="Master">Master</mat-option>
+
+                    <mat-option value="Mr">Mr</mat-option>
+                    <mat-option value="Ms">Ms</mat-option>
+                    <mat-option value="Mrs">Mrs</mat-option>
+
+                  </mat-select>
+
+                </mat-form-field>
+              </div>
+
+              <div class="text text-danger" style="font-size:10px;padding-left:15px;font-weight:bold"
+                *ngIf="!submitted && RegisterForm.controls['title'].touched && !RegisterForm.controls['title'].valid">
+                Title is Mandatory
+              </div>
+
+              <div class="text text-danger" style="font-size:10px;padding-left:15px;font-weight:bold"
+                *ngIf="submitted && !RegisterForm.controls['title'].valid">
+                Title is Mandatory
+              </div>
+
+            </div>
+          </div>
+
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field style="width:140px">
+
+
+                  <input required minlength="3" maxlength="50" pattern="^[A-Za-z -]+$" [(ngModel)]="firstName"
+                    [formControl]="RegisterForm.controls['firstName']" matInput placeholder="First Name" type="text"
+                    required>
+                </mat-form-field>
+
+              </div>
+              <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"
+                *ngIf="!submitted && RegisterForm.controls['firstName'].touched  && !RegisterForm.controls['firstName'].valid">
+                FirstName is Mandatory</div>
+              <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"
+                *ngIf="submitted && !RegisterForm.controls['firstName'].valid">
+                FirstName is Mandatory</div>
+              <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"
+                *ngIf="RegisterForm.controls['firstName'].errors?.minlength">firstname should have min 3 characters
+              </div>
+              <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"
+                *ngIf="RegisterForm.controls['firstName'].errors?.maxlength">firstname should have max 50 characters
+              </div>
+              <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"
+                *ngIf="RegisterForm.controls['firstName'].errors?.pattern">Allow only alphabets</div>
+
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group ">
+              <div class="col-xl">
+
+                <mat-form-field style="width:140px">
+
+                  <input [(ngModel)]="middleName" [formControl]="RegisterForm.controls['middleName']" matInput
+                    placeholder="Middle Name" type="text">
+                </mat-form-field>
+
+              </div>
+            </div>
+          </div>
+          <!-- <div class="col-lg-3 col-md-4 col-sm-12">
+            <div class="form-group ">
+              <div class="col-xl">
+
+                <mat-form-field>
+
+                  <input [(ngModel)]="aliasName" [formControl]="RegisterForm.controls['aliasName']" matInput placeholder="AliasName" type="text">
+                </mat-form-field>
+
+              </div>
+            </div>
+          </div> -->
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group ">
+              <div class="col-xl">
+
+                <mat-form-field style="width:140px">
+
+                  <input required minlength="1" maxlength="50" pattern="^[A-Za-z -]+$" [(ngModel)]="lastName"
+                    [formControl]="RegisterForm.controls['lastName']" matInput placeholder="Last Name" type="text">
+                </mat-form-field>
+
+              </div>
+              <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"
+                *ngIf="!submitted && RegisterForm.controls['lastName'].touched && !RegisterForm.controls['lastName'].valid">
+                Last Name is Mandatory</div>
+              <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"
+                *ngIf="submitted && !RegisterForm.controls['lastName'].valid">
+                Last Name is Mandatory</div>
+              <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"
+                *ngIf="RegisterForm.controls['lastName'].errors?.minlength">lastName should have min 1 characters</div>
+              <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"
+                *ngIf="RegisterForm.controls['lastName'].errors?.maxlength">lastName should have max 50 characters</div>
+              <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"
+                *ngIf="RegisterForm.controls['lastName'].errors?.pattern">Allow only alphabets</div>
+            </div>
+          </div>
+
+
+
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group"
+              [ngClass]="{'has-error':!RegisterForm.controls['gender'].valid  && RegisterForm.controls['gender'].touched}">
+              <div class="col-xl">
+                <mat-form-field style="width:140px">
+
+
+                  <mat-select required [(ngModel)]="gender" [formControl]="RegisterForm.controls['gender']"
+                    placeholder="Gender">
+                    <mat-option value="Male">Male</mat-option>
+                    <mat-option value="Female">Female</mat-option>
+
+                    <mat-option value="Others">Others</mat-option>
+
+                  </mat-select>
+
+                </mat-form-field>
+                <div style="font-size:10px;padding-right:5px;font-weight:bold"
+                  *ngIf=" !submitted && RegisterForm.controls['gender'].hasError('required') &&  RegisterForm.controls['gender'].touched "
+                  class="text text-danger">
+                  Gender is Mandatory
+                </div>
+                <div style="font-size:10px;padding-right:5px;font-weight:bold"
+                  *ngIf="RegisterForm.controls['gender'].hasError('required') && submitted " class="text text-danger">
+                  Gender is Mandatory
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group">
+              <div class="col-xl">
+                <mat-form-field style="width:140px">
+                  <input required [max]="minDate" [(ngModel)]="dob" (dateChange)="calculateAge($event.value)"
+                    [formControl]="RegisterForm.controls['dob']" matInput [matDatepicker]="picker" placeholder=" DOB">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+                <div class="text text-danger" style="font-size:10px;font-weight:bold"
+                  *ngIf="RegisterForm.controls['dob'].touched && !RegisterForm.controls['dob'].valid">DOB is Mandatory
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+
+
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group age-group-fields">
+              <div class="col-xl">
+                <mat-form-field>
+                  <input [formControl]="RegisterForm.controls['years']"
+                    (change)="calcDoB(yearsEle.value, monthsEle.value, daysEle.value)" style="width:60px" #yearsEle
+                    matInput placeholder="Years" type="number">
+                </mat-form-field>
+                <mat-form-field>
+                  <input [formControl]="RegisterForm.controls['months']"
+                    (change)="calcDoB(yearsEle.value, monthsEle.value, daysEle.value)" style="width:60px" #monthsEle
+                    matInput placeholder="months" type="number">
+                </mat-form-field>
+                <mat-form-field>
+                  <input [formControl]="RegisterForm.controls['days']"
+                    (change)="calcDoB(yearsEle.value, monthsEle.value, daysEle.value)" style="width:60px" #daysEle
+                    matInput placeholder="Days" type="number">
+                </mat-form-field>
+              </div>
+              <!--div class="col-xl-4">
+                <mat-form-field>
+                  <input [(ngModel)]="months" matInput placeholder="months" type="number">
+                </mat-form-field>
+                <mat-form-field>
+                <input [(ngModel)]="days" matInput placeholder="Days" type="number">
+              </mat-form-field>
+              </div-->
+            </div>
+          </div>
+
+          <!-- <div class="col-lg-3 col-md-4 col-sm-12">
+              <div class="form-group ">
+                <div class="col-xl">
+  
+                  <mat-form-field>
+  
+                    <input [(ngModel)]="age"  (change)="calculateDob(age)" [formControl]="RegisterForm.controls['age']" matInput placeholder="Age" type="text">
+                  </mat-form-field>
+  
+                </div>
+              </div>
+            </div> -->
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group ">
+              <div class="col-xl">
+
+                <mat-form-field style="width:140px">
+
+                  <input [(ngModel)]="occupation" [formControl]="RegisterForm.controls['occupation']" matInput
+                    placeholder="Occupation" type="text">
+                </mat-form-field>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group"
+              [ngClass]="{'has-error':!RegisterForm.controls['bloodGroup'].valid  && RegisterForm.controls['bloodGroup'].touched}">
+              <div class="col-xl">
+                <mat-form-field style="width:140px">
+
+
+                  <mat-select [(ngModel)]="bloodGroup" [formControl]="RegisterForm.controls['bloodGroup']"
+                    placeholder="Blood Group">
+                    <mat-option value="NONE">NONE</mat-option>
+                    <mat-option value="A+">A+</mat-option>
+                    <mat-option value="A-">A-</mat-option>
+                    <mat-option value="AB">AB+</mat-option>
+                    <mat-option value="AB-">AB-</mat-option>
+                    <mat-option value="B+">B+</mat-option>
+                    <mat-option value="B-">B-</mat-option>
+                    <mat-option value="O+">O+</mat-option>
+                    <mat-option value="O-">O-</mat-option>
+                  </mat-select>
+
+                </mat-form-field>
+                <!-- <div *ngIf="RegisterForm.controls['bloodGroup'].hasError('required') && RegisterForm.controls['bloodGroup'].touched" class="text text-danger">
+                  Please select a valid value
+                </div> -->
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group"
+              [ngClass]="{'has-error':!RegisterForm.controls['maritialStatus'].valid  && RegisterForm.controls['maritialStatus'].touched}">
+              <div class="col-xl">
+                <mat-form-field style="width:140px">
+
+
+                  <mat-select [(ngModel)]="maritialStatus" [formControl]="RegisterForm.controls['maritialStatus']"
+                    placeholder="Marital Status">
+                    <mat-option>None</mat-option>
+                    <mat-option value="Married">Married</mat-option>
+                    <mat-option value="Single"> Single</mat-option>
+
+                  </mat-select>
+
+                </mat-form-field>
+                <span style="font-size:10px;margin-left:13px;font-weight:bold"
+                  *ngIf="!submitted && RegisterForm.controls['maritialStatus'].hasError('required') && RegisterForm.controls['maritialStatus'].touched "
+                  class="text text-danger">
+                  <small>Please select a valid value</small>
+                </span>
+                <span style="font-size:10px;margin-left:13px;font-weight:bold"
+                  *ngIf="RegisterForm.controls['maritialStatus'].hasError('required') && submitted "
+                  class="text text-danger">
+                  <small>Please select a valid value</small>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group ">
+              <div class="col-xl">
+
+                <mat-form-field style="width:140px">
+
+                  <input required minlength="3" maxlength="50" pattern="^[A-Za-z -]+$" [(ngModel)]="motherName"
+                    [formControl]="RegisterForm.controls['motherName']" matInput placeholder="Parent/Spouse Name"
+                    type="text">
+                </mat-form-field>
+
+              </div>
+              <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"
+                *ngIf="!submitted && RegisterForm.controls['motherName'].touched && !RegisterForm.controls['motherName'].valid">
+                Parent/Spouse Name is Mandatory</div>
+              <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"
+                *ngIf="submitted && !RegisterForm.controls['motherName'].valid">
+                Parent/Spouse Name is Mandatory</div>
+              <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"
+                *ngIf="RegisterForm.controls['motherName'].errors?.minlength">Parent/Spouse Name should have min 3
+                characters
+              </div>
+              <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"
+                *ngIf="RegisterForm.controls['motherName'].errors?.maxlength">Parent/Spouse Name should have max 50
+                characters
+              </div>
+              <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"
+                *ngIf="RegisterForm.controls['motherName'].errors?.pattern">Allow only alphabets</div>
+
+            </div>
+          </div>
+
+
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group"
+              [ngClass]="{'has-error':!RegisterForm.controls['nationality'].valid  && RegisterForm.controls['nationality'].touched}">
+              <div class="col-xl">
+                <mat-form-field style="width:140px">
+
+
+                  <mat-select required [(ngModel)]="nationality" [formControl]="RegisterForm.controls['nationality']"
+                    placeholder="Nationality">
+                    <!-- <mat-option>None</mat-option> -->
+                    <mat-option value="Indian">Indian</mat-option>
+                    <mat-option value="others">Others</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div style="font-size:10px;padding-right:5px;font-weight:bold"
+                  *ngIf="RegisterForm.controls['nationality'].hasError('required') && submitted "
+                  class="text text-danger">
+                  Nationality is Mandatory
+                </div>
+                <div style="font-size:10px;padding-right:5px;font-weight:bold"
+                  *ngIf="!submitted && RegisterForm.controls['nationality'].touched && RegisterForm.controls['nationality'].hasError('required') "
+                  class="text text-danger">
+                  Nationality is Mandatory
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group"
+              [ngClass]="{'has-error':!RegisterForm.controls['state'].valid  && RegisterForm.controls['state'].touched}">
+              <div class="col-xl">
+                <mat-form-field style="width:140px">
+
+
+                  <mat-select required [(ngModel)]="state" [formControl]="RegisterForm.controls['state']"
+                    placeholder="State">
+                    <!-- <mat-option>None</mat-option> -->
+                    <mat-option value="Telangana">Telangana</mat-option>
+                    <mat-option value="AndhraPradesh">AndhraPradesh</mat-option>
+                    <mat-option value="Karnataka">Karnataka</mat-option>
+                    <mat-option value="Kerala">Kerala</mat-option>
+                    <mat-option value="Maharastra">Maharastra</mat-option>
+                    <mat-option value="Orrisa">Orrisa</mat-option>
+                    <mat-option value="others">others</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div style="font-size:10px;padding-right:5px;font-weight:bold"
+                  *ngIf="RegisterForm.controls['state'].hasError('required') && submitted" class="text text-danger">
+                  State is Mandatory
+                </div>
+                <div style="font-size:10px;padding-right:5px;font-weight:bold"
+                  *ngIf=" !submitted && RegisterForm.controls['state'].touched && RegisterForm.controls['state'].hasError('required') "
+                  class="text text-danger">
+                  State is Mandatory
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field style="width:140px">
+
+                  <input required minlength="3" maxlength="50" pattern="^[A-Za-z -]+$" [(ngModel)]="city"
+                    [formControl]="RegisterForm.controls['city']" matInput placeholder="City" type="text">
+                </mat-form-field>
+
+              </div>
+              <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"
+                *ngIf="!submitted && RegisterForm.controls['city'].touched && !RegisterForm.controls['city'].valid">City
+                is Mandatory
+              </div>
+              <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"
+                *ngIf="submitted && !RegisterForm.controls['city'].valid">City is Mandatory
+              </div>
+              <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"
+                *ngIf="RegisterForm.controls['city'].errors?.minlength">city should have min 3 characters</div>
+              <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"
+                *ngIf="RegisterForm.controls['city'].errors?.maxlength">city should have max 50 characters</div>
+              <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"
+                *ngIf="RegisterForm.controls['city'].errors?.pattern">Allow only alphabets</div>
+
+            </div>
+          </div>
+
+
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field style="width:140px">
+
+                  <input required minlength="3" maxlength="50" [(ngModel)]="area"
+                    [formControl]="RegisterForm.controls['area']" matInput placeholder="Area" type="text">
+                </mat-form-field>
+
+              </div>
+              <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"
+                *ngIf="!submitted && RegisterForm.controls['area'].touched && !RegisterForm.controls['area'].valid && RegisterForm.controls['area'].touched">
+                Area is Mandatory
+              </div>
+              <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"
+                *ngIf="submitted && !RegisterForm.controls['area'].valid">
+                Area is Mandatory
+              </div>
+              <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"
+                *ngIf="RegisterForm.controls['area'].errors?.minlength">Area should have min 3 characters</div>
+              <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"
+                *ngIf="RegisterForm.controls['area'].errors?.maxlength">Area should have max 50 characters</div>
+              <!-- <div class="text text-danger" *ngIf="RegisterForm.controls['area'].errors?.pattern">Allow only alphabets</div> -->
+
+
+            </div>
+          </div>
+
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field style="width:140px">
+
+                  <input required minlength="3" maxlength="300" [(ngModel)]="address"
+                    [formControl]="RegisterForm.controls['address']" matInput placeholder="Address" type="text">
+                </mat-form-field>
+
+              </div>
+              <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"
+                *ngIf="!submitted && RegisterForm.controls['address'].touched && !RegisterForm.controls['address'].valid">
+                Address is Mandatory
+              </div>
+              <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"
+                *ngIf="submitted && !RegisterForm.controls['address'].valid">Address is Mandatory
+              </div>
+              <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"
+                *ngIf="RegisterForm.controls['address'].errors?.minlength">Address should have min 3 characters</div>
+              <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"
+                *ngIf="RegisterForm.controls['address'].errors?.maxlength">Address should have max 50 characters</div>
+
+
+
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field style="width:140px">
+
+                  <input pattern="^[0-9]{6}$" [(ngModel)]="pin" [formControl]="RegisterForm.controls['pin']" matInput
+                    placeholder="Pincode" type="text">
+                </mat-form-field>
+
+              </div>
+              <!-- <div class="text text-danger" *ngIf="RegisterForm.controls['pin'].touched && !RegisterForm.controls['pin'].valid">Mandatory(if not entered)</div> -->
+              <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"
+                *ngIf="RegisterForm.controls['pin'].errors?.pattern">valid pattern</div>
+
+
+            </div>
+          </div>
+
+
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group ">
+              <div class="col-xl">
+                <mat-form-field style="width:140px">
+
+
+                  <mat-select [(ngModel)]="responsiblePerson" [formControl]="RegisterForm.controls['responsiblePerson']"
+                    placeholder="Responsible Person">
+                    <mat-option>None</mat-option>
+                    <mat-option value="Friends">Friends</mat-option>
+                    <mat-option value="Father">Father</mat-option>
+                    <mat-option value="Mother">Mother</mat-option>
+                    <mat-option value="Spouse">Spouse</mat-option>
+                  </mat-select>
+
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field style="width:140px">
+
+                  <input [(ngModel)]="responsiblePersonName"
+                    [formControl]="RegisterForm.controls['responsiblePersonName']" matInput
+                    placeholder="Responsible Person Name" type="text">
+                </mat-form-field>
+
+              </div>
+              <!-- <div class="text text-danger" *ngIf="RegisterForm.controls['responsiblePersonName'].touched && !RegisterForm.controls['responsiblePersonName'].valid">Mandatory(if not entered)</div> -->
+
+            </div>
+          </div>
+          <!-- <div class="col-lg-3 col-md-4 col-sm-12">
+            <div class="form-group" [ngClass]="{'has-error':!RegisterForm.controls['religion'].valid  && RegisterForm.controls['religion'].touched}">
+              <div class="col-xl">
+                <mat-form-field>
+
+
+                  <mat-select  [(ngModel)]="religion" [formControl]="RegisterForm.controls['religion']" placeholder="Religion">
+                    <mat-option>None</mat-option>
+                    <mat-option value="Hindu">Hindu</mat-option>
+                    <mat-option value="Muslim">Muslim</mat-option>
+                    <mat-option value="Sikh">Sikh</mat-option>
+                    <mat-option value="option4">Christainity</mat-option>
+                    <mat-option value="option5">Jainism</mat-option>
+                    <mat-option value="option6">Buddhism</mat-option>
+                    <mat-option value="option7">Others</mat-option>
+                  </mat-select>
+
+                </mat-form-field>
+              
+              </div>
+            </div>
+          </div> -->
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group"
+              [ngClass]="{'has-error':!RegisterForm.controls['pType'].valid  && RegisterForm.controls['pType'].touched}">
+              <div class="col-xl">
+                <mat-form-field style="width:140px">
+
+
+                  <mat-select [(ngModel)]="pType" [formControl]="RegisterForm.controls['pType']"
+                    placeholder="Patient Type" required>
+                    <!-- <mat-option>None</mat-option> -->
+                    <mat-option value="DAY CARE">DAY CARE</mat-option>
+                    <mat-option value="EMERGENCY">EMERGENCY</mat-option>
+                    <mat-option value="OUTPATIENT">OUTPATIENT</mat-option>
+                    <mat-option value="INPATIENT">INPATIENT</mat-option>
+                    <mat-option value="GENERAL">GENERAL</mat-option>
+                    <mat-option value="VIP">VIP</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div style="font-size:10px;font-weight:bold"
+                  *ngIf="!submitted && RegisterForm.controls['pType'].hasError('required') && RegisterForm.controls['pType'].touched "
+                  class="text text-danger">
+                  PatientType is Mandatory
+                </div>
+                <div style="font-size:10px;font-weight:bold"
+                  *ngIf="RegisterForm.controls['pType'].hasError('required') && submitted " class="text text-danger">
+                  PatientType is Mandatory
+                </div>
+                <div *ngIf="pType=='INPATIENT'||pType=='DAY CARE'||pType=='EMERGENCY'">
+                  <!-- [ngStyle]="{'color':getchoose(selectedBed)}" -->
+
+                  <a style="color:red" (click)="openBed(floor)">Choose Room</a>
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group ">
+              <div class="col-xl"> -->
+
+          <!-- <mat-form-field style="width:140px">
+
+                  <mat-select [(ngModel)]="consultant" (selectionChange)="userdetails($event.value)"
+                    [formControl]="RegisterForm.controls['consultant']" placeholder="Consultant" required>
+                    <mat-option>none</mat-option>
+                    <mat-option *ngFor="let c of Patient[3];let i=index"
+                      [value]="c.firstName+' '+c.middleName+' '+c.lastName+'-'+c.userId">
+                      {{c.firstName}} {{c.middleName}} {{c.lastName}}
+
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+          <div style="width:210px">
+            <ng-select style="width:210px" required formControlName="consultant" appendTo="body" [items]="Patient[3]"
+              bindLabel="fullName" (change)="userdetails($event)" placeholder="Consultant">
+            </ng-select>
+            <div class="text text-danger" style="font-size:10px;font-weight:bold"
+              *ngIf=" !submitted && RegisterForm.controls['consultant'].touched && !RegisterForm.controls['consultant'].valid">
+              Consultant is Mandatory</div>
+            <div class="text text-danger" style="font-size:10px;font-weight:bold"
+              *ngIf="submitted && !RegisterForm.controls['consultant'].valid">
+              Consultant is Mandatory</div>
+          </div>
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group"
+              [ngClass]="{'has-error':!RegisterForm.controls['insurance'].valid  && RegisterForm.controls['insurance'].touched}">
+              <div class="col-xl">
+                <mat-form-field style="width:140px">
+
+
+                  <mat-select required [(ngModel)]="insurance" [formControl]="RegisterForm.controls['insurance']"
+                    placeholder="Insurance Status">
+                    <mat-option value="Yes">yes</mat-option>
+                    <mat-option value="No">No</mat-option>
+
+
+
+                  </mat-select>
+
+                </mat-form-field>
+                <!-- <div style="font-size:10px;padding-right:5px;font-weight:bold"
+                  *ngIf=" !submitted && RegisterForm.controls['gender'].hasError('required') &&  RegisterForm.controls['gender'].touched "
+                  class="text text-danger">
+                  Gender is Mandatory
+                </div>
+                <div style="font-size:10px;padding-right:5px;font-weight:bold"
+                  *ngIf="RegisterForm.controls['gender'].hasError('required') && submitted " class="text text-danger">
+                  Gender is Mandatory
+                </div> -->
+              </div>
+            </div>
+          </div>
+
+          <div style="width:210px" *ngIf="insurance ==='Yes'">
+            <ng-select style="width:210px" required formControlName="insuranceCompany" appendTo="body"
+              [items]="Patient[6]" bindLabel="insuranceCompany" placeholder="InsuranceCompanies"
+              (change)="onInsuranceChange($event)">
+            </ng-select>
+          </div>
+          <!-- </div>
+            </div>
+          </div> -->
+          <!-- <div class=" col-lg-2 col-md-3 col-sm-12">
+              <div class="form-group"
+                [ngClass]="{'has-error':!RegisterForm.controls['q_id'].valid  && RegisterForm.controls['q_id'].touched}">
+                <div class="col-xl">
+                  <mat-form-field style="width:140px">
+
+
+                    <mat-select [(ngModel)]="q_id" [formControl]="RegisterForm.controls['q_id']"
+                      placeholder="How Did you Hear about this Hospital?">
+
+
+                      <mat-option value="Just Dial">Just Dial</mat-option>
+                      <mat-option value="Referred by Doctor"> Referred by Doctor</mat-option>
+                      <mat-option value="Facebook">Facebook</mat-option>
+                      <mat-option value="Google">Google</mat-option>
+                      <mat-option value="Friends">Friends</mat-option>
+                      <mat-option value="Old Patient">Old Patient</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <div style="font-size:10px;margin-left:13px;font-weight:bold"
+                    *ngIf="RegisterForm.controls['q_id'].hasError('required') && RegisterForm.controls['q_id'].touched"
+                    class="text text-danger">
+                    Please select a valid value
+                  </div>
+                </div>
+              </div>
+          </div> -->
+
+
+        </div>
+        <!-- <button class="btn btn-primary mat-ripple" md-ripple="submit" (click)="save(RegisterForm.value)">save</button>  -->
+
+      </form>
+
+    </mat-card>
+  </div>
+  <br>
+  <div class="content">
+    <div
+      style="padding-left:10px;margin-top:-10px;padding-top:1px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+      <mat-card style="padding-left:50infopx;height:2.2cm;padding-top: 2px">
+        <div class="row">
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group" style="padding-top:20px">
+              <div class="col-xl">
+                <mat-card-title style="font-size:18px;font-weight:bold; margin-left:-20px;color:#7266ba">
+                  &nbsp;&nbsp;Contact Details :
+                </mat-card-title>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field style="width:140px">
+
+                  <input required [(ngModel)]="mobile" pattern="[6789][0-9]{9}" maxlength="10"
+                    [formControl]="RegisterForm.controls['mobile']" matInput placeholder="Mobile No" type="text">
+                </mat-form-field>
+
+              </div>
+              <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"
+                *ngIf="!submitted &&  RegisterForm.controls['mobile'].touched && !RegisterForm.controls['mobile'].valid">
+                MobileNo is Mandatory</div>
+              <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"
+                *ngIf="submitted && !RegisterForm.controls['mobile'].valid">
+                MobileNo is Mandatory</div>
+              <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"
+                *ngIf="RegisterForm.controls['mobile'].errors?.minlength">mobile should have min 10 characters</div>
+              <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"
+                *ngIf="RegisterForm.controls['mobile'].errors?.maxlength">mobile should have max 10 characters</div>
+              <div class="text text-danger" style="font-size:10px;margin-left:13px;font-weight:bold"
+                *ngIf="RegisterForm.controls['mobile'].errors?.pattern">Allow only numbers
+              </div>
+
+
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group"
+              [ngClass]="{'has-error':!RegisterForm.controls['telephone'].valid  && RegisterForm.controls['telephone'].touched}">
+              <div class="col-xl">
+
+                <mat-form-field style="width:140px">
+
+                  <input pattern="[789][0-9]{9}" maxlength="10" [(ngModel)]="telephone"
+                    [formControl]="RegisterForm.controls['telephone']" matInput placeholder="Telephone" type="text">
+                </mat-form-field>
+                <div
+                  *ngIf="RegisterForm.controls['telephone'].hasError('required') && RegisterForm.controls['telephone'].touched"
+                  class="text text-danger">
+                  Please enter a valid number
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group"
+              [ngClass]="{'has-error':!RegisterForm.controls['email'].valid  && RegisterForm.controls['email'].touched}">
+              <div class="col-xl">
+
+                <mat-form-field style="width:140px">
+
+                  <input [(ngModel)]="email" [formControl]="RegisterForm.controls['email']" matInput placeholder="Email"
+                    type="text">
+                </mat-form-field>
+                <span
+                  *ngIf="RegisterForm.controls['email'].hasError('pattern') && RegisterForm.controls['email'].touched"
+                  class="text text-danger">
+                  <small>Email validations @ ;.com etc</small>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group">
+              <div class="col-xl">
+                <mat-form-field style="width:140px">
+
+                  <mat-select [(ngModel)]="comun" [formControl]="RegisterForm.controls['comun']"
+                    placeholder="ModeOfCommunication">
+                    <mat-option>None</mat-option>
+                    <mat-option value="Byphone">Byphone</mat-option>
+                    <mat-option value="ByEmail">ByEmail</mat-option>
+                    <mat-option value="Bypost">Bypost</mat-option>
+                    <mat-option value="Bysms">Bysms</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </mat-card>
+    </div>
+  </div>
+  <br>
+  <div class="content">
+    <div style="padding-left:10px;margin-top:-10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+      <mat-card style="padding-left:50infopx;height: 1.6cm;padding-top: 2px">
+        <div class="row">
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group" style="padding-top:20px">
+              <div class="col-xl">
+                <mat-card-title style="font-size:18px;margin-left:-20px;font-weight:bold;color:#7266ba"> &nbsp; Referral
+                  Details :
+                </mat-card-title>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group"
+              [ngClass]="{'has-error':!RegisterForm.controls['source'].valid  && RegisterForm.controls['source'].touched}">
+              <div class="col-xl">
+                <mat-form-field style="width:140px">
+
+                  <mat-select [(ngModel)]="source" (selectionChange)="showId(source)"
+                    [formControl]="RegisterForm.controls['source']" placeholder="Referral">
+                    <mat-option *ngFor="let ref of Patient[2];let i =index" [value]="ref.source">
+                      {{ref.source}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <!-- <div *ngIf="RegisterForm.controls['source'].hasError('required') && RegisterForm.controls['source'].touched" class="text text-danger">
+                        Please select a valid value
+                      </div> -->
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-2 col-md-3  col-sm-12" *ngIf="source!='Walkin'">
+            <div class="form-group">
+              <div class="col-xl">
+
+
+                <ng-select appendTo="body" style="width:
+                      140px;margin-top:10px" [items]="Id" bindLabel="refName" placeholder="ReferralName"
+                  (change)="onReferralChange($event);showRefDetails()">
+                </ng-select>
+
+              </div>
+            </div>
+          </div>
+
+
+          <div *ngIf="source==='Walkin'">
+            <div class="form-group">
+
+              <div class="col-lg-2 col-md-3  col-sm-12">
+                <mat-form-field style="width:140px;margin-top: -10px">
+
+                  <mat-select [(ngModel)]="refwalkin" [formControl]="RegisterForm.controls['refwalkin']"
+                    placeholder="ReferralName">
+                    <mat-option value="Walkin">Walkin
+
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+              </div>
+            </div>
+          </div>
+
+
+          <!-- *ngIf="refnew==null&&source!='Walkin'" -->
+
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field style="width:140px;margin-top:10px">
+
+                  <input minlength="3" maxlength="50" [(ngModel)]="refName"
+                    [formControl]="RegisterForm.controls['refName']" matInput placeholder="Referral Name" type="text">
+                </mat-form-field>
+                <!-- <div class="text text-danger" *ngIf="RegisterForm.controls['refName'].touched && !RegisterForm.controls['refName'].valid">Mandatory(if not entered)</div>  -->
+                <div class="text text-danger" *ngIf="RegisterForm.controls['refName'].errors?.minlength"><small>refname
+                    should have min 3 characters</small></div>
+                <div class="text text-danger" *ngIf="RegisterForm.controls['refName'].errors?.maxlength"><small>refname
+                    should have max 50 characters</small></div>
+                <!-- <div class="text text-danger" *ngIf="RegisterForm.controls['refName'].errors?.pattern">Allow only alphabets</div> -->
+
+
+              </div>
+            </div>
+          </div>
+
+
+
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field style="width:140px;padding-top: -10px">
+
+                  <input minlength="3" maxlength="50" [(ngModel)]="refAdd"
+                    [formControl]="RegisterForm.controls['refAdd']" matInput placeholder="Address" type="text">
+                </mat-form-field>
+
+              </div>
+              <!-- <div class="text text-danger" *ngIf="RegisterForm.controls['refAdd'].touched && !RegisterForm.controls['refAdd'].valid">Mandatory(if not entered)</div> -->
+              <div class="text text-danger" *ngIf="RegisterForm.controls['refAdd'].errors?.minlength"> Address should
+                have min 3 characters</div>
+              <div class="text text-danger" *ngIf="RegisterForm.controls['refAdd'].errors?.maxlength">Address should
+                have max 50 characters</div>
+
+            </div>
+          </div>
+
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field style="width:140px;padding-top: -10px">
+
+                  <input [(ngModel)]="refPhone" maxlength="10" [formControl]="RegisterForm.controls['refPhone']"
+                    matInput placeholder="Phone#" type="text">
+                </mat-form-field>
+
+              </div>
+
+              <div class="text text-danger" *ngIf="RegisterForm.controls['refPhone'].errors?.maxlength">phone should
+                have max 10 characters</div>
+              <!-- minlength="10" maxlength="10" pattern="[6789][0-9]{9}" maxlength="10"  -->
+              <!-- <span *ngIf="refPhone!=0"> -->
+              <!-- <div class="text text-danger" *ngIf="RegisterForm.controls['refPhone'].touched && !RegisterForm.controls['refPhone'].valid">Mandatory(if not entered)</div> -->
+              <!-- <div class="text text-danger" *ngIf="RegisterForm.controls['refPhone'].errors?.minlength">phone should have min 10 characters</div>
+             
+                    <div class="text text-danger" *ngIf="RegisterForm.controls['refPhone'].errors?.pattern">Allow only numbers</div>
+                    </span> -->
+
+
+            </div>
+          </div>
+
+
+
+
+        </div>
+
+        <!-- <a style="color:red" (click)="resetRef()">Reset Referal information</a> -->
+      </mat-card>
+    </div>
+  </div>
+
+  <br>
+
+  <div class="content">
+    <div style="padding-left:10px;margin-top:-10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+      <mat-card style="padding-left:50infopx;height:1.6cm;padding-top: 2px">
+        <div class="row">
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group" style="padding-top:20px">
+              <div class="col-xl">
+                <mat-card-title style="font-size:18px;margin-left:-20px;font-weight:bold;color:#7266ba">Passport Details
+                  :
+                </mat-card-title>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group ">
+              <div class="col-xl">
+
+                <mat-form-field style="width:140px;padding-top:-10px">
+
+                  <input [(ngModel)]="passportNo" [formControl]="RegisterForm.controls['passportNo']" matInput
+                    placeholder="Passport#" type="text">
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group">
+              <div class="col-xl">
+
+
+                <mat-form-field style="width: 140px;padding-top:-10px">
+                  <input [(ngModel)]="issueDate" [formControl]="RegisterForm.controls['issueDate']" matInput
+                    [matDatepicker]="picker1" placeholder="Choose a date">
+                  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                  <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+
+
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group ">
+              <div class="col-xl">
+
+
+                <mat-form-field style="width: 140px;padding-top:-10px">
+                  <input [(ngModel)]="expiryDate" [formControl]="RegisterForm.controls['expiryDate']" matInput
+                    [matDatepicker]="picker2" placeholder="Choose a date">
+                  <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                  <mat-datepicker #picker2></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group ">
+              <div class="col-xl">
+                <mat-form-field style="width:140px;padding-top:-10px">
+
+                  <input [(ngModel)]="issuedAt" [formControl]="RegisterForm.controls['issuedAt']" matInput
+                    placeholder="Issued At" type="text">
+                </mat-form-field>
+
+
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </mat-card>
+    </div>
+  </div>
+  <br>
+  <div class="content">
+    <div style="padding-left:10px;margin-top:-10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+      <mat-card style="padding-left:50infopx;height: 1.6cm;padding-top: 2px">
+
+        <div class="row">
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group" style="padding-top:20px">
+              <div class="col-xl">
+                <mat-card-title style="font-size:18px;margin-left:-26px;font-weight:bold;color:#7266ba">
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Company Info :
+                </mat-card-title>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field style="width:140px;padding-top:-10px">
+
+                  <input [(ngModel)]="companyName" [formControl]="RegisterForm.controls['companyName']" matInput
+                    placeholder="Company Name" type="text">
+                </mat-form-field>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field style="width:140px;padding-top:-10px">
+
+                  <input [(ngModel)]="companyCode" [formControl]="RegisterForm.controls['companyCode']" matInput
+                    placeholder="Company Code" type="text">
+                </mat-form-field>
+
+              </div>
+            </div>
+          </div>
+
+
+          <div class="col-lg-2 col-md-3  col-sm-12">
+            <div class="form-group ">
+              <div class="col-xl">
+
+                <mat-form-field style="width:140px;padding-top:-10px">
+
+                  <input [(ngModel)]="companyFee" [formControl]="RegisterForm.controls['companyFee']" matInput
+                    placeholder="Company Fee" type="text">
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="col-md-6">
+                  <div class="form-group ">
+                    <div class="col-xl">
+                  <label for="pwd">Password:</label>
+                  <input type="password" class="form-control" >
+                </div>
+                  </div>
+                </div> -->
+          <!-- <div class="col-md-2">
+                    <div class="form-group ">
+                      <div class="col-xl">
+                        <mat-form-field>
+          
+                          <input matInput placeholder="Issuedat" type="text">
+                        </mat-form-field>
+          
+          
+          
+                      </div>
+                    </div>
+                  </div> -->
+
+        </div>
+
+
+      </mat-card>
+    </div>
+  </div>
+  <ng-template #basic let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Patient Details Confirmation</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form class="form-horizontal" class="form-inline" [formGroup]="RegisterForm">
+
+        <div class=" col-md-6">
+          <div class="form-group">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input [(ngModel)]="firstName" [formControl]="RegisterForm.controls['firstName']" matInput
+                  placeholder="Patient Name" type="text">
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+        <div class=" col-md-6">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+                <input required [(ngModel)]="dob" [formControl]="RegisterForm.controls['dob']" matInput
+                  [matDatepicker]="picker" placeholder=" DOB">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-md-6">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+
+
+                <mat-select [(ngModel)]="gender" [formControl]="RegisterForm.controls['gender']" placeholder="Gender">
+                  <mat-option>None</mat-option>
+                  <mat-option value="Female">Female</mat-option>
+                  <mat-option value="Male">Male</mat-option>
+                  <mat-option value="Others">Others</mat-option>
+
+
+
+                </mat-select>
+
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+
+
+                <mat-select [(ngModel)]="maritialStatus" [formControl]="RegisterForm.controls['maritialStatus']"
+                  placeholder="MaritalStatus">
+                  <mat-option>None</mat-option>
+                  <mat-option value="Married">Married</mat-option>
+                  <mat-option value="Single"> Single</mat-option>
+
+                </mat-select>
+
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+                <mat-select [(ngModel)]="pType" [formControl]="RegisterForm.controls['pType']"
+                  placeholder="PatientType">
+                  <mat-option>None</mat-option>
+                  <mat-option value="OUTPATIENT">OUTPATIENT</mat-option>
+                  <mat-option value="INPATIENT">INPATIENT</mat-option>
+                  <mat-option value="GENERAL">GENERAL</mat-option>
+                  <mat-option value="VIP">VIP</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-md-6">
+          <div class="form-group ">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input [(ngModel)]="address" [formControl]="RegisterForm.controls['address']" matInput
+                  placeholder="Address1" type="text" required>
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-group ">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input [(ngModel)]="motherName" [formControl]="RegisterForm.controls['motherName']" matInput
+                  placeholder="FATHERNAME" type="text">
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-md-12">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+
+                <input [(ngModel)]="consultant" [formControl]="RegisterForm.controls['consultant']" matInput
+                  placeholder="consultant" type="text">
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+      </form>
+
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">NO</button>
+      <button type="button" class="btn btn-outline-dark" (click)="open(content1);consultationdetails()">YES</button>
+    </div>
+  </ng-template>
+
+
+
+
+  <ng-template #content1 let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Registration Payment</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+
+
+      <div class=" col-md-6">
+        <div class="form-group">
+          <div class="col-xl">
+            <label>Consultation Fee :</label>
+            <!-- <mat-form-field> -->
+
+            <input [(ngModel)]="doctorFee" (input)="calamount()" pattern="(0|[0-9]\d*)"
+              [formControl]="RegisterForm.controls['doctorFee']" type="text">
+            <!-- </mat-form-field> -->
+
+          </div>
+
+          <div class="text text-danger"
+            *ngIf="RegisterForm.controls['doctorFee'].touched && !RegisterForm.controls['doctorFee'].valid">Mandatory(if
+            not entered)</div>
+
+          <div class="text text-danger" *ngIf="RegisterForm.controls['doctorFee'].errors?.pattern">Allow only numbers
+          </div>
+
+
+        </div>
+      </div>
+
+
+      <!-- <div class=" col-md-6">
+        <div class="form-group">
+          <div class="col-xl">
+
+            <label>FeeType :</label>
+            <select style="width:200px" required [(ngModel)]="typeOfCharge" [formControl]="RegisterForm.controls['typeOfCharge']" placeholder="FeeType"
+              type="text"> -->
+
+
+      <!-- <option>None</option> -->
+      <!-- <option value="Reg Fees">Reg Fees</option>  -->
+
+      <!-- <option value="Nursing Charges">Nursing Charges</option> -->
+      <!-- <option value="Doctor Fee">Doctor Fee</option> -->
+      <!-- <option value="Service Charges">Service Charges</option>
+              <option value="Vaccination fees">Vaccination fees</option> -->
+      <!-- </select>
+
+          </div>
+        </div>
+      </div> -->
+      <div class=" col-md-6">
+        <div class="form-group" style="padding-right:20 px;">
+          <div class="col-xl">
+            <label>Registration Fee : </label>
+            <!-- <mat-form-field> -->
+            <!-- getcashamount();getcardamount() -->
+            <input required [(ngModel)]="regFee" (input)="calamount()" pattern="(0|[0-9]\d*)"
+              [formControl]="RegisterForm.controls['regFee']" type="text">
+            <!-- </mat-form-field> -->
+
+          </div>
+
+          <div class="text text-danger"
+            *ngIf="RegisterForm.controls['regFee'].touched && !RegisterForm.controls['regFee'].valid">Mandatory(if not
+            entered)</div>
+
+          <div class="text text-danger" *ngIf="RegisterForm.controls['regFee'].errors?.pattern">Allow only numbers</div>
+
+
+        </div>
+      </div>
+      <div *ngIf="pType=='INPATIENT'||pType=='DAY CARE'||pType=='EMERGENCY'" class="col-md-6">
+        <div class="form-group" style="padding-right:20 px;">
+          <div class="col-xl">
+            <label>Advnace Amount : </label>
+            <!-- getcashamount();getcardamount(); -->
+            <input [(ngModel)]="Aamount" (input)="calamount()" pattern="(0|[0-9]\d*)"
+              [formControl]="RegisterForm.controls['Aamount']" type="text">
+
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group" style="padding-right:20 px;">
+          <div class="col-xl">
+            <label>Total Amount : </label>
+
+            <input [(ngModel)]="amount" (change)="calamount()" type="text" readonly>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+
+        <div>
+          <table width="100%" class="table table-bordered table-condensed table-responsive">
+
+            <tr style="background:#03a9f4;color:whitesmoke">
+              <!-- <th>Sno</th> -->
+              <th>Payment Type</th>
+
+              <!-- <th>Action</th> -->
+
+            </tr>
+
+            <tr *ngFor="let c of multiplePayment1;let i= index">
+              <!-- <td> {{i + 1}}</td> -->
+              <td>
+
+                <div *ngFor="let option of options; let optI = index">
+
+                  <div style="display:inline">
+                    <!-- <mat-form-field style="width:80px"> -->
+                    <select style="width:80px;" (ngModelChange)="changed($event, i)" [(ngModel)]="c.payType"
+                      placeholder="Type">
+
+                      <option *ngFor="let type of types$ | async; let i = index" [value]="type.text"
+                        [disabled]="!type.allowed">
+                        {{type.text}}</option>
+                    </select>&nbsp;&nbsp;
+
+                    <!-- </mat-form-field>&nbsp;&nbsp; -->
+                    <a (click)="addMore1($event);secondrow()"><i class="fa fa-plus"
+                        style="font-size:15px;color:blue"></i></a>&nbsp;
+                    <a *ngIf="multiplePayment1.length>1" (click)="removeSaleItem1(i);secondrowremove()"><i
+                        class="fa fa-close" style="font-size:15px;color:red"></i></a>&nbsp;
+                    <div style="display:inline" *ngIf="c.payType==='Card'">
+
+                      <!-- <mat-form-field style="width:80px"> -->
+                      <input style="width:80px" [(ngModel)]="referenceNumber" placeholder="Ref No" type="text">
+
+                      <!-- </mat-form-field> -->
+
+                    </div>
+
+                  </div>
+                </div>
+
+                <!-- <a (click)="addMore1($event);secondrow()"><i class="fa fa-plus" style="font-size:10px;color:blue"></i></a>&nbsp;
+                      <a *ngIf="multiplePayment1.length>1" (click)="removeSaleItem1(i);secondrowremove()"><i class="fa fa-close" style="font-size:10px;color:red"></i></a> -->
+              </td>
+
+              <!-- <td>
+                      <a (click)="addMore1($event);secondrow()"><i class="fa fa-plus" style="font-size:10px;color:blue"></i></a>&nbsp;
+                      <a *ngIf="multiplePayment1.length>1" (click)="removeSaleItem1(i);secondrowremove()"><i class="fa fa-close" style="font-size:10px;color:red"></i></a>
+                    </td> -->
+
+            </tr>
+          </table>
+        </div>&nbsp;&nbsp;
+        <div style="float: left">
+
+          <table width="100%" class="table table-bordered table-condensed table-responsive">
+
+            <tr style="background:#03a9f4;color:whitesmoke">
+
+              <th>Amount</th>
+              <!-- <th>Action</th> -->
+            </tr>
+
+            <tr>
+              <td>
+                <!-- <mat-form-field style="width:80px"> -->
+                <input style="width:80px;height:22px" [disabled]="Xamount" min="0" max="total" (input)="amount2()"
+                  [(ngModel)]="X" placeholder="Amount" type="text">
+
+                <!-- </mat-form-field> -->
+                <!-- <div>
+        
+                        <mat-form-field style="width:80px">
+                          <input [(ngModel)]="referenceNumber" matInput placeholder="Ref No" type="text">
+        
+                        </mat-form-field>
+        
+                      </div> -->
+              </td>
+
+
+              <!-- <td> <a (click)="secondrow()"><i class="fa fa-plus" style="font-size:18px;color:blue"></i></a></td> -->
+            </tr>
+
+            <tr>
+              <td *ngIf="!row">
+                <!-- <mat-form-field style="width:80px"> -->
+                <input style="width:80px;height:22px" (input)="amount1()" min="0" max="total" [(ngModel)]="Y"
+                  placeholder="Amount" type="text">
+
+                <!-- </mat-form-field> -->
+              </td>
+            </tr>
+            <!-- <tr>
+        
+                    <td *ngIf="!row"><input placeholder="Amount2" (input)="amount1()" [(ngModel)]="Y" type="text"></td>
+                    <td> <a *ngIf="!row" (click)="secondrowremove()"><i class="fa fa-close" style="font-size:18px;color:red"></i></a></td>
+                  </tr> -->
+          </table>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click');refresh()">CLOSE</button>
+
+
+      <button class="btn btn-primary mat-ripple" md-ripple="submit" [disabled]="disablebutton || !RegisterForm.valid"
+        (click)="save(RegisterForm.value)">SAVE</button>
+
+
+
+      <button class="btn btn-primary mat-ripple" (click)="printBlank()">Print Priscription</button>&nbsp;
+      <button *ngIf="pType!='OUTPATIENT'" class="btn btn-primary mat-ripple" (click)="printAdmissionSlip()">Print
+        AdmissionSlip</button>
+    </div>
+  </ng-template>
+
+
+
+  <ng-template #floor let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Bed Allocation</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+
+        <div class="col-md-4">
+          <label> Select Floor:</label>
+          <div class="form-group">
+
+            <div class="col-xl">
+
+
+
+              <select [(ngModel)]="floor1" style="width:150px" (change)="showFloors(floor1)" placeholder="Floor"
+                type="text">
+                <option>none</option>
+                <option *ngFor="let data of BEDS" [value]="data">{{data}}</option>
+
+              </select>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <label>Select Room Type:</label>
+          <div style="color:rebeccapurple" *ngFor="let n of WARDS" (click)="roomtype(n.roomType)">
+            <button style="font-size :11px;width:130px;" type="button" class="btn btn-outline-dark"
+              (click)="bedColor(n)">{{n.roomType}}</button>
+          </div>
+        </div>
+
+        <!--div class="col-md-6">
+          <div *ngFor="let b of Colors;let i=index">
+
+            <a style="width:150px" [ngStyle]="{'color':getColor(b.status)}"> <i class="fa fa-user-md">{{b.bedName}}</i></a>
+
+
+          </div>
+        </div-->
+        <div class="col-md-8">
+          <div class="d-flex radio btn-group-toggle flex-wrap" data-toggle="buttons">
+            <label *ngFor="let b of Colors;"
+              (click)="b.status != 'OCCUPIED'?(selectedBed==b.bedName? selectedBed=null:selectedBed=b.bedName):null"
+              class="btn p-2 m-1"
+              [ngClass]="{'disabled btn-danger inactive':b.status == 'OCCUPIED', 'btn-primary':b.status != 'OCCUPIED', 'active':selectedBed == b.bedName, 'inactive':selectedBed != b.bedName}">
+              <input type="radio" name="bed-allot" [id]="b.bedName" autocomplete="off"> {{b.bedName}}
+            </label>
+
+          </div>
+
+        </div>
+      </div>
+      <br>
+      <br>
+      <div class="row">
+        <div class="col-md-4">&nbsp;
+          <label>Selected Room: <span class="selected-room">{{selectedBed}}</span></label>
+          <!--div class="form-group">
+
+            <div class="col-xl">
+              <select  [(ngModel)]="bed"   style="width:150px" type="text">
+                  <option>none</option>
+                <option *ngFor="let b of availColors" [value]="b.bedName">{{b.bedName}}</option>
+               
+            </select>
+
+            </div>
+          </div-->
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group ">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input [(ngModel)]="idate" [formControl]="RegisterForm.controls['idate']" matInput placeholder="From"
+                  type="date">
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group ">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input [(ngModel)]="tdate" [formControl]="RegisterForm.controls['tdate']" matInput placeholder="TO"
+                  type="date">
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-md-4">
+          <div class="form-group ">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input [(ngModel)]="eamount" [formControl]="RegisterForm.controls['eamount']" matInput
+                  placeholder="Estimation amount" type="text">
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Done</button>
+
+
+    </div>
+  </ng-template>

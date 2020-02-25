@@ -1,0 +1,171 @@
+<div style="padding-left: 10px;padding-top: 10px;padding-right: 10px;margin-bottom: 10px;
+">
+  <mat-card style="background-color: #03a9f4; color:white; padding: 7px; margin-left:-20px;margin-right:-20px">
+    <mat-card-title style= "font-size:19px;font-weight:bold">INVOICE PAYMENTS
+      <!-- 
+        <button style="margin-left: 100vh;" class="btn btn-primary mat-ripple" md-ripple="reset" (click)="reset()">RESET</button> &nbsp;&nbsp;
+        <button style="margin-right: 10px;" class="btn btn-primary mat-ripple" md-ripple="submit" (click)="save(ProForm.value)">save</button> -->
+
+    </mat-card-title>
+
+
+
+
+  </mat-card>
+  <div style="margin-top:-10px;margin-left:-20px;margin-right:-20px">
+  <table width="100%" class="table table-striped table-condensed" style="overflow-y: scroll;">
+      <tbody style="font-size:11px;font-weight: bold">
+    <tr style="background:#03a9f4;color:whitesmoke">
+      <th>Procurement Id</th>
+      <th>Procurement Date</th>
+      <th>Raise Invoice</th>
+      <th>Invoice #</th>
+
+
+
+      <th>Amount</th>
+      <th>Paid Amount</th>
+      <th>Due Amount</th>
+
+
+    </tr>
+    <tr *ngFor="let data of Invoice">
+      <td>{{data.procurementId}}</td>
+      <td>{{data.procurementDate}}</td>
+      <td><a style="color:blue" (click)="open(basic,data)">RaiseInvoice</a>
+      &nbsp;</td>
+      <td style="word-break:break-word">{{data.invoice}}</td>
+      <td>{{data.cost}}</td>
+
+
+      <td>{{data.paid_amount}}</td>
+      <td>{{data.dueAmount}}</td>
+
+    </tr>
+      </tbody>
+  </table>
+  </div>
+
+  <ng-template #basic let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Invoice Details</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class=" col-md-6">
+          <div class="form-group">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input [(ngModel)]="invoice" [formControl]="InvoiceForm.controls['invoice']" matInput placeholder="Invoice#"
+                  type="text" readonly>
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+        <div class=" col-md-6">
+          <div class="form-group">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input [(ngModel)]="cost" [formControl]="InvoiceForm.controls['cost']" matInput placeholder="Amount"
+                  type="text" readonly>
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+
+        <div class=" col-md-6">
+          <div class="form-group">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input [(ngModel)]="paid_amount" [formControl]="InvoiceForm.controls['paid_amount']" matInput
+                  placeholder="Payable Amount" type="text" required>
+              </mat-form-field>
+              <div class="text text-danger" *ngIf="InvoiceForm.controls['paid_amount'].touched && !InvoiceForm.controls['paid_amount'].valid">Mandatory(if not entered)</div>
+              <div class="text text-danger" *ngIf="InvoiceForm.controls['paid_amount'].touched && (!paid_amount < 0 || paid_amount > cost)">Invalid Payable Amount</div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class=" col-md-6">
+          <div class="form-group">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input [(ngModel)]="dueAmount" matInput placeholder="due Amount" type="text" readonly>
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <div class="col-xl">
+              <label>Paidin Full:&nbsp;</label><br>
+              <mat-radio-group>
+                <mat-radio-button [disabled]="this.cost==this.paid_amount" value="Full">Full</mat-radio-button><br>
+                <mat-radio-button [disabled]="this.cost==this.paid_amount" value="Partial">Partial</mat-radio-button>
+
+              </mat-radio-group>
+
+            </div>
+          </div>
+        </div>
+
+        <div class=" col-md-6">
+          <div class="form-group ">
+            <div class="col-xl">
+              <!-- <mat-form-field>
+              
+              
+                            <mat-select   placeholder="PaymentMode">
+                              <mat-option>None</mat-option>
+                              <mat-option value="Cheque">Cheque</mat-option>
+                              <mat-option value="Cash">Cash</mat-option>
+                              <mat-option value="Card">Card</mat-option>
+                              <mat-option value="Adjustment">Adjustment</mat-option>
+                            </mat-select>
+                          </mat-form-field> -->
+              <label>PaymentMode : </label>
+              <select  required [(ngModel)]="payment">
+                <option value="none">None</option>
+                <option value="Cheque">Cheque</option>
+                <option value="Cash">Cash</option>
+                <option value="Card">Card</option>
+                <option value="Adjustment">Adjustment</option>
+              </select> <br>
+              <br>
+              <label>Location :&nbsp;&nbsp;<br> </label>
+              <select required [(ngModel)]="location">
+                <option value="none">None</option>
+                <option value="KPHB">KPHB</option>
+                <option value="Miyapur">Miyapur</option>
+              </select>
+            </div>
+            <div class="text text-danger" *ngIf="InvoiceForm.controls['location'].touched && !InvoiceForm.controls['location'].valid">Mandatory(if not entered)</div>
+        
+          </div>
+        </div>
+
+
+      </div>
+
+
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">close</button>
+      <button class="btn btn-primary mat-ripple" md-ripple="submit" [disabled]="!InvoiceForm.valid" (click)="save(InvoiceForm.value,data);modal.close('Save click')">submit</button>
+    </div>
+  </ng-template>

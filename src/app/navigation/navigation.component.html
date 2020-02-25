@@ -1,0 +1,32 @@
+<nav class="navbar-default navbar-static-side" role="navigation" style="position:fixed; background-color:#2f4050">
+  <div class="sidebar-collapse">
+    <ul class="nav metismenu" id="side-menu">
+      <li class="nav-header">
+        <div class=" profile-element">
+          <span>
+            <!-- <img alt="image" class="img-circle" width="100px" src="../../../assets/img/vpulse5.png" /> -->
+            <img alt="image" class="img-circle" width="140px" src="{{this.image}}" />
+          </span>
+        </div>
+        <!-- <div class="logo-element">
+          <img alt="image" class="img-circle" width="80px" src="../../../assets/img/icons/vPulse.png" />
+
+        </div> -->
+      </li>
+     
+      <!-- [hidden]="menu.hide" -->
+      <div class="vertical-menu" *ngIf="router.url != '/login'">
+      
+        <a *ngFor="let menu of userPages;" [routerLink]="[menu['link']]" class="active" matTooltip="{{menu['name']}}"
+          aria-label="Button that displays a tooltip when focused or hovered over">
+
+          <i [class]="menu['icon']" aria-hidden="true" id="fontawesome"></i>
+          <!-- TO CHANGE -->
+          <span class="nav-label">{{menu['name']}}</span>
+        </a>
+       
+      </div>
+    </ul>
+
+  </div>
+</nav>

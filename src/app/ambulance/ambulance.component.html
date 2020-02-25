@@ -1,0 +1,285 @@
+<div style="padding-left: 10px;padding-top: 10px;padding-right: 10px;margin-bottom: 10px;
+">
+  <div class="fixHeader" id="myHeader" style="margin-left:-20px;margin-right:-20px">
+    <mat-card style="background-color: #03a9f4; color:white; padding: 7px;">
+      <mat-card-title style="font-size:19px;font-weight:bold">Ambulance Services
+        <button style="    margin-right: 10px;
+      float: right;
+      background-color: white;
+      color: black !important;margin-top:-5px " class="btn btn-primary mat-ripple" md-ripple="reset"
+          (click)="reset()">Reset</button> &nbsp;
+        <button style="margin-right: 10px;
+      float: right;
+      background-color: white;
+      color: black !important; margin-right: 10px;margin-top:-5px" class="btn btn-primary mat-ripple"
+          (click)="save(AmbulanceForm.value)" [disabled]="disableBtn">Save</button> &nbsp;
+
+      </mat-card-title>
+    </mat-card>
+  </div>
+  <!-- [disabled]="!AmbulanceForm.valid" -->
+  <!-- refresh() -->
+</div>
+<div class="content">
+  <div style="padding-left:10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+    <mat-card style="padding-left:50infopx;">
+
+      <form class="form-horizontal" class="form-inline" [formGroup]="AmbulanceForm">
+
+        <div class="row">
+
+          <div class="col-lg-3 col-md-4 col-sm-12 ">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field>
+
+
+                  <input [value]="Id[1]?Id[1].nextAmbId:''" matInput placeholder="ServiceId" type="text" readonly>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-4 col-sm-12 ">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field>
+
+
+                  <input [(ngModel)]="patName" [formControl]="AmbulanceForm.controls['patName']" matInput
+                    placeholder="Patient Name" type="text" pattern="[a-zA-Z ]*" minlength="3" maxlength="50" required>
+                </mat-form-field>
+                <div
+                  *ngIf="!submitted && AmbulanceForm.controls['patName'].hasError('required') && AmbulanceForm.controls['patName'].touched"
+                  class="text text-danger">
+                  <small>Patient name is Mandatory</small>
+                </div>
+                <div *ngIf="submitted && AmbulanceForm.controls['patName'].hasError('required')"
+                  class="text text-danger">
+                  <small>Patient name is Mandatory</small>
+                </div>
+                <div
+                  *ngIf="AmbulanceForm.controls['patName'].hasError('pattern') && AmbulanceForm.controls['patName'].touched"
+                  class="text text-danger">
+                  <small>Enter valid type</small>
+                </div>
+                <div
+                  *ngIf="AmbulanceForm.controls['patName'].hasError('minlength') && AmbulanceForm.controls['patName'].touched"
+                  class="text text-danger">
+                  <small>minlength is 3</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-4 col-sm-12 ">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field>
+
+                  <input required [(ngModel)]="mobileNo" pattern="[6789][0-9]{9}" minlength="10" maxlength="10"
+                    [formControl]="AmbulanceForm.controls['mobileNo']" matInput placeholder="Mobile No" type="text">
+                </mat-form-field>
+                <!-- <div class="text text-danger" *ngIf="AmbulanceForm.controls['mobileNo'].errors?.minlength">mobile should have min 10 characters </div>
+                       <div class="text text-danger" *ngIf="AmbulanceForm.controls['mobileNo'].errors?.maxlength">mobile should have max 10 characters </div> -->
+                <div *ngIf=" submitted && AmbulanceForm.controls['mobileNo'].hasError('required')"
+                  class="text text-danger">
+                  <small>Mobile No is Mandatory</small>
+                </div>
+                <div
+                  *ngIf=" !submitted && AmbulanceForm.controls['mobileNo'].hasError('required') && AmbulanceForm.controls['mobileNo'].touched"
+                  class="text text-danger">
+                  <small>Mobile No is Mandatory</small>
+                </div>
+                <div
+                  *ngIf="AmbulanceForm.controls['mobileNo'].hasError('pattern') && AmbulanceForm.controls['mobileNo'].touched"
+                  class="text text-danger">
+                  <small>Enter valid type</small>
+                </div>
+                <div
+                  *ngIf="AmbulanceForm.controls['mobileNo'].hasError('minlength') && AmbulanceForm.controls['mobileNo'].touched"
+                  class="text text-danger">
+                  <small>minlength is 10</small></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-4 col-sm-12 ">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field>
+                  <mat-select required [(ngModel)]="fromLocation" [formControl]="AmbulanceForm.controls['fromLocation']"
+                    placeholder="From Location">
+                    <mat-option value="Hyderabad">Hyderabad</mat-option>
+                    <mat-option value="Chennai">Chennai</mat-option>
+                    <mat-option value="Bangalore">Bangalore</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div *ngIf="submitted && AmbulanceForm.controls['fromLocation'].hasError('required')"
+                  class="text text-danger">
+                  <small>From Location is Mandatory</small>
+                </div>
+                <div
+                  *ngIf="!submitted &&  AmbulanceForm.controls['fromLocation'].hasError('required')&& AmbulanceForm.controls['fromLocation'].touched"
+                  class="text text-danger">
+                  <small>From Location is Mandatory</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-4 col-sm-12 ">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field>
+                  <mat-select required [(ngModel)]="toLocation" [formControl]="AmbulanceForm.controls['toLocation']"
+                    placeholder="To Location">
+                    <mat-option value="Miyapur">Miyapur</mat-option>
+                    <mat-option value="KPHB">KPHB</mat-option>
+
+                  </mat-select>
+                </mat-form-field>
+                <div *ngIf="submitted && AmbulanceForm.controls['toLocation'].hasError('required')"
+                  class="text text-danger">
+                  <small>To Location is Mandatory</small>
+                </div>
+                <div
+                  *ngIf="!submitted && AmbulanceForm.controls['toLocation'].hasError('required') && AmbulanceForm.controls['toLocation'].touched"
+                  class="text text-danger">
+                  <small>To Location is Mandatory</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-4 col-sm-12 ">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field>
+                  <input required [(ngModel)]="fromTime" [formControl]="AmbulanceForm.controls['fromTime']" matInput
+                    [matDatepicker]="picker" placeholder="Date">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+                <div *ngIf="submitted && AmbulanceForm.controls['fromTime'].hasError('required')"
+                  class="text text-danger">
+                  <small>FromTime is Mandatory</small>
+                </div>
+                <div
+                  *ngIf="!submitted && AmbulanceForm.controls['fromTime'].hasError('required') && AmbulanceForm.controls['fromTime'].touched"
+                  class="text text-danger">
+                  <small>FromTime is Mandatory</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-4 col-sm-12 ">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field>
+                  <mat-select required [(ngModel)]="ano" [formControl]="AmbulanceForm.controls['ano']"
+                    placeholder="Ambulance No">
+                    <mat-option>None</mat-option>
+                    <mat-option *ngFor="let c of Id[0]" [value]="c.ambulanceNO">
+
+                      {{c.ambulanceNO}}
+                    </mat-option>
+                  </mat-select>
+
+                </mat-form-field>
+                <div
+                  *ngIf="!submitted && AmbulanceForm.controls['ano'].hasError('required') && AmbulanceForm.controls['ano'].touched"
+                  class="text text-danger">
+                  <small>Ambulance No is Mandatory</small>
+                </div>
+                <div *ngIf="submitted && AmbulanceForm.controls['ano'].hasError('required')" class="text text-danger">
+                  <small>Ambulance No is Mandatory</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-4 col-sm-12 ">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field>
+
+                  <input [(ngModel)]="driverName" [formControl]="AmbulanceForm.controls['driverName']" matInput
+                    placeholder="Driver Name" type="text" pattern="[a-zA-Z ]*" minlength="3" maxlength="50" required>
+                </mat-form-field>
+                <div
+                  *ngIf="!submitted &&AmbulanceForm.controls['driverName'].hasError('required') && AmbulanceForm.controls['driverName'].touched"
+                  class="text text-danger">
+                  <small>Driver Name is Mandatory</small>
+                </div>
+                <div *ngIf="submitted && AmbulanceForm.controls['driverName'].hasError('required')"
+                  class="text text-danger">
+                  <small>Driver Name is Mandatory</small>
+                </div>
+                <div
+                  *ngIf="AmbulanceForm.controls['driverName'].hasError('pattern') && AmbulanceForm.controls['driverName'].touched"
+                  class="text text-danger">
+                  <small>Enter valid type</small>
+                </div>
+                <div
+                  *ngIf="AmbulanceForm.controls['driverName'].hasError('minlength') && AmbulanceForm.controls['driverName'].touched"
+                  class="text text-danger">
+                  <small>minlength is 3</small>
+                </div>
+                <div
+                  *ngIf="AmbulanceForm.controls['driverName'].hasError('maxlength') && AmbulanceForm.controls['driverName'].touched"
+                  class="text text-danger">
+                  <small>maxlength is 3</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </form>
+    </mat-card>
+  </div>
+</div>
+
+<!-- 
+<form [formGroup]="loginForm"   (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label for="username">Username</label>
+    <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }"
+    />
+    <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+      <div *ngIf="f.username.errors.required">Username is required</div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }"
+    />
+    <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+      <div *ngIf="f.password.errors.required">Password is required</div>
+    </div>
+  </div>
+
+  <div class="form-group"    [ngClass]="{ 'is-invalid':loginForm.controls['driverName'].hasError && submitted}">
+
+
+    <mat-form-field>
+
+      <input [(ngModel)]="driverName" [formControl]="loginForm.controls['driverName']"  matInput placeholder="Driver Name" type="text"
+         required>
+    </mat-form-field>
+    <mat-error *ngIf="submitted && loginForm.controls['driverName'].errors" class="invalid-feedback">
+      <mat-error *ngIf="loginForm.controls['driverName'].errors?.required">Password is required</mat-error>
+    </mat-error>
+  </div>
+    <div class="form-group">
+      <button [disabled]="loading" class="btn btn-primary">Login</button>
+
+
+    </div>
+</form>
+<button  class="btn btn-danger" (click)="reset1()">reset</button>
+ -->

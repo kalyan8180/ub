@@ -1,0 +1,17 @@
+.modal-body {
+    overflow-x: auto;
+  }
+  
+  /* mat-form-field
+  {
+width:50px;
+  } */
+
+  .c
+  {
+  
+      white-space: nowrap;
+      display: block;
+      overflow-x: scroll;
+      overflow-y: scroll;
+    }

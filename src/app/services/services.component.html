@@ -1,0 +1,329 @@
+<div style="padding-left: 10px;padding-right: 10px;margin-bottom: 10px;margin-left:-20px;margin-right:-20px">
+    <mat-card style="background-color: #03a9f4; color:white; padding: 7px;padding-top:10px">
+      <mat-card-title style= "font-size:19px;font-weight:bold">ADDING SERVICES
+        <button style="margin-right: 10px;
+        float: right;
+        background-color: white;
+        color: black !important; margin-top:-5px" class="btn btn-primary mat-ripple" md-ripple="reset" (click)="reset()">RESET</button>      &nbsp;&nbsp;
+        <button style="    margin-right: 10px;
+        float: right;
+        background-color: white;
+        color: black !important; margin-right: 10px;margin-top:-5px" class="btn btn-primary mat-ripple" md-ripple="submit" [disabled]="ServiceForm.invalid || !allPriceFilled"
+          (click)="save(ServiceForm.value)">SAVE</button>
+      </mat-card-title>
+    </mat-card>
+  </div>
+<div class="content">
+  <div style="padding-left:10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+    <mat-card id="new" style="padding-left:50infopx;">
+      <form class="form-horizontal" class="form-inline" [formGroup]="ServiceForm">
+        <div class="row" style="margin-top:-15px;margin-bottom:-25px">
+          <div class="col-lg-3 col-md-4 col-sm-12">
+            <div class="form-group ">
+              <div class="col-xl">
+                <mat-form-field>
+                  <!-- [value]="Id[0][0]?Id[0][0].srvicreId:''" -->
+                  <input matInput placeholder="Service Id" [value]="Id" type="text" readonly>
+                </mat-form-field>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-4 col-sm-12">
+            <div class="form-group ">
+              <div class="col-xl">
+                <mat-form-field>
+
+                  <input [(ngModel)]="serviceName" (focusout)="checkDuplicate(serviceName)" [formControl]="ServiceForm.controls['serviceName']"
+                    matInput placeholder="Service Name" type="text" required>
+                </mat-form-field>
+                <span *ngIf="ServiceForm.controls['serviceName'].hasError('required') && ServiceForm.controls['serviceName'].touched" class="text text-danger">
+             <!-- <small>Mandatory(if not entered)</small> -->
+           </span>
+                <!-- <span *ngIf="ServiceForm.controls['serviceName'].hasError('pattern') && ServiceForm.controls['serviceName'].touched"
+             class="text text-danger">
+             <small>Enter valid type</small>
+           </span> -->
+                <span *ngIf="ServiceForm.controls['serviceName'].hasError('minlength') && ServiceForm.controls['serviceName'].touched" class="text text-danger">
+           <small>minlength is 3</small>
+         </span>
+              <div>  <a style="color:green" (click)="open(basic)">ADD CHARGE</a></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-sm-12">
+            <div class="form-group" [ngClass]="{'has-error':!ServiceForm.controls['department'].valid  && ServiceForm.controls['department'].touched}">
+              <div class="col-xl">
+                <mat-form-field>
+
+                  <mat-select [(ngModel)]="department" [formControl]="ServiceForm.controls['department']" name="Department" placeholder="Department"
+                    required>
+
+                    <mat-option>none</mat-option>
+                    <mat-option value="Others">Others</mat-option>
+                    <mat-option value="ANC PACKAGE">ANC PACKAGE</mat-option>
+                    <mat-option value="BIOCHEMISTRY">BIOCHEMISTRY</mat-option>
+                    <mat-option value="CARDIOLOGY">CARDIOLOGY</mat-option>
+                    <mat-option value="RADIOLOGY">RADIOLOGY</mat-option>
+                    <mat-option value="CT SCAN">CT SCAN</mat-option>
+                    <mat-option value="CYTOLOGY">CYTOLOGY</mat-option>
+                    <mat-option value="CLINICAL PATHOLOGY">CLINICAL PATHOLOGY</mat-option>
+                    <mat-option value="DIALYSIS">DIALYSIS</mat-option>
+                    <mat-option value="DIET">DIET</mat-option>
+                    <mat-option value="ENT">ENT</mat-option>
+                    <mat-option value="GASTROENTEROLOGY"> GASTROENTEROLOGY</mat-option>
+                    <mat-option value="GENERAL SURGERY">GENERAL SURGERY</mat-option>
+                    <mat-option value="GENERAL MEDICINE">GENERAL MEDICINE</mat-option>
+                    <mat-option value="GYNECOLOGY CONSULTATION">GYNECOLOGY CONSULTATION</mat-option>
+                    <mat-option value="HISTOPATHOLOGY">HISTOPATHOLOGY</mat-option>
+                    <mat-option value="HAEMATOLOGY">HAEMATOLOGY</mat-option>
+                    <mat-option value="HEALTH CHECKUP">HEALTH CHECKUP</mat-option>
+                    <mat-option value="KIDNEY CHECKUP PACKAGE">KIDNEY CHECKUP PACKAGE</mat-option>
+                    <mat-option value="MICROBIOLOGY">MICROBIOLOGY</mat-option>
+                    <mat-option value="MRI">MRI</mat-option>
+                    <mat-option value="MEDICAL EQUIPMENT">MEDICAL EQUIPMENT</mat-option>
+                    <mat-option value="MISCELLANEOUS CHARGES">MISCELLANEOUS CHARGES</mat-option>
+                    <mat-option value="OT">OT</mat-option>
+                    <mat-option value="PHARMACY">PHARMACY</mat-option>
+                    <mat-option value="PROFESSIONAL CHARGES">PROFESSIONAL CHARGES</mat-option>
+                    <mat-option value="PAEDIATRICIAN CHARGES">PAEDIATRICIAN CHARGES</mat-option>
+                    <mat-option value="PATHOLOGY">PATHOLOGY</mat-option>
+                    <mat-option value="SEROLOGY">SEROLOGY</mat-option>
+                    <mat-option value="SPECIAL INVESTIGATION">SPECIAL INVESTIGATION</mat-option>
+                    <mat-option value="TRANSFUSION MEDICINE">TRANSFUSION MEDICINE</mat-option>
+                    <mat-option value="ULTRA SOUND">ULTRA SOUND</mat-option>
+                    <mat-option value="UROLOGY">UROLOGY</mat-option>
+                    <mat-option value="WARD SERVICE GROUP">WARD SERVICE GROUP</mat-option>
+                    <mat-option value="XRAY">XRAY</mat-option>
+
+                  </mat-select>
+
+                </mat-form-field>
+                <span *ngIf="ServiceForm.controls['department'].hasError('required') && ServiceForm.controls['department'].touched" class="text text-danger">
+                      <small>Please select a valid value</small>
+                    </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="col-lg-3 col-md-4 col-sm-12">
+            <div class="form-group ">
+              <div class="col-xl">
+                <mat-form-field>
+
+                  <input [(ngModel)]="cost" [formControl]="ServiceForm.controls['cost']" matInput placeholder="Cost" type="text" required>
+                </mat-form-field>
+                <span *ngIf="ServiceForm.controls['cost'].hasError('required') && ServiceForm.controls['cost'].touched" class="text text-danger">
+             <small>Mandatory(if not entered)</small>
+           </span>
+                <span *ngIf="ServiceForm.controls['cost'].hasError('pattern') && ServiceForm.controls['cost'].touched" class="text text-danger">
+             <small>Enter valid type</small>
+           </span>
+              </div>
+            </div>
+          </div> -->
+          <div class="col-lg-3 col-md-4 col-sm-12">
+            <div class="form-group ">
+              <div class="col-xl">
+                <mat-form-field>
+                  <input [(ngModel)]="fromDate" [formControl]="ServiceForm.controls['fromDate']" matInput [matDatepicker]="picker1" placeholder="From"
+                    readonly>
+                  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                  <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+                <!-- <span *ngIf="ServiceForm.controls['fromDate'].hasError('required') && ServiceForm.controls['fromDate'].touched"
+            class="text text-danger">
+            <small>Mandatory(if not entered)</small>
+          </span> -->
+              </div>
+            </div>
+          </div>
+
+
+
+
+          <div class="col-lg-3 col-md-4 col-sm-12">
+            <div class="form-group ">
+              <div class="col-xl">
+                <mat-form-field>
+                  <input [(ngModel)]="tillDate" [formControl]="ServiceForm.controls['tillDate']" matInput [matDatepicker]="picker" placeholder="Till"
+                    readonly>
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+                <!-- <span *ngIf="ServiceForm.controls['tillDate'].hasError('required') && ServiceForm.controls['tillDate'].touched"
+            class="text text-danger">
+            <small>Mandatory(if not entered)</small>
+          </span> -->
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="col-lg-3 col-md-4 col-sm-12">
+            <div class="form-group ">
+              <div class="col-xl">
+                <mat-form-field>
+
+                  <mat-select [(ngModel)]="patientType" [formControl]="ServiceForm.controls['patientType']" matInput placeholder="Patient type"
+                    type="text" required>
+                    <mat-option value="GENERAL">GENERAL</mat-option>
+                    <mat-option value="INPATIENT">INPATIENT</mat-option>
+                    <mat-option value="OUTPATIENT">OUTPATIENT</mat-option>
+                    <mat-option value="EMERGENCY">EMERGENCY</mat-option>
+                    <mat-option value="OTHERS">OTHERS</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <span *ngIf="ServiceForm.controls['patientType'].hasError('required') && ServiceForm.controls['patientType'].touched" class="text text-danger">
+             <small>Mandatory(if not entered)</small>
+           </span>
+              </div>
+            </div>
+          </div> -->
+          <div class="col-lg-3 col-md-4 col-sm-12">
+            <div class="form-group ">
+              <div class="col-xl">
+                <mat-form-field>
+
+                  <mat-select [(ngModel)]="serviceType" [formControl]="ServiceForm.controls['serviceType']" matInput placeholder="ServiceType"
+                    type="text" required>
+                    <mat-option value="Lab">Lab</mat-option>
+                    <mat-option value="Consultation Charges">Consultation Charges</mat-option>
+                    <mat-option value="Ward Charges">Ward Charges</mat-option>
+                    <mat-option value="Equipment Charges">Equipment Charges</mat-option>
+                    
+                    <mat-option value="Other">Other</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <span *ngIf="ServiceForm.controls['serviceType'].hasError('required') && ServiceForm.controls['serviceType'].touched" class="text text-danger">
+            <small>Mandatory(if not entered)</small>
+          </span>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="serviceType==='lab'" class="col-lg-3 col-md-4 col-sm-12">
+            <div class="form-group">
+              <div class="col-xl">
+                <mat-form-field>
+                  <mat-select [(ngModel)]="specimenType" [formControl]="ServiceForm.controls['specimenType']" placeholder="SpecimenType">
+                    <mat-option value="URINE">URINE</mat-option>
+                    <mat-option value="BLOOD">BLOOD</mat-option>
+                    <mat-option value="SERUM">SERUM</mat-option>
+                    <mat-option value="STEMCELLS">STEMCELLS</mat-option>
+                    <mat-option value="XRAY">XRAY</mat-option>
+                    <mat-option value="SELVIA">SELVIA</mat-option>
+                    <mat-option value="TUMOR">TUMOR</mat-option>
+
+
+                  </mat-select>
+
+                </mat-form-field>
+                <span *ngIf="ServiceForm.controls['specimenType'].hasError('required') && ServiceForm.controls['specimenType'].touched" class="text text-danger">
+            <small>Mandatory(if not entered)</small>
+          </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-sm-12">
+            <div class="form-group">
+              <div class="col-xl">
+                <mat-form-field>
+                  <mat-select [(ngModel)]="inHouse" [formControl]="ServiceForm.controls['inHouse']" name="In house" placeholder="In house"
+                    required>
+
+                    <mat-option value="Yes">Yes</mat-option>
+                    <mat-option value="No">No</mat-option>
+
+                  </mat-select>
+
+                </mat-form-field>
+                <span *ngIf="ServiceForm.controls['inHouse'].hasError('required') && ServiceForm.controls['inHouse'].touched" class="text text-danger">
+             <small>Mandatory(if not entered)</small>
+           </span>
+              </div>
+            </div>
+          </div>
+
+
+
+
+
+        </div>
+      </form>
+
+
+    </mat-card>
+
+
+  </div>
+</div>
+
+<ng-template #basic let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add Charges</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+  </div>
+  <div class="modal-body" style="height:80vh; overflow:auto">
+
+
+    <table width="100%" class="table table-condensed table-bordered" style="overflow-y: scroll;">
+      <tr style="background:#03a9f4;color:whitesmoke">
+        <th>Sno</th>
+
+        <th>PatientType</th>
+        <th>RoomType</th>
+
+        <th>Cost</th>
+        <!--th>Action</th-->
+      </tr>
+      <tr *ngFor="let data of services;let i=index">
+        <td>{{i+1}}</td>
+        <td> {{data.patientType}}
+          <!--mat-form-field>
+
+            <mat-select [(ngModel)]="data.patientType" matInput placeholder="Patient type" type="text">
+
+              <mat-option value="INPATIENT">INPATIENT</mat-option>
+              <mat-option value="OUTPATIENT">OUTPATIENT</mat-option>
+
+              <mat-option value="OSP">OSP</mat-option>
+            </mat-select>
+          </mat-form-field-->
+        </td>
+        <td> {{data.roomType}}
+          <!--mat-form-field>
+
+            <mat-select [disabled]="data.patientType!='INPATIENT'" [(ngModel)]="data.roomType" matInput placeholder="Room Type" type="text">
+
+
+              <mat-option *ngFor="let c of Id[1];let i=index" [value]="c.roomType">
+                {{c.roomType}}
+
+              </mat-option>
+            </mat-select>
+
+          </mat-form-field-->
+        </td>
+        <td>
+          <!--mat-form-field-->
+          <input type="text" [(ngModel)]="data.cost" placeholder="cost">
+          <!--/mat-form-field-->
+        </td>
+        <!--td>
+            <a (click)="addMore($event)"><i class="fa fa-plus" style="font-size:18px;color:blue"></i></a>&nbsp;
+            <a  (click)="removeSaleItem(i);"><i class="fa fa-close" style="font-size:18px;color:red"></i></a>
+          </td-->
+      </tr>
+
+    </table>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click');validateCharges()">Done</button>
+
+
+  </div>
+</ng-template>

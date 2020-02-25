@@ -1,0 +1,98 @@
+<div style="padding-left: 10px;padding-top: 10px;padding-right: 10px;margin-bottom: 10px;margin-left:-20px;margin-right:-20px
+">
+  <mat-card style="background-color: #03a9f4; color:white; padding: 7px;">
+    <mat-card-title style= "font-size:19px;font-weight:bold">RETURNS LIST
+    </mat-card-title>
+  </mat-card>
+</div>
+<div style="padding-left:10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+    <mat-card style="max-height: 50px; padding-top: 5px">
+    <label>
+        <mat-form-field style="width:150px;margin-top:-5px">
+        <mat-select [(ngModel)]="count" (selectionChange)="showCount(count)" matInput placeholder="Days">
+          <mat-option value="2">2</mat-option>
+          <mat-option value="7">7</mat-option>
+
+          <mat-option value="15">15</mat-option>
+
+          <mat-option value="30">30</mat-option>
+          <mat-option value="All">All</mat-option>
+
+        </mat-select>
+
+      </mat-form-field>
+
+
+    </label>
+  </mat-card>
+</div>
+
+<div style="padding-left:10px;margin-top:-10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+
+  <table width="100%" class="table table-striped table-condensed" style="overflow-y: scroll;">
+      <tbody style="font-size:11px;font-weight: bold">
+    <tr style="background:#03a9f4;color:whitesmoke">
+
+      <th>Bill No</th>
+
+      <th>UMR#</th>
+      <th>RegId</th>
+      <th>Date</th>
+      <th>patient Name</th>
+      <th>Mobile</th>
+      <th>Amount</th>
+      <th>Tracker</th>
+    </tr>
+
+    <tr *ngFor="let data of RefDet">
+
+      <td>
+        {{data.billNo}}
+      </td>
+      <td> {{data.umrNo}} </td>
+      <td> {{data.regNo}} </td>
+      <td> {{data.Date}} </td>
+      <td>{{data.patientName}}</td>
+
+
+      <td>{{data.mobileNo}}</td>
+      <td>
+        {{data.Amount}}
+      </td>
+      <td> <a style="color:blue" (click)="showReports(basic2);showPdf(data)">Tracker</a></td>
+    </tr>
+      </tbody>
+  </table>
+</div>
+<ng-template #basic2 let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">ALL RETURN BILLS</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <table class="table table-">
+      <thead>
+        <th> Name </th>
+        <th> Action </th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of Bills | keyvalue">
+
+          <td> {{item.key}}</td>
+          <td><a href="{{item.value}}" target="_blank">open</a></td>
+        </tr>
+      </tbody>
+
+    </table>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-danger" (click)="modal.close('Save click')">cancel</button>
+
+
+
+
+  </div>
+</ng-template>

@@ -1,0 +1,435 @@
+<div style="padding-left: 10px;padding-top: 10px;padding-right: 10px;margin-bottom: 10px;">
+    <div class="fixHeader" id="myHeader" style="margin-left:-20px;margin-right:-20px">
+        <mat-card style="background-color: #03a9f4; color:white; padding: 7px;">
+            <mat-card-title style="font-size:19px;font-weight:bold"> DUE BILLS
+                <button style="    margin-right: 10px;
+      float: right;
+      background-color: white;
+      color: black !important; margin-top:-5px" class="btn btn-primary mat-ripple" md-ripple="reset" (click)="reset()">Reset</button>                &nbsp;
+
+
+            </mat-card-title>
+        </mat-card>
+    </div>
+</div>
+
+<div style="padding-left:10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+    <mat-card style="max-height: 45px; padding-top: 2px">
+        <label>
+             <!-- <form class="form-horizontal" class="form-inline" [formGroup]="PatientForm">  -->
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-12 ">
+                  <div class="form-group "> 
+                    <div class="col-xl" style="padding-top:2px">
+        <!-- <mat-form-field> -->
+           
+                  <input [(ngModel)]="filter" maxlength="10"  matInput placeholder="Search" type="search" >
+                <!-- </mat-form-field> -->
+                </div>
+                </div>
+                </div>
+  
+                <div class="col-lg-6 col-md-6 col-sm-12 ">
+                    <div class="form-group">
+                        <div class="col-xl">
+                            <mat-form-field>
+                                <mat-select  [(ngModel)]="type"  [formControl]="InventoryForm.controls['type']" placeholder="Type" (selectionChange)="saveas(type)">
+                                    <mat-option value="All">All</mat-option>
+                                    <mat-option value="Pharmacy">Pharmacy</mat-option>
+                                    <mat-option value="Consulting">Consulting</mat-option>
+                                    <mat-option value="Lab">Lab</mat-option>
+                                    <mat-option value="OSP">OSP</mat-option>
+                                   
+                
+                                  </mat-select>
+                
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div> 
+  
+                </div>
+                </label>
+    </mat-card>
+
+</div>
+
+<!-- </div>
+  <div class="content">
+    <div style="padding-left:10px;padding-right:10px">
+        <mat-card style="padding-left:50infopx;">
+  
+            <form class="form-horizontal" class="form-inline" [formGroup]="InventoryForm">
+  
+                <div class="row">
+                 
+                    <div class="col-lg-4 col-md-3 col-sm-12 ">
+                        <div class="form-group">
+                            <div class="col-xl">
+                                <mat-form-field>
+  
+                                    <input [(ngModel)]="UMRno"  [formControl]="InventoryForm.controls['UMRno']" matInput (keydown.enter)="findPatient(UMRno)"  placeholder="UMR#" type="text">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div> 
+                  
+                    
+                    <div  class="col-lg-4 col-md-3 col-sm-12 ">
+                      <div class="form-group">
+                          <div class="col-xl">
+                              <mat-form-field>
+  
+                                  <input [(ngModel)]="regno"  [formControl]="InventoryForm.controls['regno']" matInput (keydown.enter)="findbyPatient(regno)"  placeholder="REG#" type="text">
+                              </mat-form-field>
+                          </div>
+                      </div>
+                  </div> 
+                    <div class="col-lg-4 col-md-3 col-sm-12 ">
+                        <div class="form-group">
+                            <div class="col-xl">
+                                <mat-form-field>
+  
+                                    <input  [(ngModel)]="mobileno"  [formControl]="InventoryForm.controls['mobileno']" matInput placeholder="MobileNo" type="text">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div> 
+                    <div class="col-lg-4 col-md-3 col-sm-12 ">
+                        <div class="form-group">
+                            <div class="col-xl">
+                                <mat-form-field>
+                                    <input  [(ngModel)]="name"  [formControl]="InventoryForm.controls['name']" matInput placeholder="Name" type="text">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div> 
+                    <div  *ngIf="UMRno!=null" class="col-lg-4 col-md-3 col-sm-12 ">
+                        <div class="form-group">
+                            <div class="col-xl">
+                                <mat-form-field>
+                                    <mat-select  [(ngModel)]="type"  [formControl]="InventoryForm.controls['type']" placeholder="Type" (selectionChange)="saveas(type)">
+                                        <mat-option value="All">All</mat-option>
+                                        <mat-option value="Pharmacy">Pharmacy</mat-option>
+                                        <mat-option value="Consulting">Consulting</mat-option>
+                                        <mat-option value="Lab">Lab</mat-option>
+                                        <mat-option value="IP">IP</mat-option>
+                                        <mat-option value="Others">Others</mat-option>
+                    
+                                      </mat-select>
+                    
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div> 
+  
+                    <div  *ngIf="regno!=null" class="col-lg-4 col-md-3 col-sm-12 ">
+                      <div class="form-group">
+                          <div class="col-xl">
+                              <mat-form-field>
+                                  <mat-select  [(ngModel)]="typeas"  [formControl]="InventoryForm.controls['typeas']" placeholder="Type" (selectionChange)="saveref(typeas)">
+                                      <mat-option value="All">All</mat-option>
+                                      <mat-option value="Pharmacy">Pharmacy</mat-option>
+                                      <mat-option value="Consulting">Consulting</mat-option>
+                                      <mat-option value="Lab">Lab</mat-option>
+                                      <mat-option value="IP">IP</mat-option>
+                                      <mat-option value="Others">Others</mat-option>
+                  
+                                    </mat-select>
+                  
+                              </mat-form-field>
+                          </div>
+                      </div>
+                  </div> 
+  
+                
+             
+                </div>
+            </form>
+        </mat-card>
+    </div>
+  </div> -->
+
+
+<div style="padding-left:10px;margin-top:-10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+
+    <table width="100%" class="table table-striped table-condensed" style="overflow-y: scroll;">
+        <tbody style="font-size:11px;font-weight: bold">
+            <tr style="background:#03a9f4;color:whitesmoke">
+                <th>S.NO</th>
+                <th>REG#</th>
+                <th>UMR#</th>
+                <th>Date</th>
+                <th>Name</th>
+                <th>Due Type</th>
+                <th>Bill No</th>
+                <!-- <th>Date</th> -->
+                <th>Amount</th>
+                <th>Pay</th>
+            </tr>
+            <tr let *ngFor="let data of alist| filter: filter | paginate: { itemsPerPage: 15, currentPage: p };let i =index">
+                <td>{{i+1}}</td>
+                <td>{{data.patientregid}}</td>
+                <td>{{data.umr}}</td>
+                <td> {{data.date}} </td>
+                <td>{{data.patientName}}</td>
+                <td>{{data.dueFor}}</td>
+                <td>{{data.billno}}</td>
+                <!-- <td>{{data.saleDate}}</td> -->
+                <td> {{data.amount}}</td>
+
+                <td><a style="color:blue" (click)="open(basic,data)">pay</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<pagination-controls (pageChange)="p = $event"></pagination-controls>
+
+
+<ng-template #basic let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">PAYMENT PAGE</h4>
+        <button type="button" class="close" aria-label="Close" (click)="resetcancel();modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+    </div>
+    <div class="modal-body">
+
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <div class="form-group ">
+                <div class="col-xl">
+
+                    <mat-form-field>
+                    <input [(ngModel)]="dueFor"  matInput placeholder="DueFor" type="text">
+                    </mat-form-field>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group ">
+                <div class="col-xl">
+                    <mat-form-field>
+                        <input [(ngModel)]="amount" matInput placeholder="Total" type="text" readonly>
+
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group ">
+                <div class="col-xl">
+                    <mat-form-field>
+                        <input [(ngModel)]="discount" (input)="calculateNetamount()" matInput placeholder="Discount" type="text">
+
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+
+       
+
+
+        <div class="col-md-6">
+            <div class="form-group ">
+                <div class="col-xl">
+                    <mat-form-field>
+                        <input [(ngModel)]="netAmount" matInput placeholder="NetAmount" type="text">
+
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+        <!-- <div class=" col-md-6">
+            <label>Payment Type :</label>
+            <div class="form-group">
+              <div class="col-xl">
+                <select style="width:150px" [(ngModel)]="paymentType" placeholder="Type">
+                    <option value="advance">Advance</option>
+        
+                    <!-- <option value="Credit">Credit</option> -->
+        <!-- <option value="Due">Due</option>
+                    <option value="Cash">Cash</option>
+                    <option value="Card">Card</option>
+                     <option value="Cash+Card">Cash+Card</option> 
+        
+                  </select>
+      
+              </div>
+            </div>
+          </div> -->
+
+        <div class="row">
+
+            <div>
+                <table width="100%" class="table table-bordered table-condensed table-responsive">
+
+                    <tr style="background:#03a9f4;color:whitesmoke">
+                        <!-- <th>Sno</th> -->
+                        <th>Payment Type</th>
+
+                        <!-- <th>Action</th> -->
+
+                    </tr>
+
+                    <tr *ngFor="let c of multiplePayment1;let i= index">
+                        <!-- <td> {{i + 1}}</td> -->
+                        <td>
+
+                            <div *ngFor="let option of options; let optI = index">
+
+                                <div style="display:inline">
+                                    <!-- <mat-form-field style="width:80px"> -->
+                                    <select style="width:80px;" (ngModelChange)="changed($event, i)" [(ngModel)]="c.payType" placeholder="Type">
+            
+                                  <option *ngFor="let type of types$ | async; let i = index" [value]="type.text" [disabled]="!type.allowed">
+                                    {{type.text}}</option>
+                                </select>&nbsp;&nbsp;
+
+                                    <!-- </mat-form-field>&nbsp;&nbsp; -->
+                                    <a (click)="addMore1($event);secondrow()"><i class="fa fa-plus" style="font-size:15px;color:blue"></i></a>&nbsp;
+                                    <a *ngIf="multiplePayment1.length>1" (click)="removeSaleItem1(i);secondrowremove()"><i class="fa fa-close" style="font-size:15px;color:red"></i></a>&nbsp;
+                                    <div style="display:inline" *ngIf="c.payType==='Card'">
+
+                                        <!-- <mat-form-field style="width:80px"> -->
+                                        <input style="width:80px" [(ngModel)]="referenceNumber" placeholder="Ref No" type="text">
+
+                                        <!-- </mat-form-field> -->
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <!-- <a (click)="addMore1($event);secondrow()"><i class="fa fa-plus" style="font-size:10px;color:blue"></i></a>&nbsp;
+                          <a *ngIf="multiplePayment1.length>1" (click)="removeSaleItem1(i);secondrowremove()"><i class="fa fa-close" style="font-size:10px;color:red"></i></a> -->
+                        </td>
+
+                        <!-- <td>
+                          <a (click)="addMore1($event);secondrow()"><i class="fa fa-plus" style="font-size:10px;color:blue"></i></a>&nbsp;
+                          <a *ngIf="multiplePayment1.length>1" (click)="removeSaleItem1(i);secondrowremove()"><i class="fa fa-close" style="font-size:10px;color:red"></i></a>
+                        </td> -->
+
+                    </tr>
+                </table>
+            </div>&nbsp;&nbsp;
+            <div style="float: left">
+
+                <table width="100%" class="table table-bordered table-condensed table-responsive">
+
+                    <tr style="background:#03a9f4;color:whitesmoke">
+
+                        <th>Amount</th>
+                        <!-- <th>Action</th> -->
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <!-- <mat-form-field style="width:80px"> -->
+                            <input style="width:80px;height:22px" [disabled]="Xamount" min="0" max="amount" (input)="amount2()" [(ngModel)]="X" placeholder="Amount"
+                                type="text">
+
+                            <!-- </mat-form-field> -->
+                            <!-- <div>
+            
+                            <mat-form-field style="width:80px">
+                              <input [(ngModel)]="referenceNumber" matInput placeholder="Ref No" type="text">
+            
+                            </mat-form-field>
+            
+                          </div> -->
+                        </td>
+
+
+                        <!-- <td> <a (click)="secondrow()"><i class="fa fa-plus" style="font-size:18px;color:blue"></i></a></td> -->
+                    </tr>
+
+                    <tr>
+                        <td *ngIf="!row">
+                            <!-- <mat-form-field style="width:80px"> -->
+                            <input style="width:80px;height:22px" (input)="amount1()" min="0" max="amount" [(ngModel)]="Y" placeholder="Amount" type="text">
+
+                            <!-- </mat-form-field> -->
+                        </td>
+                    </tr>
+                    <!-- <tr>
+            
+                        <td *ngIf="!row"><input placeholder="Amount2" (input)="amount1()" [(ngModel)]="Y" type="text"></td>
+                        <td> <a *ngIf="!row" (click)="secondrowremove()"><i class="fa fa-close" style="font-size:18px;color:red"></i></a></td>
+                      </tr> -->
+                </table>
+            </div>
+        </div>
+
+        <!-- <div class="col-lg-6 col-md-6 col-sm-12">
+            <div class="form-group ">
+                <div class="col-xl">
+
+                    <label>Payment Type</label>
+                    <select [(ngModel)]="Payment" style="width:200px"> -->
+        <!-- <option value="none">none</option> -->
+        <!-- <option  value="Advance">Advance</option> -->
+        <!-- <option  value="Cash">Cash</option>
+                  <option   value="Card">Card</option>
+                  <option  value="Cash+Card">Cash+Card</option>
+    
+                </select>
+
+
+                </div>
+            </div>
+        </div> -->
+
+        <!-- <div *ngIf="Payment==='Cash+Card'||Payment==='Card'" class="col-md-6">
+            <div class="form-group" style="padding-right:20 px;">
+                <div class="col-xl">
+                    <label>RefNo </label>
+                    <input [(ngModel)]="referenceNumber" type="text">
+
+
+                </div>
+            </div>
+        </div> -->
+        <!-- <div *ngIf="Payment==='Cash+Card'" class="col-md-6">
+            <div class="form-group" style="padding-right:20 px;">
+                <div class="col-xl">
+                    <label>CashAmount : </label>
+
+
+                    <input required [(ngModel)]="this.cashamount" (input)="getcardamount()" type="text">
+
+
+                </div>
+
+
+            </div>
+        </div>
+ -->
+        <!-- <div *ngIf="Payment==='Cash+Card'" class="col-md-6">
+            <div class="form-group" style="padding-right:20 px;">
+                <div class="col-xl">
+                    <label>CardAmount: </label>
+
+
+                    <input required [(ngModel)]="this.cardamount" (input)="getcashamount()" type="text">
+
+
+                </div>
+            </div>
+        </div> -->
+
+
+        <!-- <h1 style="padding-left:300px"> Total:{{this.amount}}</h1> -->
+
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger mat-ripple" (click)="resetcancel();modal.close('Save click')">No</button>
+        <button class="btn btn-primary mat-ripple" md-ripple="submit" (click)="save(InventoryForm.value);modal.close('Save click')">Save</button>
+
+
+
+    </div>
+</ng-template>

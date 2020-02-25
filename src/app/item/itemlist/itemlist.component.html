@@ -1,0 +1,217 @@
+<div style="padding-left: 10px;padding-top: 10px;padding-right: 10px;margin-bottom: 10px;margin-left:-20px;margin-right:-20px
+">
+  <mat-card style="background-color: #03a9f4; color:white; padding: 5px;">
+    <mat-card-title style="font-size:19px;font-weight:bold">ITEM LIST
+
+
+    </mat-card-title>
+
+
+  </mat-card>
+
+
+</div>
+<div style="margin-left:-20px;margin-right:-10px">
+  <mat-card style="max-height: 45px; padding-top: 2px">
+    <label style="padding-top:2px">
+      <!-- <mat-form-field style="width:150px;margin-top:-5px"> -->
+
+        <input [(ngModel)]="filter" matInput placeholder="Search" type="search">
+      <!-- </mat-form-field> -->
+    </label>
+
+
+  </mat-card>
+
+</div>
+<div style="padding-left:10px;margin-top:-10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+  <table width="100%" class="table table-striped table-condensed" style="overflow-y: scroll;">
+    <tbody style="font-size:11px;font-weight: bold">
+  <tr style="background:#03a9f4;color:whitesmoke">
+    <th>S.No</th>
+    <th>Item Id</th>
+    <th>Item Name</th>
+    <th>Drug Type</th>
+    <th>Inserted By</th>
+    <th>Inserted date</th>
+
+
+    <th>Modified By</th>
+    <th>Modified Date</th>
+
+  </tr>
+  <tr *ngFor="let data of Medicine |filter: filter|paginate:{itemsPerPage: 15, currentPage: p};let i=index">
+      <td>{{15 * (p - 1) + i+1}}</td>
+    <td><a style="color:blue" (click)="open(basic,data)">{{data.medicineId}}</a></td>
+    <td>{{data.name}}</td>
+    <td>{{data.drugType}}</td>
+    <td></td>
+    <td>{{data.insertedDate | date:"dd.MM.y" }}</td>
+    <td></td>
+    <td></td>
+  </tr>
+    </tbody>
+</table>
+</div>
+<pagination-controls (pageChange)="p = $event"></pagination-controls>
+<ngx-spinner
+bdColor = "rgba(51, 51, 51, 0.8)"
+size = "large"
+color = "rgb(73, 165, 171)"
+type = "ball-clip-rotate-pulse"></ngx-spinner>
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }" [template]="customLoadingTemplate"></ngx-loading>
+    
+
+
+<ng-template #basic let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Item Edit Information</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+              <span aria-hidden="true">&times;</span>
+            </button>
+    </div>
+    <div class="modal-body">
+      <form class="form-horizontal" class="form-inline" [formGroup]="ItemForm">
+      <div class="row">
+        <div class="col-lg-3 col-md-3">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+
+                <input  [(ngModel)]="medicineId" formControlName="medicineId" matInput placeholder="Medicine Id" type="text">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-3">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+
+                <input   [(ngModel)]="name"  formControlName="name" matInput placeholder="MedicineName" type="text">
+              </mat-form-field>
+            </div>
+ 
+                   
+          </div>
+        </div>
+      
+        
+        <div class="col-lg-3 col-md-3">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+
+                <input  [(ngModel)]="brand"  formControlName="brand" matInput placeholder="Brand" type="text">
+              </mat-form-field>
+            </div>
+
+
+         </div>
+
+          </div>
+       
+
+        <div class="col-lg-3 col-md-3">
+            <div class="form-group ">
+              <div class="col-xl">
+                <mat-form-field style="width:150px">
+
+                  <input [(ngModel)]="strengthUnits"  formControlName="strengthUnits" matInput placeholder="Strength Units" type="text">
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-3">
+              <div class="form-group ">
+                <div class="col-xl">
+                  <mat-form-field>
+  
+                    <input [(ngModel)]="saleUnits"  formControlName="saleUnits" matInput placeholder=" Sales Units" type="text">
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-3">
+              <div class="form-group ">
+                <div class="col-xl">
+                  <mat-form-field>
+  
+                    <input  [(ngModel)]="quantityPerDay"  formControlName="quantityPerDay" matInput placeholder="Qty Per Day" type="text">
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-3">
+              <div class="form-group ">
+                <div class="col-xl">
+                  <mat-form-field>
+  
+                    <input  [(ngModel)]="minPurchaseQuantity"  formControlName="minPurchaseQuantity"  matInput placeholder="Min Purchase qty" type="text">
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+
+
+          <div class="col-lg-3 col-md-3">
+              <div class="form-group ">
+                <div class="col-xl">
+                  <mat-form-field  style="width:150px">
+  
+                    <input  [(ngModel)]="maxPurchaseQuantity" formControlName="maxPurchaseQuantity" matInput placeholder="Max Purchase qty" type="text">
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+        <div class="col-lg-3 col-md-3">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+                <mat-select style="width:150px" [(ngModel)]="drugType" formControlName="drugType"  matInput placeholder="drug type">
+                   <!-- <mat-option>None</mat-option>  -->
+                   <mat-option value="CAPSULES">CAPSULES</mat-option>
+                   <mat-option value="CREAMS">CREAMS</mat-option>
+                   <mat-option value="DISPOSABLES">DISPOSABLES</mat-option>
+                   <mat-option value="DROPS">DROPS</mat-option>
+                   <mat-option value="FOOD PRODUCTS">FOOD PRODUCTS</mat-option>
+                   <mat-option value="GENERAL">GENERAL</mat-option>
+                   <mat-option value="I.V FLUIDS">I.V FLUIDS</mat-option>
+                   <mat-option value="IMPLANTS">IMPLANTS</mat-option>
+                   <mat-option value="INHALERS">INHALERS</mat-option>
+                   <mat-option value="INJECTION">INJECTION</mat-option>
+                   <mat-option value="LIQUIDS">LIQUIDS</mat-option>
+                   <mat-option value="LOTIONS">LOTIONS</mat-option>
+                   <mat-option value="OINTMENTS">OINTMENTS</mat-option>
+                   <mat-option value="OTHERS">OTHERS</mat-option>
+                   <mat-option value="POWDERS">POWDERS</mat-option>
+                   <mat-option value="RESPULES">RESPULES</mat-option>
+                   <mat-option value="ROTACAPS">ROTACAPS</mat-option>
+                   <mat-option value="SACHETS">SACHETS</mat-option>
+                   <mat-option value="SOAPS">SOAPS</mat-option>
+                   <mat-option value="SOLUTIONS">SOLUTIONS</mat-option>
+                   <mat-option value="SPRAYS">SPRAYS</mat-option>
+                   <mat-option value="SUPPOSITORS">SUPPOSITORS</mat-option>
+                   <mat-option value="SURGICALS">SURGICALS</mat-option>
+                   <mat-option value="SUSPENSIONS">SUSPENSIONS</mat-option>
+                   <mat-option value="SUTURES">SUTURES</mat-option>
+                   <mat-option value="SYRUPS">SYRUPS</mat-option>
+                   <mat-option value="TABLETS">TABLETS</mat-option>
+                   <mat-option value="VILE">VILE</mat-option>
+   
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        </div>
+  </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">close</button>
+      <!-- <button class="btn btn-primary mat-ripple" md-ripple="submit">save</button> -->
+      <button type="button" class="btn btn-primary mat-ripple" md-ripple="submit" (click)="save();refresh();modal.close('Save click')">save</button>
+    </div>
+  </ng-template>
+  

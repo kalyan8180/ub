@@ -1,0 +1,175 @@
+<div style="padding-left: 10px;padding-top: 10px;padding-right: 10px;margin-bottom: 10px;
+">
+  <div class="fixHeader" id="myHeader" style= "margin-left:-20px;margin-right:-20px" >
+    <mat-card style="background-color: #03a9f4; color:white; padding: 7px;">
+      <mat-card-title style="font-size:19px;font-weight:bold">NURSE VIEW
+        <!-- <button style="margin-left: 100vh;" class="btn btn-primary mat-ripple" md-ripple="reset" (click)="reset()">RESET</button>      &nbsp;
+      <button style="margin-right: 10px;"  class="btn btn-primary mat-ripple" (click)="open(basic)">CONFIRM</button> &nbsp; -->
+
+      </mat-card-title>
+    </mat-card>
+  </div>
+
+</div>
+<div style="padding-left:10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+  <mat-card style="max-height: 45px; padding-top: 2px">
+
+    <label>
+      <div class="row">
+        <div class="col-lg-3 col-md-4 col-sm-12 ">
+
+          <div class="form-group ">
+            <div class="col-xl">
+              <!-- <mat-form-field style="width:100px;margin-top:-5pxpx" id="value"> -->
+
+                <input [(ngModel)]="filter"  placeholder="Search" type="search">
+              <!-- </mat-form-field> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </label>
+  </mat-card>
+</div>
+
+
+<div style="padding-left:10px;margin-top:-10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+
+  <table width="100%" class="table table-striped table-condensed" style="overflow-y: scroll;">
+      <tbody style="font-size:11px;font-weight: bold">
+    <tr style="background:#03a9f4;color:whitesmoke">
+      <th>S.No</th>
+      <th>Register Date</th>
+      <th>Registration #</th>
+      <th>Consultant</th>
+      <th>Prescription</th>
+      <th>Reports</th>
+      <th>Notes</th>
+      <th>Write Notes</th>
+      <th>Raise Labservice request</th>
+      <th>Raise Pharmacy needs</th>
+    </tr>
+    <tr *ngFor="let data of Nur|filter:filter|paginate:{ itemsPerPage: 15, currentPage: p };let i=index">
+      <td>{{15*(p-1)+i+1}}</td>
+      <td>{{data.doj}}</td>
+      <td>{{data.regNo}}</td>
+      <td>{{data.doctorName}}</td>
+
+      <td>
+        <a *ngIf="data.prescription && data.prescription.length>0" href="{{ data.prescription}}" target="_blank">view</a>
+        <p *ngIf="!data.prescription">&nbsp;</p>
+      </td>
+      <td><a *ngIf="data.report && data.report.length > 0" (click)="openModal(basic2, data)">Available</a>
+        &nbsp;
+      </td>
+      <td>
+        <a style="color:green" (click)="showNotes(data)">Notes</a>
+      </td>
+      <td><a style="color:green" (click)="open(basic,data)">Write Notes</a></td>
+      <td><a routerLink="/lab">RaiseLabRequest</a></td>
+      <td>
+            <a style="color:green" (click)="show1(basic1,data)"> Pharmacy Notes</a>
+         
+        </td>
+    </tr>
+      </tbody>
+  </table>
+  <pagination-controls (pageChange)="p = $event"></pagination-controls>
+</div>
+
+
+<ng-template #basic let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Notes</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <form class="form-horizontal" class="form-inline" [formGroup]="NurseForm">
+      <div>
+        <div class="form-group">
+
+
+          <mat-form-field style="width:600px">
+
+            <textarea style="height:500px" [(ngModel)]="note" formControlName="note" matInput placeholder="Notes" type="text"></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+
+
+    </form>
+
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">close</button>
+    <button class="btn btn-primary mat-ripple" md-ripple="submit" (click)="save1(NurseForm.value);modal.close('Save click')">save</button>
+
+  </div>
+</ng-template>
+
+
+
+<ng-template #basic1 let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Notes</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+    </div>
+    <div class="modal-body">
+  
+      <form class="form-horizontal" class="form-inline" [formGroup]="NurseForm">
+        <div>
+          <div class="form-group">
+          
+  
+              <mat-form-field style="width:600px">
+  
+                <textarea style="height:500px" [(ngModel)]="note1" formControlName="note1" matInput placeholder="Notes" type="text"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+    
+  
+      </form>
+  
+  
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">close</button>
+      <button class="btn btn-primary mat-ripple" md-ripple="submit" (click)="savePha(NurseForm.value);modal.close('Save click')">save</button>
+    </div>
+  </ng-template>
+
+<ng-template #basic2 let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Reports List</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+    </div>
+    <div class="modal-body">
+  <table class="table table-">
+    <thead>
+    <th> Report Name </th>
+    <th> Action </th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let report of reports">
+        <td> {{report.name}}</td>
+        <td><a href="{{report.link}}" target="_blank">open</a></td>
+      </tr>
+    </tbody>
+
+  </table>
+
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">close</button>
+
+    </div>
+  </ng-template>

@@ -1,0 +1,25 @@
+<service>
+	<id>udabhavafe.exe</id>
+	<name>udabhava-fe</name>
+	<description>The nodejs.org example web server.</description>
+	<executable>C:\Program Files\nodejs\node.exe</executable>
+	<logmode>rotate</logmode>
+	<argument>--harmony</argument>
+	<argument>C:\Users\VNC\Desktop\udbhava- (2)\27-12-18\git-hub-ui\udbhava-fe\node_modules\node-windows\lib\wrapper.js</argument>
+	<argument>--file</argument>
+	<argument>C:\Users\VNC\Desktop\udbhava- (2)\27-12-18\git-hub-ui\udbhava-fe\server.js</argument>
+	<argument>--log</argument>
+	<argument>udabhava-fe wrapper</argument>
+	<argument>--grow</argument>
+	<argument>0.25</argument>
+	<argument>--wait</argument>
+	<argument>1</argument>
+	<argument>--maxrestarts</argument>
+	<argument>3</argument>
+	<argument>--abortonerror</argument>
+	<argument>n</argument>
+	<argument>--stopparentfirst</argument>
+	<argument>undefined</argument>
+	<stoptimeout>30sec</stoptimeout>
+	<workingdirectory>C:\Users\VNC\Desktop\udbhava- (2)\27-12-18\git-hub-ui\udbhava-fe</workingdirectory>
+</service>

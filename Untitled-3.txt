@@ -1,0 +1,24 @@
+ <div id="content" class="app-content" role="main">
+        <div class="app-content-body ">
+            <div class="hbox hbox-auto-xs hbox-auto-sm">
+                <!-- <div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="
+                app.settings.asideFolded = true; 
+                app.settings.asideDock = true;
+              ">  -->
+
+                <ngx-loading-bar [fixed]="false" [includeSpinner]="false"></ngx-loading-bar>
+
+                <router-outlet></router-outlet>
+
+            </div>
+        </div>
+    </div>
+
+     [ngClass]="{'has-error':!RegisterForm.controls['firstName'].valid  && RegisterForm.controls['firstName'].touched}"
+       <span *ngIf="RegisterForm.controls['firstName'].hasError('required') && RegisterForm.controls['firstName'].touched" class="text text-danger">
+                <small>enter name</small>
+              </span>
+
+              companyName
+              companyFee
+         

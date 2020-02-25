@@ -1,0 +1,369 @@
+<div style="padding-left: 10px;padding-top: 10px;padding-right: 10px;margin-bottom: 10px;margin-left:-20px;margin-right:-20px
+">
+  <mat-card style="background-color: #03a9f4; color:white; padding: 7px;">
+    <mat-card-title style="font-size:19px;font-weight:bold">PROCUREMENT MASTER LIST
+
+
+    </mat-card-title>
+
+
+
+
+  </mat-card>
+
+</div>
+
+<div style="padding-left:10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+  <mat-card style="max-height: 45px; padding-top: 2px">
+    <label>
+        <div class="row">
+            <div class="col-lg-3 col-md-4 col-sm-12 ">
+    
+              <div class="form-group " style="margin-left:-30px">
+                <div class="col-xl" style="padding-top:2px">
+                    <!-- <mat-form-field style="width:150px;margin-top:-5pxpx" id="value"> -->
+           
+                  <input [(ngModel)]="filter"   placeholder="SearchByVendorName" type="search" >
+                <!-- </mat-form-field> -->
+                </div>
+                </div>
+                </div>
+              <!-- </label> -->
+    <!-- <div class="row">
+      <div class="col-lg-4 col-md-6 col-sm-12"> -->
+
+    <div class="col-lg-3 col-md-4 col-sm-12 " style="padding-left: 100px">
+      <mat-form-field style="width:50px;margin-left:30px" id="value">
+
+        <mat-select [(ngModel)]="count" (selectionChange)="showProcList2(count)" matInput placeholder="Days">
+          <mat-option value="2">2</mat-option>
+          <mat-option value="7">7</mat-option>
+
+          <mat-option value="15">15</mat-option>
+
+          <mat-option value="30">30</mat-option>
+          <mat-option value="All">All</mat-option>
+
+        </mat-select>
+
+      </mat-form-field>
+
+    </div>
+</div>
+</label>
+</mat-card>
+
+</div>
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="large" color="rgb(73, 165, 171)" type="ball-clip-rotate-pulse"></ngx-spinner>
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }" [template]="customLoadingTemplate"></ngx-loading>
+
+<div style="padding-left:10px;margin-top:-10px;padding-right:10px;margin-left:-30px;margin-right:-38px">
+  <table width="100%" class="table table-striped table-condensed" style="overflow-y: scroll;
+width: 98%;margin-left: 10px;">
+    <tbody style="font-size:11px;font-weight: bold">
+      <tr style="background:#03a9f4;color:whitesmoke">
+        <th>S.No</th>
+        <th>Procurement #</th>
+        <th>INVOICE #</th>
+        <th>Procurement Date</th>
+        <!-- <th>Type</th> -->
+        <th>Location</th>
+
+        <th>Vendor Name</th>
+        <th>Amount</th>
+        <th>Status</th>
+        <th>Manipulate</th>
+        <th>View</th>
+      </tr>
+      <tr *ngFor="let c of list[0]|filter:filter|paginate: { itemsPerPage: 10, currentPage: p };let i=index">
+        <!-- <td> <a style="color:blue" (click)="open(basic,data)">{{data.MasterprocId}}</a></td> -->
+
+        <td>{{15 * (p - 1) +i+1 }}</td>
+        <td><a style="color:blue" (click)="open(basic,c)">{{c.procId}}</a></td>
+        <td>{{c.invoiceNo}}</td>
+        <td>{{c.date}}</td>
+        <!-- <td>{{c.date | date : "dd.MM.y"}}</td> -->
+        <!-- <td>{{data.procurementType}}</td> -->
+        <td>{{c.location}}</td>
+        <td>{{c.vendor}}</td>
+        <td>{{c.amount}}</td>
+        <td>{{c.status}}</td>
+        <td>
+          <mat-radio-group>
+            <!-- <mat-radio-button value="1" >View</mat-radio-button>&nbsp; -->
+            <mat-radio-button value="2" (click)="open2(basic2,c)">Approve</mat-radio-button>&nbsp;
+            <!-- <mat-radio-button value="3">Deny</mat-radio-button> -->
+          </mat-radio-group>
+        </td>
+        <td><a style="color:blue" (click)="getReport(c)">View</a></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<pagination-controls (pageChange)="p = $event"></pagination-controls>
+
+<ng-template #basic let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">EDIT DETAILS</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+  </div>
+  <div class="modal-body">
+
+    <form class="form-horizontal" class="form-inline" [formGroup]="ProForm">
+
+      <div class="row">
+        <!-- <div class= "col-lg-4 col-md-3">
+                <div class="form-group ">
+                  <div class="col-xl">
+    
+                    <mat-form-field>
+    
+                      <input [(ngModel)]="masterProcurementId" formControlName="masterProcurementId" matInput placeholder="GRN_ID" type="text" readonly>
+                    </mat-form-field>
+    
+                  </div>
+                </div>
+              </div> -->
+        <div class="col-lg-4 col-md-3">
+          <div class="form-group ">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input [(ngModel)]="this.medDetails.procurementId" formControlName="procurementId" matInput placeholder="ProcurementId" type="text"
+                  readonly>
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-3">
+          <div class="form-group ">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input [(ngModel)]="this.medDetails.invoiceNo" formControlName="invoiceNo" matInput placeholder="INVOICE#" type="text">
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-3">
+          <div class="form-group ">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input [(ngModel)]="this.medDetails.status" formControlName="status" matInput placeholder="Status" type="text" readonly>
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- <label>VendorName:</label> -->
+        <div class="col-lg-4 col-md-3">
+
+          <div class="form-group">
+
+            <div class="col-xl">
+
+              VendorName
+
+              <select style="width:200px" [(ngModel)]="this.medDetails.vendorName" formControlName="vendorName" placeholder="vendorName"
+                required>
+                            <option>none</option>
+                            <option *ngFor="let data of list[1] ;let i=index" [value]="data.vendorName">
+                              {{data.vendorName}} 
+                            
+                            </option>
+                            </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- <label>ProcurementType:</label>  -->
+        <div class="col-lg-4 col-md-3">
+
+          <div class="form-group">
+
+            <div class="col-xl">
+
+
+              ProcurementType
+              <select style="width:200px" [(ngModel)]="this.medDetails.procurementType" formControlName="procurementType" placeholder="ProcurementType"
+                required>
+                              <option>none</option>
+                              <option value="With PO">With PO</option>
+                              <option value="Without PO">Without PO</option>
+                            
+                            </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- <label>Location:</label>  -->
+
+        <div class="col-lg-4 col-md-3">
+
+          <div class="form-group">
+
+            <div class="col-xl">
+              Currency
+
+
+              <select style="width:200px" [(ngModel)]="this.medDetails.currency" formControlName="currency" placeholder="Currency" required>
+                              <option value="INR">INR</option>
+                              <option value="$">$</option>
+                              <option value="Euro">Euro</option>
+                            
+                             
+                              </select>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-3">
+
+          <div class="form-group">
+
+            <div class="col-xl">
+              Location
+
+
+              <select style="width:200px" [(ngModel)]=" this.medDetails.location" formControlName="location" placeholder="location" required>
+                          
+                          
+                            <option>None</option>
+                            <option value="Miyapur">Miyapur</option>
+                            <option value="KPHB">KPHB</option>
+                            </select>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </form>
+
+    <table id="classTable" class="table table-bordered" style="overflow-y: scroll;">
+      <tr style="background:#03a9f4;color:whitesmoke;font-size:13px">
+
+        <th>Medicine Name</th>
+        <th>Batch #</th>
+        <th>Pack</th>
+        <!-- <th>Manuf Dt</th> -->
+
+        <th>Expiry Dt</th>
+        <th>Qty</th>
+
+        <th>FREE</th>
+        <th>MRP</th>
+        <th>RATE</th>
+        <th>Dis</th>
+        <th>Gst</th>
+
+      </tr>
+      <tr *ngFor="let med of medDetails.refMedicineDetails">
+        <td>
+          <select style="width:150px" placeholder="Medicine name" [(ngModel)]="med.itemName">
+                  <option>none<option>
+                     <option *ngFor="let data of MedicinName;let i=index" [value]="data.itemName" >
+                       {{data.itemName}}
+                    </option>
+                   </select>
+        </td>
+        <td><input [(ngModel)]="med.batch" type="text"></td>
+        <td>
+          <input style="width:70px" [(ngModel)]="med.packSize" type="number">
+
+
+        </td>
+        <!-- <td>
+              <input [(ngModel)]= "med.manufacturedDate"  type="text">
+
+            
+            </td> -->
+        <td><input [(ngModel)]="med.expDate" type="text"></td>
+        <td>
+          <input style="width:70px" [(ngModel)]="med.quantity" type="text">
+        </td>
+
+        <td>
+          <input style="width:70px" [(ngModel)]="med.freeSample" type="text">
+        </td>
+        <td>
+          <input [(ngModel)]="med.mrp" type="text">
+        </td>
+        <td>
+          <input [(ngModel)]="med.costPrice" type="text">
+        </td>
+        <td>
+          <input style="width:70px" [(ngModel)]="med.discount" type="text">
+        </td>
+        <td>
+          <input style="width:70px" [(ngModel)]="med.gst" type="text">
+        </td>
+      </tr>
+      <!--
+        <tr>
+         
+<td>
+                <select  style="width:150px" placeholder="Medicine name" [(ngModel)]="itemName">
+               <option>none<option>
+                  <option *ngFor="let data of Details;let i=index" [value]="data.itemName" >
+                    {{data.itemName}}
+                 </option>
+                </select>
+              
+              
+        </td>
+        <td><input [(ngModel)]="batch" type="text"></td>
+        <td>
+            <input [(ngModel)]= "manufacturedDate"  type="text">
+          </td>
+          <td><input [(ngModel)]="expDate" type="text"></td>
+          <td>
+              <input [(ngModel)]= "quantity"  type="text">
+            </td>
+            <td>
+                <input [(ngModel)]= "freeSample"  type="text">
+              </td>
+              <td>
+                  <input [(ngModel)]= "mrp"  type="text">
+                </td>
+                <td>
+                    <input [(ngModel)]= "costPrice"  type="text">
+                  </td>
+        </tr>-->
+    </table>
+
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">close</button>
+    <button type="button" class="btn btn-primary mat-ripple" md-ripple="submit" [disabled]="this.medDetails.status=='Approved'&& this.medDetails.role!='VNC ADMIN'"
+      (click)="edit();refresh();modal.close('Save click')">save</button>
+
+  </div>
+</ng-template>
+
+
+<ng-template #basic2 let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">DO YOU WANT TO APPROVE?</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+  </div>
+  <div class="modal-body">
+
+    <button type="submit" class="btn btn-outline-primary" (click)="save();modal.close('Save click')">YES</button>&nbsp;&nbsp;
+    <button type="button" class="btn btn-outline-danger" (click)="modal.close('Save click')">NO</button>
+
+
+  </div>
+
+</ng-template>

@@ -1,0 +1,124 @@
+<div style="padding-left: 10px;padding-top: 10px;padding-right: 10px;margin-bottom: 10px;
+">
+  <div class="fixHeader" id="myHeader" style="margin-left:-20px;margin-right:-20px">
+    <mat-card style="background-color: #03a9f4; color:white; padding: 7px;">
+      <mat-card-title style= "font-size:19px;font-weight:bold">Bed Availability
+
+        <button style=" margin-right: 10px;
+      float: right;
+      background-color: white;
+      color: black !important; margin-right: 10px;margin-top:-5px" class="btn btn-primary mat-ripple">CONFIRM</button> &nbsp;
+        <button style="margin-right: 10px;
+      float: right;
+      background-color: white;
+      color: black !important;margin-top:-5px " class="btn btn-primary mat-ripple" md-ripple="reset" (click)="reset()">RESET</button>
+        &nbsp;
+      </mat-card-title>
+    </mat-card>
+  </div>
+</div>
+<!-- <div class="content">
+  <mat-card>
+     
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                  <div class="col-xl">
+    
+                    <mat-form-field>
+                        <mat-select  [(ngModel)]="floor"  style="width:150px" (change)="showFloors(floor)" placeholder="Floor" type="text">
+                            <mat-option>none</mat-option>
+                          <mat-option  *ngFor="let data of BEDS" [value]="data.floor">{{data.floor}}</mat-option>
+           
+                          </mat-select>
+                     
+                    </mat-form-field>
+          
+
+
+</div>
+</div>
+
+           
+        </div>
+ 
+      <div class="cardList">
+          <div class="col-md-8">
+              
+            <div class="d-flex radio btn-group-toggle flex-wrap" data-toggle="buttons">
+                <label   *ngFor="let b of All;"  (click)="b.status != 'OCCUPIED'?(selectedBed==b.bedName? selectedBed=null:selectedBed=b.bedName):null" class="btn p-2 m-1" [ngClass]="{'disabled btn-danger inactive':b.status == 'OCCUPIED', 'btn-primary':b.status != 'OCCUPIED', 'active':selectedBed == b.bedName, 'inactive':selectedBed != b.bedName}" >
+                    <input  type="radio"  name="bed-allot" [id]="b.bedName" autocomplete="off" > {{b.bedName}}
+              </label> 
+            </div>
+          </div> 
+        </div>
+         
+      
+      </div>
+    </mat-card>
+
+
+ 
+  </div> -->
+
+<div class="content">
+  <div style="padding-left:10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+      <mat-card style="max-height: 45px; padding-top: 2px">
+
+      <div class="row">
+        <div style="display: flex;">
+        <div class="col-12">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+                <mat-select [(ngModel)]="floor" style="width:150px" (selectionChange)="showBeds(floor)"
+                  placeholder="Floor" type="text">
+                  <mat-option>none</mat-option>
+                  <mat-option *ngFor="let data of BEDS" [value]="data">{{data}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+                <mat-select [(ngModel)]="floor" style="width:150px" (selectionChange)="showBeds(floor)"
+                  placeholder="Floor" type="text">
+                  <mat-option>none</mat-option>
+                  <mat-option *ngFor="let data of BEDS" [value]="data">{{data}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+        <div *ngFor="let type of bedTypes;" class="col-12">
+          
+        {{type}} :  Total : {{bedRows[type]['total']}} ,
+         Available: {{bedRows[type]['allocate']}},
+         Occupied: {{bedRows[type]['occupied']}}
+            
+          <div class="form-group ">
+            <div class="col-xl">
+              <div class="d-flex radio btn-group-toggle flex-wrap" data-toggle="buttons">
+                  <!-- <i class="fa fa-bed" aria-hidden="true"></i> -->
+                <label  *ngFor="let b of bedRows[type];"
+                  (click)="b.status != 'OCCUPIED'?(selectedBed==b.bedName? selectedBed=null:selectedBed=b.bedName):null"
+                  class="btn p-2 m-1 "
+                  [ngClass]="{'disabled btn-danger inactive':b.status == 'OCCUPIED', 'btn-primary':b.status != 'OCCUPIED', 'active':selectedBed == b.bedName, 'inactive':selectedBed != b.bedName}">
+                  <input   type="radio" name="bed-allot" [id]="b.bedName" autocomplete="off" > {{b.bedName}}
+                </label>
+             
+              </div>
+            </div>
+          </div>
+        <!-- <hr class="p-2 m-0"> -->
+        </div>
+      </div>
+
+    </mat-card>
+  </div>
+</div>

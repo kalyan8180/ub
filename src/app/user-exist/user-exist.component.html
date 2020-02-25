@@ -1,0 +1,421 @@
+<div style="padding-left: 10px;padding-top: 10px;padding-right: 10px;margin-bottom: 10px;margin-left:-20px;margin-right:-20px
+">
+  <mat-card style="background-color: #03a9f4; color:white; padding: 7px;">
+    <mat-card-title style="font-size:19px;font-weight:bold">EXISTING USERS
+
+    </mat-card-title>
+
+  </mat-card>
+
+
+</div>
+<div style="padding-left:10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+  <mat-card style="max-height: 45px; padding-top: 2px">
+    <label style="padding-top:2px">
+      <!-- <mat-form-field style="width:150px;margin-top:-5px"> -->
+
+      <input [(ngModel)]="filter" placeholder="Search By Name" type="search">
+      <!-- </mat-form-field> -->
+    </label>
+  </mat-card>
+</div>
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="large" color="rgb(73, 165, 171)" type="ball-clip-rotate-pulse">
+</ngx-spinner>
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }" [template]="customLoadingTemplate">
+</ngx-loading>
+<div style="padding-left:10px;margin-top:-10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+
+  <table width="100%" class="table table-striped table-condensed" style="overflow-y: scroll;">
+    <tbody style="font-size:11px;font-weight: bold">
+      <tr style="background:#03a9f4;color:whitesmoke">
+        <th>S.No</th>
+        <th (click)="sort('a')">UserID
+          <span>
+            <span [hidden]="!a"></span>
+            <span [hidden]="reverse">▼</span>
+            <span [hidden]="!reverse">▲</span>
+          </span>
+        </th>
+        <th>FullName</th>
+        <th>Role</th>
+        <th>RESET PWD</th>
+        <th>EDIT</th>
+        <th>Status</th>
+        <th>Manage</th>
+      </tr>
+
+      <tr
+        *ngFor="let data of Alluser[0]| filter: filter| orderBy: key : reverse |paginate: { itemsPerPage: 15, currentPage: p };let i=index">
+
+        <td>{{15 * (p - 1) +i+1 }}</td>
+        <td>{{data.userId}}</td>
+        <td>
+          {{data.firstName}} {{data.middleName}} {{data.lastName}}
+        </td>
+        <td>{{data.role}}</td>
+        <td>
+          <a style="color:red" (click)="onEdit(basic1,data)">Reset</a>
+        </td>
+        <td><a style="color:blue" (click)="open(basic,data)"> Edit</a></td>
+        <td [ngStyle]="{'color':getColor(data.status)}">{{data.status}}</td>
+        <td>
+          <mat-radio-group>
+
+            <mat-radio-button value="Active" (click)="Active(data);refresh()">Active</mat-radio-button>&nbsp;
+            <mat-radio-button value="Inactive" (click)="inActive(data);refresh()">Inactive</mat-radio-button>
+
+          </mat-radio-group>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <pagination-controls (pageChange)="p = $event"></pagination-controls>
+</div>
+
+<ng-template #basic let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title"> Edit Information</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form class="form-inline" [formGroup]="UserExist">
+
+
+      <div class="row">
+        <div class="col-md-6 col-lg-4">
+          <div class="form-group">
+            <div class="col-xl">
+              <mat-form-field>
+                <input formControlName="userId" [(ngModel)]="userId" matInput placeholder="User Id" type="text"
+                  readonly>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="form-group">
+            <div class="col-xl">
+              <mat-form-field>
+                <input [(ngModel)]="firstName" formControlName="firstName" matInput placeholder="First Name"
+                  type="text">
+              </mat-form-field>
+
+
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-lg-4">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+                <input [(ngModel)]="middleName" formControlName="middleName" matInput placeholder="Middle Name"
+                  type="text">
+
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-lg-4">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+                <input [(ngModel)]="lastName" formControlName="lastName" matInput placeholder="Last Name" type="text">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-lg-4">
+          <div class="form-group ">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input [(ngModel)]="userName" formControlName="userName" matInput placeholder="UserName" type="text">
+              </mat-form-field>
+            </div>
+
+          </div>
+        </div>
+        <div class="col-md-3 col-lg-4">
+          <div class="form-group ">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input [(ngModel)]="role" formControlName="role" matInput placeholder="Role" type="text" readonly>
+              </mat-form-field>
+
+
+
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="form-group ">
+            <div class="col-xl">
+
+
+
+
+              <mat-form-field>
+
+                <input [(ngModel)]="refName" formControlName="refName" matInput placeholder="RefName" type="text"
+                  readonly>
+              </mat-form-field>
+
+
+
+
+              <br />
+
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="form-group ">
+            <div class="col-xl">
+
+
+              <mat-form-field>
+
+                <input [(ngModel)]="location" formControlName="location" matInput placeholder="Address" type="text">
+              </mat-form-field>
+
+
+
+
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="form-group ">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input [(ngModel)]="email" formControlName="email" matInput placeholder="Email" type="email">
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="form-group ">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input [(ngModel)]="personalContactNumber" formControlName="personalContactNumber" matInput
+                  placeholder="Personal Contact Number" type="text" pattern="[6789][0-9]{9}" maxlength="10" required>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="form-group ">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input [(ngModel)]="workContactNumber" formControlName="workContactNumber" matInput
+                  placeholder="Work Contact Number" type="text" pattern="[6789][0-9]{9}" maxlength="10">
+              </mat-form-field>
+
+              <div class="text text-danger" *ngIf="UserExist.controls['workContactNumber'].errors?.maxlength">Maximum
+                length 10</div>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="form-group ">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input [(ngModel)]="description" formControlName="description" matInput placeholder="Description"
+                  type="text">
+
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+
+
+
+
+        <div *ngIf="role!='ADMIN'" class="col-md-6 col-lg-4">
+          <div class="form-group ">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+
+                <mat-select [(ngModel)]="department" formControlName="department" placeholder="Department">
+
+
+
+                  <mat-option value="Adminsitration">Adminsitration</mat-option>
+                  <mat-option value="Ambulance Services">Ambulance Services</mat-option>
+                  <mat-option value="Customer Service">Customer Service</mat-option>
+                  <mat-option value="Doctors">Doctors</mat-option>
+                  <mat-option value="Finance">Finance</mat-option>
+                  <mat-option value="Nursing">Nursing</mat-option>
+                  <mat-option value="Pharmacy">Pharmacy</mat-option>
+                  <mat-option value="Security">Security</mat-option>
+
+
+                </mat-select>
+
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="col-md-6 col-lg-4">
+          <div class="form-group ">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input  [(ngModel)]="specialization" formControlName="specialization" matInput placeholder="Specilazation" type="text">
+
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div> -->
+
+
+
+        <div *ngIf="role!='ADMIN'" class="col-md-4 col-lg-4">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+                <mat-select (selectionChange)="push(specialization)" [(ngModel)]="specialization"
+                  formControlName="specialization" placeholder="Specialization">
+
+                  <mat-option *ngFor="let c of  Alluser[1]" [value]="c.specName">
+
+                    {{c.specName}}
+                  </mat-option>
+
+                </mat-select>
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+
+
+
+        <div class="col-md-4 col-lg-4">
+          <div class="form-group ">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <textarea [(ngModel)]="qualification" formControlName="qualification" matInput
+                  placeholder="Qualification" type="text"></textarea>
+
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </form>
+
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger mat-ripple" (click)="modal.close('Save click')">No</button>
+    <button class="btn btn-primary mat-ripple" md-ripple="submit"
+      (click)="modal.close('Save click');submitForm(UserExist.value);push()">Save</button>
+
+
+
+
+  </div>
+</ng-template>
+
+
+<ng-template #basic1 let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Password Information</h4>
+    <button type="button" class="close" aria-label="Close" (click)="resetpassword();modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form class="form-inline" [formGroup]="UserExist1">
+
+
+      <div class="row">
+        <div class="col-md-6 col-lg-4">
+          <div class="form-group">
+            <div class="col-xl">
+              <mat-form-field>
+                <input maxlength="12" [(ngModel)]="password1" (change)="checkConfirmPass(password1)"
+                  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,12}" formControlName="password1" matInput
+                  placeholder="NewPassword" type="text" required>
+              </mat-form-field>
+              <div *ngIf="UserExist1.controls['password1'].touched && !UserExist1.controls['password1'].valid">
+                Enter valid password
+
+              </div>
+              <!-- <span class="alert alert-danger" *ngIf="UserExist.controls['password1'].touched && !UserExist.controls['password1'].required"> 
+                <small>
+                  Mandatory Field
+                </small></span> -->
+              <div class="text text-danger" *ngIf="UserExist1.controls['password1'].errors?.maxlength">password should
+                have 12 characters</div>
+              <div class="text text-danger" *ngIf="UserExist1.controls['password1'].errors?.pattern">pasword should One
+                capital letter and one number</div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 col-lg-4">
+          <div class="form-group">
+            <div class="col-xl">
+              <mat-form-field>
+                <input [(ngModel)]="confirmPassword1" pattern="{{ match }}" formControlName="confirmPassword1" matInput
+                  placeholder="ConFirmPassword" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,12}" type="password"
+                  required>
+              </mat-form-field>
+              <div class="text text-danger"
+                *ngIf="UserExist1.controls['confirmPassword1'].touched && !UserExist1.controls['confirmPassword1'].valid">
+                Mismatch
+
+
+              </div>
+              <!-- <div class="text text-danger" *ngIf="UserExist.controls['confirmPassword1'].errors?.maxlength">password  should have  8 characters</div>
+                <div class="text text-danger" *ngIf="UserExist.controls['confirmPassword1'].errors?.pattern">pasword should One capital letter and one number</div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger mat-ripple"
+      (click)="resetpassword();modal.close('Save click')">Cancel</button>
+    <button class="btn btn-primary mat-ripple" md-ripple="submit" [disabled]="!UserExist1.valid"
+      (click)="submitForm2(UserExist1.value);modal.close('Save click')">Submit</button>
+
+    <!-- <button type="button" class="btn btn-danger mat-ripple" (click)="reset()">reset</button> -->
+
+
+  </div>
+</ng-template>

@@ -1,0 +1,131 @@
+<div style="padding-left: 10px;padding-top: 10px;padding-right: 10px;margin-bottom: 10px;">
+  <div class="fixHeader" id="myHeader" style="margin-left:-20px;margin-right:-20px">
+    <mat-card style="background-color: #03a9f4; color:white; padding: 7px;">
+      <mat-card-title style= "font-size:19px;font-weight:bold">REFERRAL
+        <button style="margin-right: 10px;
+        float: right;
+        background-color: white;
+        color: black !important; margin-top:-5px" class="btn btn-primary mat-ripple" md-ripple="reset" (click)="reset()">Reset</button>        &nbsp;
+        <button style="margin-right: 10px;
+            float: right;
+            background-color: white;
+            color: black !important; margin-right: 10px;margin-top:-5px" class="btn btn-primary mat-ripple" (click)="save(ReferaldrForm.value);refresh()">Save</button>        &nbsp;
+
+      </mat-card-title>
+    </mat-card>
+  </div>
+
+
+</div>
+
+<div class="content">
+  <div style="padding-left:10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+    <mat-card style="padding-left:50infopx;padding-top:2px;padding-bottom:2px;">
+
+      <form class="form-horizontal" class="form-inline" [formGroup]="ReferaldrForm">
+
+        <div class="row">
+
+          <div class="col-lg-4 col-md-3 col-sm-12 ">
+            <div class="form-group">
+              <div class="col-xl">
+                <mat-form-field>
+
+                  <mat-select [(ngModel)]="referal" [formControl]="ReferaldrForm.controls['referal']" matInput placeholder="Referal" type="text">
+
+                    <mat-option value="Doctor">Doctor</mat-option>
+
+                    <mat-option value="Franchise">Franchise</mat-option>
+
+                    <mat-option value="Health">Health</mat-option>
+                    <mat-option value="Health coordinators">Health coordinators</mat-option>
+                    <mat-option value="Management">Management</mat-option>
+                    <mat-option value="Other Doctors">Other Doctors</mat-option>
+                    <mat-option value="Other Hospitals">Other Hospitals</mat-option>
+                    <mat-option value="Other organisations">Other organisations</mat-option>
+                    <mat-option value="Walkin">Walkin</mat-option>
+                    <mat-option value="Staff">Staff</mat-option>
+
+
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-3 col-sm-12 ">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field>
+
+
+                  <input minlength="3" maxlength="50" pattern="^[A-Za-z -]+$" [(ngModel)]="doctorname" [formControl]="ReferaldrForm.controls['doctorname']"
+                    matInput placeholder="Name" type="text">
+                </mat-form-field>
+
+                <div class="text text-danger" *ngIf="ReferaldrForm.controls['doctorname'].touched && !ReferaldrForm.controls['doctorname'].valid">
+                Name is Mandatory</div>
+                <div class="text text-danger" *ngIf="ReferaldrForm.controls['doctorname'].errors?.minlength">name should have min 3 characters</div>
+                <div class="text text-danger" *ngIf="ReferaldrForm.controls['doctorname'].errors?.maxlength">name should have max 50 characters</div>
+                <div class="text text-danger" *ngIf="ReferaldrForm.controls['doctorname'].errors?.pattern">Allow only alphabets</div>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-3 col-sm-12 ">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field>
+
+
+                  <input [(ngModel)]="address" [formControl]="ReferaldrForm.controls['address']" matInput placeholder="Address" type="text">
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-3 col-sm-12 ">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field>
+
+
+                  <input [(ngModel)]="phoneno" pattern="[6789][0-9]{9}" minlength="10" maxlength="10" [formControl]="ReferaldrForm.controls['phoneno']"
+                    matInput placeholder="Phone No" type="text">
+                </mat-form-field>
+
+                <div *ngIf="ReferaldrForm.controls['phoneno'].hasError('required') && ReferaldrForm.controls['phoneno'].touched" class="text text-danger">
+                  <small>Mandatory(if not entered)</small>
+                </div>
+                <div *ngIf="ReferaldrForm.controls['phoneno'].hasError('pattern') && ReferaldrForm.controls['phoneno'].touched" class="text text-danger">
+                  <small>Enter valid type</small>
+                </div>
+                <div *ngIf="ReferaldrForm.controls['phoneno'].hasError('minlength') && ReferaldrForm.controls['phoneno'].touched" class="text text-danger">
+                  <small>minlength is 10</small></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-3 col-sm-12 ">
+            <div class="form-group">
+              <div class="col-xl">
+
+                <mat-form-field>
+
+
+                  <input [(ngModel)]="email" [formControl]="ReferaldrForm.controls['email']" matInput placeholder="Email" type="text">
+                </mat-form-field>
+                <span *ngIf="ReferaldrForm.controls['email'].hasError('pattern') && ReferaldrForm.controls['email'].touched" class="text text-danger">
+                                <small>Email validations @ ;.com etc</small>
+                              </span>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </form>
+    </mat-card>
+  </div>
+</div>

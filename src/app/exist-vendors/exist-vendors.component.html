@@ -1,0 +1,358 @@
+<div style="padding-left: 10px;padding-top: 10px;padding-right: 10px;margin-bottom: 10px;
+">
+  <div class="fixHeader" id="myHeader" style="margin-left:-20px;margin-right:-20px" >
+    <mat-card style="background-color: #03a9f4; color:white; padding: 7px;">
+      <mat-card-title style="font-size:19px;font-weight:bold">VENDOR LIST
+
+        <button style=" margin-right: 10px;
+          float: right;
+          background-color: limegreen;
+          color: white !important;margin-top:-5px" class="btn btn-success pull-right">
+          <a routerLink="/vendor" style="color:white">Add New</a>
+        </button>
+      </mat-card-title>
+
+    </mat-card>
+  </div>
+</div>
+<div style="padding-left:10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+  <mat-card style="max-height: 45px; padding-top: 2px">
+    <label style="padding-top:2px">
+          <!-- <mat-form-field style="width:150px;margin-top:-5px"> -->
+  
+          <input [(ngModel)]="filter" matInput placeholder="Search By VendorCode/VendorName/RegistrationName" type="search">
+        <!-- </mat-form-field> -->
+      </label>
+
+
+  </mat-card>
+
+</div>
+
+
+<div style="padding-left:10px;margin-top:-10px;padding-right:10px;margin-left:-20px;margin-right:-20px">
+  <table width="100%" class="table table-striped table-condensed" style="overflow-y: scroll;">
+    <tbody style="font-size:11px;font-weight: bold">
+      <tr style="background:#03a9f4;color:whitesmoke">
+        <th>S.No</th>
+        <th>Vendor Code</th>
+        <th>Vendor Name</th>
+        <th>Date</th>
+        <th> Edit</th>
+        <th>Regisration Name</th>
+
+
+        <th>Status</th>
+        <th>Inserted by</th>
+
+
+      </tr>
+
+      <tr *ngFor="let data of Vendor | filter: filter | paginate: { itemsPerPage: 15, currentPage: p };let i=index">
+
+        <td>{{15 * (p - 1) +i+1 }}</td>
+        <td>{{data.vendorId}}</td>
+        <td>{{data.vendorName}}</td>
+        <td>{{data.registeredDate | date:"dd.MM.y"}}</td>
+        <td><a style="color:blue" (click)="open(basic,data)"> Edit</a></td>
+        <td>{{data.regName}}</td>
+
+        <td>{{data.active}}</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<pagination-controls (pageChange)="p = $event"></pagination-controls>
+<ng-template #basic let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title"> Edit Information</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form class="form-inline" [formGroup]="VendorForm">
+      <div class="row">
+        <div class="col-md-6 col-lg-4">
+          <div class="form-group">
+            <div class="col-xl">
+
+
+              <mat-form-field>
+
+
+
+
+                <input [(ngModel)]="vendorId" formControlName="vendorId" matInput placeholder="VendorCode" type="text" readonly>
+
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="form-group">
+            <div class="col-xl">
+              <mat-form-field>
+                <input [(ngModel)]="vendorType" formControlName="vendorType" matInput placeholder="vendorType" type="text">
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-lg-4">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+                <input [(ngModel)]="businessType" formControlName="businessType" matInput placeholder="BusinessType" type="text">
+
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-lg-4">
+          <div class="form-group ">
+            <div class="col-xl">
+              <mat-form-field>
+                <input [(ngModel)]="vendorName" formControlName="vendorName" matInput placeholder="Vendor Name" type="text">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-lg-4">
+          <div class="form-group ">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input [(ngModel)]="globalId" formControlName="globalId" matInput placeholder="Global Id" type="text">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-lg-4">
+          <div class="form-group ">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input [(ngModel)]="regName" formControlName="regName" matInput placeholder="Regd Name" type="text">
+              </mat-form-field>
+
+
+
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="form-group ">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input [(ngModel)]="panNo" formControlName="panNo" matInput placeholder="pAN#" type="text">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="form-group ">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input [(ngModel)]="paymentTerms" formControlName="paymentTerms" matInput placeholder="PaymentTerms" type="email">
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="form-group ">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input [(ngModel)]="deliveryDays" formControlName="deliveryDays" matInput placeholder="Delivery Days" type="text">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="form-group ">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input [(ngModel)]="adress1" formControlName="adress1" matInput placeholder="Address1" type="text">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="form-group ">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input [(ngModel)]="area" formControlName="area" matInput placeholder="Area" type="text">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="form-group ">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input [(ngModel)]="city" formControlName="city" matInput placeholder="City" type="text">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="form-group ">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input [(ngModel)]="mobile" formControlName="mobile" matInput placeholder="Mobile" type="text" pattern="[6789][0-9]{9}" maxlength="10">
+              </mat-form-field>
+
+
+
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="form-group ">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input [(ngModel)]="mail" formControlName="mail" matInput placeholder="Email" type="text">
+
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="form-group ">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input [(ngModel)]="bankName" formControlName="bankName" matInput placeholder="Bank Name" type="text">
+
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="form-group ">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input [(ngModel)]="bankBranch" formControlName="bankBranch" matInput placeholder="Bank Branch" type="text">
+
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="form-group ">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input [(ngModel)]="branchAdress" formControlName="branchAdress" matInput placeholder="Branch Address" type="text">
+
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="form-group ">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input [(ngModel)]="accountNo" formControlName="accountNo" matInput placeholder="AccountNo " type="text">
+
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="form-group ">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input [(ngModel)]="accountType" formControlName="accountType" matInput placeholder="AccountType " type="text">
+
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="form-group ">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input [(ngModel)]="ifscCode" formControlName="ifscCode" matInput placeholder="IFSC CODE " type="text">
+
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="form-group ">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input [(ngModel)]="micrCode" formControlName="micrCode" matInput placeholder="MICR CODE " type="text">
+
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="form-group ">
+            <div class="col-xl">
+
+              <mat-form-field>
+
+                <input [(ngModel)]="beneficiaryBankName" formControlName="beneficiaryBankName" matInput placeholder="BeneficiaryBankName "
+                  type="text">
+
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger mat-ripple" (click)="modal.close('Save click')">No</button>
+    <button class="btn btn-primary mat-ripple" md-ripple="submit" (click)="save(VendorForm.value);refresh()">Save</button>
+
+
+
+
+  </div>
+</ng-template>

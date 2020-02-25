@@ -1,0 +1,17 @@
+/* .cdk-global-overlay-wrapper, .cdk-overlay-container {
+    z-index: 99999 !important;
+ }
+ /* .cdk-overlay-container {
+    z-index:1127;
+    } */ 
+
+    /* .cdk-global-overlay-wrapper {
+        z-index: 1000;
+   } */
+
+   .modal {
+    z-index: 9000;
+  }
+  /* input{
+    text-transform:uppercase   
+  } */
