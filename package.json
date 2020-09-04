@@ -55,7 +55,7 @@
     "ngx-select-dropdown": "^0.8.1",
     "ngx-spinner": "^7.2.0",
     "ngx-toastr": "^9.2.0",
-    "node-sass": "^4.11.0",
+    "node-sass": "^4.13.1",
     "node-windows": "^0.1.14",
     "number-words": "^1.1.0",
     "popper.js": "^1.15.0",
